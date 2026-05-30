@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillGrow — The world's first fully integrated 0–25 SEND platform</title>
+<meta name="description" content="SkillGrow Technologies — the world's first fully integrated 0–25 SEND platform. Every child at the centre. Every stakeholder connected.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0F2D52;
+  --navy-deep: #020B18;
+  --navy-mid: #1B4F8A;
+  --gold: #FCD34D;
+  --gold-deep: #F59E0B;
+  --ivory: #FAFAF7;
+  --white: #FFFFFF;
+  --slate-50: #F8FAFC;
+  --slate-100: #F1F5F9;
+  --slate-300: #CBD5E1;
+  --slate-500: #64748B;
+  --slate-700: #334155;
+  --slate-900: #0F172A;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --container: 1200px;
+  --header-h: 76px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--slate-900);
+  background: var(--ivory);
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* ── NAV ─────────────────────────────────── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: rgba(15, 45, 82, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(252, 211, 77, 0.12);
+  z-index: 1000;
+  display: flex; align-items: center;
+}
+.nav-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 32px;
+  width: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  font-family: var(--serif);
+  font-size: 28px; font-weight: 600;
+  color: var(--gold);
+  letter-spacing: -0.5px;
+}
+.nav-links { display: flex; align-items: center; gap: 36px; }
+.nav-link {
+  font-size: 14px; font-weight: 500;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 0.2px;
+  transition: color .2s;
+  padding: 6px 0;
+}
+.nav-link:hover, .nav-link.active { color: var(--gold); }
+
+.nav-dropdown { position: relative; }
+.nav-dropdown-trigger {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 14px; font-weight: 500;
+  color: rgba(255,255,255,0.85);
+  padding: 6px 0;
+  transition: color .2s;
+}
+.nav-dropdown-trigger:hover { color: var(--gold); }
+.nav-dropdown-trigger::after { content: '▾'; font-size: 10px; opacity: .7; }
+.nav-dropdown-menu {
+  position: absolute; top: calc(100% + 14px); left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  background: white;
+  border-radius: 14px;
+  padding: 12px;
+  min-width: 320px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(15,45,82,0.06);
+  opacity: 0; pointer-events: none;
+  transition: all .25s cubic-bezier(.16,1,.3,1);
+}
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown:focus-within .nav-dropdown-menu {
+  opacity: 1; pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+.nav-dropdown-item {
+  display: block;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 14px; font-weight: 600;
+  color: var(--navy);
+  transition: background .15s;
+}
+.nav-dropdown-item:hover { background: var(--slate-100); }
+.nav-dropdown-item small {
+  display: block; font-weight: 400;
+  color: var(--slate-500);
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 13px 24px;
+  border-radius: 10px;
+  font-weight: 700; font-size: 14px;
+  letter-spacing: 0.3px;
+  transition: all .2s;
+  cursor: pointer;
+  border: none;
+}
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+  color: var(--navy);
+  box-shadow: 0 4px 24px rgba(252,211,77,0.3);
+}
+.btn-gold:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 32px rgba(252,211,77,0.45);
+}
+.btn-ghost {
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+.btn-lg { padding: 16px 32px; font-size: 15px; }
+
+.nav-hamburger {
+  display: none;
+  flex-direction: column; gap: 5px;
+  width: 28px;
+  padding: 8px 0;
+}
+.nav-hamburger span {
+  height: 2px; width: 100%;
+  background: var(--gold);
+  transition: all .25s;
+}
+
+/* ── MAIN ─────────────────────────────────── */
+main { padding-top: var(--header-h); min-height: 100vh; }
+.page { opacity: 0; transform: translateY(8px); transition: opacity .4s ease, transform .4s ease; }
+.page.in { opacity: 1; transform: translateY(0); }
+
+.container { max-width: var(--container); margin: 0 auto; padding: 0 32px; }
+.section { padding: 100px 0; }
+
+.reveal {
+  opacity: 0; transform: translateY(28px);
+  transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ── HERO ─────────────────────────────────── */
+.hero {
+  background:
+    radial-gradient(ellipse at 18% 8%, rgba(252,211,77,0.09) 0%, transparent 50%),
+    radial-gradient(ellipse at 92% 82%, rgba(27,79,138,0.45) 0%, transparent 60%),
+    linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 55%, var(--navy-mid) 100%);
+  color: white;
+  padding: 140px 0 120px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-eyebrow {
+  display: inline-block;
+  font-size: 11px; font-weight: 800;
+  color: var(--gold);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  padding: 8px 16px;
+  border: 1px solid rgba(252,211,77,0.3);
+  border-radius: 100px;
+  background: rgba(252,211,77,0.05);
+}
+.hero-h1 {
+  font-family: var(--serif);
+  font-size: clamp(40px, 6vw, 78px);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -1.8px;
+  margin-bottom: 28px;
+  max-width: 900px;
+}
+.hero-h1 .gold {
+  color: var(--gold);
+  font-style: italic;
+  font-weight: 400;
+}
+.hero-sub {
+  font-size: clamp(17px, 1.6vw, 21px);
+  color: rgba(255,255,255,0.72);
+  font-weight: 400;
+  max-width: 640px;
+  line-height: 1.55;
+  margin-bottom: 44px;
+}
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+.product-hero { padding: 130px 0 90px; }
+.product-hero .hero-h1 { font-size: clamp(38px, 5.2vw, 64px); }
+
+/* ── SECTION HEADINGS ────────────────────── */
+.section-eyebrow {
+  font-size: 11px; font-weight: 800;
+  color: var(--gold-deep);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.section-h2 {
+  font-family: var(--serif);
+  font-size: clamp(34px, 4.2vw, 54px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -1.2px;
+  color: var(--navy);
+  margin-bottom: 24px;
+  max-width: 780px;
+}
+.section-h2 .gold { color: var(--gold-deep); font-style: italic; font-weight: 400; }
+.section-lead {
+  font-size: 18px;
+  color: var(--slate-500);
+  line-height: 1.65;
+  max-width: 700px;
+  margin-bottom: 56px;
+}
+
+/* ── PRODUCT GRID ─────────────────────────── */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+.product-card {
+  background: white;
+  border: 1px solid rgba(15,45,82,0.08);
+  border-radius: 18px;
+  padding: 36px 32px;
+  transition: all .3s cubic-bezier(.16,1,.3,1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: block;
+}
+.product-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-deep) 100%);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .4s cubic-bezier(.16,1,.3,1);
+}
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(252,211,77,0.4);
+  box-shadow: 0 24px 48px rgba(15,45,82,0.1);
+}
+.product-card:hover::before { transform: scaleX(1); }
+.product-card-eyebrow {
+  font-size: 11px; font-weight: 800;
+  color: var(--gold-deep);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.product-card-title {
+  font-family: var(--serif);
+  font-size: 28px; font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 14px;
+  letter-spacing: -0.5px;
+}
+.product-card-desc {
+  font-size: 15px;
+  color: var(--slate-500);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+.product-card-cta {
+  font-size: 12px; font-weight: 800;
+  color: var(--navy);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: gap .2s, color .2s;
+}
+.product-card:hover .product-card-cta { gap: 12px; color: var(--gold-deep); }
+
+/* ── VISION (Jayden) ──────────────────────── */
+.vision {
+  background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 100%);
+  color: white;
+  padding: 120px 0;
+  position: relative;
+  overflow: hidden;
+}
+.vision::before {
+  content: 'J';
+  position: absolute;
+  font-family: var(--serif);
+  font-size: 780px;
+  font-style: italic;
+  font-weight: 400;
+  color: rgba(252,211,77,0.03);
+  top: -240px; right: -80px;
+  line-height: 1;
+  pointer-events: none;
+}
+.vision-inner { position: relative; z-index: 1; max-width: 840px; }
+.vision-eyebrow {
+  font-size: 11px; font-weight: 800;
+  color: var(--gold); letter-spacing: 3px; text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.vision-h2 {
+  font-family: var(--serif);
+  font-size: clamp(34px, 4.6vw, 58px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -1.2px;
+  margin-bottom: 32px;
+}
+.vision-h2 .gold { color: var(--gold); font-style: italic; font-weight: 400; }
+.vision-body {
+  font-size: 19px; line-height: 1.7;
+  color: rgba(255,255,255,0.78);
+  font-weight: 400;
+  max-width: 720px;
+}
+.vision-body p + p { margin-top: 20px; }
+
+/* ── STATS ────────────────────────────────── */
+.stats {
+  background: var(--ivory);
+  border-top: 1px solid rgba(15,45,82,0.08);
+  border-bottom: 1px solid rgba(15,45,82,0.08);
+  padding: 72px 0;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+  text-align: center;
+}
+.stat-number {
+  font-family: var(--serif);
+  font-size: clamp(52px, 6.5vw, 84px);
+  font-weight: 500;
+  color: var(--navy);
+  line-height: 1;
+  letter-spacing: -2.5px;
+  margin-bottom: 12px;
+}
+.stat-number .gold { color: var(--gold-deep); font-style: italic; }
+.stat-label {
+  font-size: 11px; font-weight: 800;
+  color: var(--slate-500);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* ── AUDIENCE CARDS ───────────────────────── */
+.audience-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+.audience-card {
+  background: white;
+  border: 1px solid rgba(15,45,82,0.08);
+  border-radius: 16px;
+  padding: 36px 32px;
+  transition: all .3s ease;
+}
+.audience-card:hover {
+  border-color: rgba(252,211,77,0.3);
+  box-shadow: 0 16px 40px rgba(15,45,82,0.06);
+}
+.audience-card-num {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--gold-deep);
+  margin-bottom: 18px;
+  line-height: 1;
+}
+.audience-card-title {
+  font-family: var(--serif);
+  font-size: 24px; font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 10px;
+  letter-spacing: -0.3px;
+}
+.audience-card-body {
+  font-size: 14px;
+  color: var(--slate-500);
+  line-height: 1.65;
+}
+
+/* ── CAPABILITIES ─────────────────────────── */
+.capabilities { background: white; }
+.capability-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 48px;
+}
+.capability { padding: 8px 0; }
+.capability-num {
+  width: 56px; height: 56px;
+  background: var(--navy);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold);
+  font-size: 22px; font-weight: 600;
+  margin-bottom: 24px;
+  font-family: var(--serif);
+  font-style: italic;
+}
+.capability-title {
+  font-family: var(--serif);
+  font-size: 26px; font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 12px;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+.capability-body {
+  font-size: 15px;
+  color: var(--slate-500);
+  line-height: 1.7;
+}
+
+/* ── CTA BAND ─────────────────────────────── */
+.cta-band {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+  color: white;
+  padding: 96px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-band::before {
+  content: ''; position: absolute;
+  top: 50%; left: 50%;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(252,211,77,0.06) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.cta-band-inner { position: relative; z-index: 1; }
+.cta-band h2 {
+  font-family: var(--serif);
+  font-size: clamp(32px, 4vw, 50px);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  margin-bottom: 20px;
+}
+.cta-band h2 .gold { color: var(--gold); font-style: italic; font-weight: 400; }
+.cta-band p {
+  font-size: 17px;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 36px;
+  max-width: 560px; margin-left: auto; margin-right: auto;
+  line-height: 1.6;
+}
+
+/* ── ABOUT ────────────────────────────────── */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 80px;
+  align-items: start;
+}
+.about-block p {
+  font-size: 17px;
+  color: var(--slate-700);
+  line-height: 1.75;
+  margin-bottom: 18px;
+}
+.about-pull {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--navy);
+  line-height: 1.4;
+  padding: 8px 0 8px 28px;
+  border-left: 3px solid var(--gold);
+  margin: 32px 0;
+}
+
+/* ── CONTACT ──────────────────────────────── */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 80px;
+  align-items: start;
+}
+.contact-info h3 {
+  font-family: var(--serif);
+  font-size: 22px; font-weight: 600;
+  color: var(--navy);
+  margin: 28px 0 8px;
+}
+.contact-info p { font-size: 15px; color: var(--slate-500); line-height: 1.65; }
+.contact-info a { color: var(--navy); font-weight: 600; }
+.contact-info a:hover { color: var(--gold-deep); }
+
+.form {
+  background: white;
+  border: 1px solid rgba(15,45,82,0.08);
+  border-radius: 18px;
+  padding: 44px;
+  box-shadow: 0 16px 48px rgba(15,45,82,0.05);
+}
+.field { margin-bottom: 22px; }
+.field label {
+  display: block;
+  font-size: 11px; font-weight: 800;
+  color: var(--navy);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.field input, .field textarea {
+  width: 100%;
+  padding: 13px 16px;
+  background: var(--slate-50);
+  border: 1px solid rgba(15,45,82,0.1);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--slate-900);
+  outline: none;
+  transition: all .2s;
+}
+.field input:focus, .field textarea:focus {
+  border-color: var(--gold-deep);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(252,211,77,0.18);
+}
+.field textarea { resize: vertical; min-height: 120px; }
+
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.checkbox-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+.checkbox-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px;
+  background: var(--slate-50);
+  border: 1px solid rgba(15,45,82,0.08);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all .2s;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--navy);
+}
+.checkbox-item:hover { border-color: var(--gold); }
+.checkbox-item input { width: auto; margin: 0; accent-color: var(--gold-deep); cursor: pointer; }
+.checkbox-item.checked { background: rgba(252,211,77,0.1); border-color: var(--gold); }
+
+.form-success {
+  display: none;
+  text-align: center;
+  padding: 32px 24px;
+}
+.form-success.show { display: block; }
+.form-success-icon {
+  width: 60px; height: 60px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-deep));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; color: var(--navy);
+  margin: 0 auto 20px;
+  font-weight: 800;
+}
+.form-success h3 {
+  font-family: var(--serif);
+  font-size: 28px; font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+.form-success p { color: var(--slate-500); font-size: 15px; }
+
+/* ── FOOTER ───────────────────────────────── */
+.footer {
+  background: var(--navy-deep);
+  color: rgba(255,255,255,0.6);
+  padding: 72px 0 32px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 48px;
+}
+.footer-brand .nav-logo { font-size: 30px; margin-bottom: 16px; display: inline-block; }
+.footer-brand p {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  max-width: 280px;
+  line-height: 1.65;
+}
+.footer-col h4 {
+  font-size: 11px; font-weight: 800;
+  color: var(--gold);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.footer-col a {
+  display: block;
+  font-size: 14px;
+  color: rgba(255,255,255,0.55);
+  padding: 5px 0;
+  transition: color .2s;
+}
+.footer-col a:hover { color: var(--gold); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; gap: 12px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+}
+
+/* ── RESPONSIVE ───────────────────────────── */
+@media (max-width: 900px) {
+  .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .stats-grid { grid-template-columns: 1fr; gap: 32px; }
+  .field-row { grid-template-columns: 1fr; }
+  .section { padding: 72px 0; }
+  .container { padding: 0 24px; }
+  .form { padding: 32px 24px; }
+}
+
+@media (max-width: 720px) {
+  .nav-links {
+    position: fixed; top: var(--header-h); left: 0; right: 0;
+    background: var(--navy);
+    flex-direction: column; align-items: stretch;
+    gap: 0; padding: 16px 24px 24px;
+    border-bottom: 1px solid rgba(252,211,77,0.12);
+    transform: translateY(-200%);
+    transition: transform .35s cubic-bezier(.16,1,.3,1);
+    max-height: calc(100vh - var(--header-h));
+    overflow-y: auto;
+  }
+  .nav-links.open { transform: translateY(0); }
+  .nav-links > * { padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .nav-links > *:last-child { border-bottom: none; padding: 18px 0 0; }
+  .nav-dropdown-menu {
+    position: static; transform: none; opacity: 1; pointer-events: auto;
+    background: rgba(255,255,255,0.04); box-shadow: none;
+    margin-top: 8px; padding: 4px;
+    min-width: 0;
+  }
+  .nav-dropdown-item { color: rgba(255,255,255,0.85); }
+  .nav-dropdown-item:hover { background: rgba(255,255,255,0.08); color: var(--gold); }
+  .nav-dropdown-item small { color: rgba(255,255,255,0.45); }
+  .nav-hamburger { display: flex; }
+  .hero { padding: 96px 0 80px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+  .vision::before { font-size: 480px; top: -120px; right: -60px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#/" class="nav-logo" data-link>SkillGrow</a>
+
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="nav-links" id="nav-links">
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-trigger">Products</button>
+        <div class="nav-dropdown-menu">
+          <a href="#/sen" class="nav-dropdown-item" data-link>
+            DARE SEN OS <small>The operating system for special schools</small>
+          </a>
+          <a href="#/mainstream" class="nav-dropdown-item" data-link>
+            DARE Mainstream <small>SEND infrastructure for mainstream schools</small>
+          </a>
+          <a href="#/staff-pwa" class="nav-dropdown-item" data-link>
+            Staff PWA <small>Real-time tools for frontline staff</small>
+          </a>
+          <a href="#/parent" class="nav-dropdown-item" data-link>
+            Parent Portal <small>Every family in the loop</small>
+          </a>
+          <a href="#/trust" class="nav-dropdown-item" data-link>
+            Trust Portal <small>Multi-school oversight</small>
+          </a>
+        </div>
+      </div>
+      <a href="#/about" class="nav-link" data-link>About</a>
+      <a href="#/contact" class="nav-link" data-link>Contact</a>
+      <a href="#/contact" class="btn btn-gold" data-link>Book a Demo</a>
+    </div>
+  </div>
+</nav>
+
+<main id="app"></main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#/" class="nav-logo" data-link>SkillGrow</a>
+        <p>The world's first fully integrated 0–25 SEND platform. Built in Bedford, England, by people who have worked with SEN children.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <a href="#/sen" data-link>DARE SEN OS</a>
+        <a href="#/mainstream" data-link>DARE Mainstream</a>
+        <a href="#/staff-pwa" data-link>Staff PWA</a>
+        <a href="#/parent" data-link>Parent Portal</a>
+        <a href="#/trust" data-link>Trust Portal</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#/about" data-link>About</a>
+        <a href="#/contact" data-link>Contact</a>
+        <a href="#/contact" data-link>Book a Demo</a>
+      </div>
+      <div class="footer-col">
+        <h4>Get in touch</h4>
+        <a href="mailto:hello@skillgrow.co.uk">hello@skillgrow.co.uk</a>
+        <a>Bedford, England</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 SkillGrow Technologies Ltd · Company No: 13535893</span>
+      <span>ICO registered · GDPR compliant · KCSIE 2025 aligned</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ─── Page templates ────────────────────── */
+const pages = {
+  home: () => `
+    <section class="hero">
+      <div class="container">
+        <div class="reveal">
+          <span class="hero-eyebrow">SkillGrow Technologies</span>
+          <h1 class="hero-h1">The world's first fully integrated <span class="gold">0–25 SEND</span> platform.</h1>
+          <p class="hero-sub">Every child at the centre. Every stakeholder connected. From early years to adulthood, one operating system for the entire SEND journey.</p>
+          <div class="hero-actions">
+            <a href="#/contact" class="btn btn-gold btn-lg" data-link>Book a Demo →</a>
+            <a href="#/sen" class="btn btn-ghost btn-lg" data-link>Explore the Platform</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">The Platform</div>
+          <h2 class="section-h2">Five products. <span class="gold">One vision.</span></h2>
+          <p class="section-lead">Most providers ship a single tool. SkillGrow ships the system — the only place where special schools, mainstream schools, frontline staff, families, and trust leadership work from the same source of truth.</p>
+        </div>
+
+        <div class="product-grid">
+          ${productCard('sen', 'Operating System', 'DARE SEN OS', 'The complete platform for special schools. Thirty-plus apps spanning safeguarding, EHCPs, therapy, medication, behaviour, and outcomes.')}
+          ${productCard('mainstream', 'Mainstream', 'DARE Mainstream', 'SEND infrastructure for mainstream schools. SENCO workflows, provision mapping, parent engagement, and statutory compliance.')}
+          ${productCard('staff-pwa', 'Frontline', 'Staff PWA', 'A real-time progressive web app for teaching assistants, learning mentors, and care staff. Works offline. Logs in seconds.')}
+          ${productCard('parent', 'Families', 'Parent Portal', 'Every family in the loop. Daily diaries, EHCP visibility, real-time safeguarding alerts, and direct two-way contact.')}
+          ${productCard('trust', 'Leadership', 'Trust Portal', 'Multi-school oversight for MATs and local authorities. Cross-site analytics, governance, and a single pane of glass for SEND.')}
+        </div>
+      </div>
+    </section>
+
+    <section class="vision">
+      <div class="container">
+        <div class="vision-inner reveal">
+          <div class="vision-eyebrow">The Vision — Jayden's Universe</div>
+          <h2 class="vision-h2">A child grows up <span class="gold">never lost</span> in the system.</h2>
+          <div class="vision-body">
+            <p>Jayden is two years old. He is autistic, non-verbal, and adored. From his first early-years intake to his transition into supported adulthood at twenty-five, every meeting, every milestone, every plan and every person who knows him lives inside one connected platform.</p>
+            <p>No re-telling. No lost paperwork. No starting over when he moves school, changes therapist, or turns eighteen. The grown-ups change. The system doesn't. That is the universe we are building.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats">
+      <div class="container">
+        <div class="stats-grid reveal">
+          <div>
+            <div class="stat-number">37 <span class="gold">apps</span></div>
+            <div class="stat-label">A complete operational stack</div>
+          </div>
+          <div>
+            <div class="stat-number">6 <span class="gold">products</span></div>
+            <div class="stat-label">From frontline to trust board</div>
+          </div>
+          <div>
+            <div class="stat-number">0–25 <span class="gold">years</span></div>
+            <div class="stat-label">The entire SEND journey</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    ${ctaBand('Ready to see SkillGrow', 'in action?', 'Book a 30-minute demo. We will walk through your school, your children, your real-world workflows.')}
+  `,
+
+  sen: () => productPage({
+    eyebrow: 'DARE SEN OS',
+    titleA: 'The operating system for',
+    titleB: 'special schools.',
+    sub: 'Thirty-plus integrated apps replacing twelve disconnected systems — built for the rhythm, complexity, and care of a SEN school.',
+    audiences: [
+      { title: 'Headteachers & SLT', body: 'A live operational picture, board-ready reporting, and the confidence of a single source of truth across every classroom and care space.' },
+      { title: 'Teachers & TAs', body: 'Daily diaries, behaviour, learning, and safeguarding logged in seconds — not at the end of the day.' },
+      { title: 'DSLs & Therapists', body: 'Real-time safeguarding, EHCP tracking, therapy notes, and medication — joined-up around each child.' },
+    ],
+    caps: [
+      { title: 'Real-time safeguarding', body: 'Instant alerts to the right person — DSL, parent, or duty leader — with full audit trail and KCSIE 2025-aligned workflow.' },
+      { title: 'EHCP at the core', body: 'Outcomes, provision, and review cycles built into every interaction, so every note connects back to the plan that matters.' },
+      { title: 'Whole-child record', body: 'Medical, behaviour, therapy, communication, attendance — one timeline per child, accessible to the right people only.' },
+    ],
+  }),
+
+  mainstream: () => productPage({
+    eyebrow: 'DARE Mainstream',
+    titleA: 'SEND infrastructure for',
+    titleB: 'mainstream schools.',
+    sub: "The SENCO's operating layer — provision mapping, statutory compliance, and parent engagement built for primaries, secondaries, and academy chains.",
+    audiences: [
+      { title: 'SENCOs', body: 'A single dashboard for the SEND register, provision maps, EHCP review cycles, and graduated-response evidence.' },
+      { title: 'Class teachers', body: 'See exactly which adjustments each child needs, this lesson, without trawling through a shared drive.' },
+      { title: 'Headteachers', body: 'Ofsted-ready evidence, local-authority reporting, and SEND outcome data available at any moment.' },
+    ],
+    caps: [
+      { title: 'Provision mapping that works', body: 'Drag-and-drop interventions, automatic costings, and a clean audit trail from assessment to outcome.' },
+      { title: 'Statutory compliance, automated', body: 'EHCP review cycles, annual reviews, and graduated-response evidence captured in the flow of teaching.' },
+      { title: 'Parents inside the conversation', body: 'Live parent portal access so families see plans, progress, and provision — and respond before the meeting, not in it.' },
+    ],
+  }),
+
+  'staff-pwa': () => productPage({
+    eyebrow: 'Staff PWA',
+    titleA: 'Real-time tools for',
+    titleB: 'frontline staff.',
+    sub: 'A progressive web app for teaching assistants, learning mentors, and care staff. Works offline. Designed for one-thumb logging in the middle of a busy day.',
+    audiences: [
+      { title: 'Teaching assistants', body: 'Log behaviour, learning, and care moments in seconds — without leaving the child you are with.' },
+      { title: 'Learning mentors', body: 'Capture interventions, track engagement, and surface concerns to the right adult instantly.' },
+      { title: 'Care & medical staff', body: 'Medication, observations, and incident logs straight from the phone — synced the moment you are back online.' },
+    ],
+    caps: [
+      { title: 'Offline-first by design', body: 'Logs the moment, syncs when reception returns. Works in playgrounds, swimming pools, hydrotherapy rooms, and minibuses.' },
+      { title: 'One-thumb fast', body: 'Designed by people who have done the job. Common entries take three taps. No deep menus. No lost work.' },
+      { title: 'Joined to the record', body: "Every entry attaches to the child's EHCP outcomes, behaviour timeline, and care plan automatically." },
+    ],
+  }),
+
+  parent: () => productPage({
+    eyebrow: 'Parent Portal',
+    titleA: 'Every family',
+    titleB: 'in the loop.',
+    sub: 'Daily diaries, EHCP visibility, real-time safeguarding alerts, and direct two-way contact with the team around your child.',
+    audiences: [
+      { title: 'Parents & carers', body: 'See what happened today, what is being worked on, and what comes next — without chasing the school.' },
+      { title: 'Foster carers', body: 'Multi-carer access with role-based permissions so the right adults see the right information at the right time.' },
+      { title: 'Family advocates', body: 'Read-only visibility for grandparents, social workers, and IROs where consent has been given.' },
+    ],
+    caps: [
+      { title: 'A daily diary that tells a story', body: 'Not just a log — photos, audio, milestones, and the small wins, delivered every day.' },
+      { title: 'Plain-English EHCP', body: 'See exactly which outcomes the school is working on, and what progress looks like — without the jargon.' },
+      { title: 'Real two-way contact', body: 'Message the right person — class teacher, DSL, therapist — and get a reply, with a full audit trail.' },
+    ],
+  }),
+
+  trust: () => productPage({
+    eyebrow: 'Trust Portal',
+    titleA: 'Multi-school oversight for',
+    titleB: 'trust leadership.',
+    sub: 'For MATs, local authorities, and federations operating SEND provision at scale — one pane of glass across every school.',
+    audiences: [
+      { title: 'Trust executives', body: 'Cross-site analytics, exception reporting, and operational visibility from a single dashboard.' },
+      { title: 'Trustees & governors', body: 'Board-ready dashboards covering safeguarding, outcomes, finance, and statutory compliance — refreshed live.' },
+      { title: 'LA commissioners', body: 'Real-time visibility of provision and outcomes for every child placed across your commissioned schools.' },
+    ],
+    caps: [
+      { title: 'One pane of glass', body: 'Every school, every child, every safeguarding signal — aggregated, anonymised where required, and drill-down on demand.' },
+      { title: 'Governance built-in', body: 'Audit trails, role-based access, and statutory reporting bundled into the way trust leaders already work.' },
+      { title: 'Comparative outcomes', body: 'Benchmark provision and progress across sites — not to rank, but to learn what is working and replicate it.' },
+    ],
+  }),
+
+  about: () => `
+    <section class="hero product-hero">
+      <div class="container">
+        <div class="reveal">
+          <span class="hero-eyebrow">About SkillGrow</span>
+          <h1 class="hero-h1">Built by people who have <span class="gold">done the job.</span></h1>
+          <p class="hero-sub">Twenty-one years in SEND. Twelve on the frontline. SkillGrow is what we wished existed when we were working with the children, not building software about them.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="about-grid">
+          <div class="reveal">
+            <div class="section-eyebrow">The Founder</div>
+            <h2 class="section-h2">Tunde's <span class="gold">story.</span></h2>
+            <p class="section-lead">SkillGrow is the operating system Tunde Alabi spent twenty years wishing he had — and four years finally building.</p>
+          </div>
+          <div class="reveal">
+            <div class="about-block">
+              <p>Tunde has spent twenty-one years in SEND, twelve of them on the frontline working directly with children, families, and the adults around them. He has been a teaching assistant, a learning mentor, a behaviour specialist, a service manager, and the person other people called when nothing else was working.</p>
+              <p>He kept seeing the same thing: brilliant practitioners held back by paper, by spreadsheets, by software either built for mainstream schools and bolted-on for SEND, or built by people who had never sat with a child in distress.</p>
+              <div class="about-pull">"SEND children have one system worth of needs. They deserve one system worth of joined-up care."</div>
+              <p>So he built it. SkillGrow Technologies is the result — designed end-to-end, from the frontline up, for the entire 0–25 SEND journey.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="vision">
+      <div class="container">
+        <div class="vision-inner reveal">
+          <div class="vision-eyebrow">The Vision — Jayden's Universe</div>
+          <h2 class="vision-h2">One child. One record. <span class="gold">Twenty-five years.</span></h2>
+          <div class="vision-body">
+            <p>Imagine a child — call him Jayden — born today. Diagnosed early, supported well, surrounded by adults who hand information cleanly to each other from his first nursery setting to his transition into adulthood.</p>
+            <p>SkillGrow exists so that Jayden's story is never lost. Not when he moves school. Not when his therapist leaves. Not when he turns eighteen and the children's-services door closes behind him. The grown-ups change. The system holds.</p>
+            <p>That is what we mean by Jayden's Universe — the integrated platform that lets every adult who matters do their best work, because the child at the centre of it is finally being seen as one whole person.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">The Company</div>
+          <h2 class="section-h2">SkillGrow Technologies Ltd.</h2>
+          <p class="section-lead">Registered in England and Wales. Headquartered in Bedford. Building the SEND infrastructure of the next twenty years.</p>
+        </div>
+        <div class="audience-grid">
+          <div class="audience-card reveal">
+            <div class="audience-card-num">i.</div>
+            <div class="audience-card-title">Bedford, England</div>
+            <div class="audience-card-body">18 Moat Farm Close, Bedford MK43 0AE. Built in the UK, hosted on UK infrastructure, with UK data residency.</div>
+          </div>
+          <div class="audience-card reveal">
+            <div class="audience-card-num">ii.</div>
+            <div class="audience-card-title">Company No: 13535893</div>
+            <div class="audience-card-body">ICO registered. GDPR compliant. KCSIE 2025 aligned. Trademark protected.</div>
+          </div>
+          <div class="audience-card reveal">
+            <div class="audience-card-num">iii.</div>
+            <div class="audience-card-title">Independent</div>
+            <div class="audience-card-body">No venture capital. No private-equity owners. Built to last, owned by the people who build it.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    ${ctaBand('See the system,', 'meet the team.', 'Book a 30-minute demo. We will walk through how SkillGrow fits your school, your trust, or your local authority.')}
+  `,
+
+  contact: () => `
+    <section class="hero product-hero">
+      <div class="container">
+        <div class="reveal">
+          <span class="hero-eyebrow">Get in Touch</span>
+          <h1 class="hero-h1">Let's talk about <span class="gold">your children.</span></h1>
+          <p class="hero-sub">Tell us a little about your school, trust, or service. We will reply within one working day with options for a demo.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="contact-grid">
+          <div class="contact-info reveal">
+            <div class="section-eyebrow">How to reach us</div>
+            <h2 class="section-h2" style="font-size: 40px;">Direct line.</h2>
+            <p style="color: var(--slate-500); font-size: 16px; line-height: 1.65;">Every enquiry is read by a member of the founding team. No call centres. No auto-replies.</p>
+            <h3>Email</h3>
+            <p><a href="mailto:hello@skillgrow.co.uk">hello@skillgrow.co.uk</a></p>
+            <h3>Office</h3>
+            <p>SkillGrow Technologies Ltd<br>18 Moat Farm Close<br>Bedford MK43 0AE<br>England</p>
+            <h3>Response time</h3>
+            <p>Within one working day, Monday to Friday.</p>
+          </div>
+
+          <form class="form reveal" id="contact-form">
+            <div class="form-fields">
+              <div class="field-row">
+                <div class="field">
+                  <label for="name">Full name</label>
+                  <input type="text" id="name" name="name" required>
+                </div>
+                <div class="field">
+                  <label for="org">Organisation</label>
+                  <input type="text" id="org" name="organisation" required placeholder="School, trust, or LA">
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label for="role">Your role</label>
+                  <input type="text" id="role" name="role" required placeholder="e.g. Headteacher, SENCO, CEO">
+                </div>
+                <div class="field">
+                  <label for="email">Email</label>
+                  <input type="email" id="email" name="email" required>
+                </div>
+              </div>
+              <div class="field">
+                <label>Which products interest you?</label>
+                <div class="checkbox-group">
+                  ${['DARE SEN OS','DARE Mainstream','Staff PWA','Parent Portal','Trust Portal'].map(p=>`
+                    <label class="checkbox-item">
+                      <input type="checkbox" name="products" value="${p}"> ${p}
+                    </label>`).join('')}
+                </div>
+              </div>
+              <div class="field">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Tell us a little about what you are looking for."></textarea>
+              </div>
+              <button type="submit" class="btn btn-gold btn-lg" style="width: 100%;">Send enquiry →</button>
+            </div>
+            <div class="form-success" id="form-success">
+              <div class="form-success-icon">✓</div>
+              <h3>Thank you.</h3>
+              <p>Your message is on its way. We will reply within one working day.</p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  `,
+};
+
+/* ─── Helpers ─────────────────────────────── */
+function productCard(slug, eyebrow, title, desc) {
+  return `
+    <a href="#/${slug}" class="product-card reveal" data-link>
+      <div class="product-card-eyebrow">${eyebrow}</div>
+      <div class="product-card-title">${title}</div>
+      <div class="product-card-desc">${desc}</div>
+      <div class="product-card-cta">Explore <span>→</span></div>
+    </a>
+  `;
+}
+
+function productPage({ eyebrow, titleA, titleB, sub, audiences, caps }) {
+  const romans = ['i', 'ii', 'iii'];
+  return `
+    <section class="hero product-hero">
+      <div class="container">
+        <div class="reveal">
+          <span class="hero-eyebrow">${eyebrow}</span>
+          <h1 class="hero-h1">${titleA} <span class="gold">${titleB}</span></h1>
+          <p class="hero-sub">${sub}</p>
+          <div class="hero-actions">
+            <a href="#/contact" class="btn btn-gold btn-lg" data-link>Book a Demo →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">Who it is for</div>
+          <h2 class="section-h2">Designed for <span class="gold">three audiences.</span></h2>
+        </div>
+        <div class="audience-grid">
+          ${audiences.map((a, i) => `
+            <div class="audience-card reveal">
+              <div class="audience-card-num">${romans[i]}.</div>
+              <div class="audience-card-title">${a.title}</div>
+              <div class="audience-card-body">${a.body}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </section>
+
+    <section class="section capabilities">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">Capabilities</div>
+          <h2 class="section-h2">Three things it does <span class="gold">very well.</span></h2>
+        </div>
+        <div class="capability-grid">
+          ${caps.map((c, i) => `
+            <div class="capability reveal">
+              <div class="capability-num">${romans[i]}</div>
+              <div class="capability-title">${c.title}</div>
+              <div class="capability-body">${c.body}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </section>
+
+    ${ctaBand('Want to see it', 'on your data?', 'A 30-minute demo, your real workflows, no slides. Book a time that suits you.')}
+  `;
+}
+
+function ctaBand(h1, h2gold, body) {
+  return `
+    <section class="cta-band">
+      <div class="container">
+        <div class="cta-band-inner reveal">
+          <h2>${h1} <span class="gold">${h2gold}</span></h2>
+          <p>${body}</p>
+          <a href="#/contact" class="btn btn-gold btn-lg" data-link>Book a Demo →</a>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+/* ─── Router ──────────────────────────────── */
+const routes = {
+  '': 'home', '/': 'home',
+  '/sen': 'sen',
+  '/mainstream': 'mainstream',
+  '/staff-pwa': 'staff-pwa',
+  '/parent': 'parent',
+  '/trust': 'trust',
+  '/about': 'about',
+  '/contact': 'contact',
+};
+
+const titles = {
+  home: "SkillGrow — The world's first fully integrated 0–25 SEND platform",
+  sen: 'DARE SEN OS — SkillGrow',
+  mainstream: 'DARE Mainstream — SkillGrow',
+  'staff-pwa': 'Staff PWA — SkillGrow',
+  parent: 'Parent Portal — SkillGrow',
+  trust: 'Trust Portal — SkillGrow',
+  about: 'About — SkillGrow',
+  contact: 'Contact — SkillGrow',
+};
+
+const app = document.getElementById('app');
+let observer;
+
+function render() {
+  const hash = window.location.hash.replace('#', '') || '/';
+  const key = routes[hash] || 'home';
+  document.title = titles[key];
+
+  app.innerHTML = `<div class="page">${pages[key]()}</div>`;
+
+  document.querySelectorAll('.nav-link, .nav-dropdown-item').forEach(el => {
+    const h = el.getAttribute('href');
+    el.classList.toggle('active', h === `#${hash}` || (hash === '/' && h === '#/'));
+  });
+
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  requestAnimationFrame(() => {
+    const page = document.querySelector('.page');
+    if (page) page.classList.add('in');
+  });
+
+  setupReveals();
+  document.getElementById('nav-links').classList.remove('open');
+}
+
+function setupReveals() {
+  if (observer) observer.disconnect();
+  observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a[data-link]');
+  if (!a) return;
+  const href = a.getAttribute('href');
+  if (href && href.startsWith('#')) {
+    e.preventDefault();
+    if (window.location.hash === href || (href === '#/' && !window.location.hash)) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      window.location.hash = href.slice(1);
+    }
+  }
+});
+
+window.addEventListener('hashchange', render);
+window.addEventListener('DOMContentLoaded', render);
+
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('nav-links').classList.toggle('open');
+});
+
+document.addEventListener('change', (e) => {
+  if (e.target.matches('.checkbox-item input')) {
+    e.target.closest('.checkbox-item').classList.toggle('checked', e.target.checked);
+  }
+});
+
+document.addEventListener('submit', (e) => {
+  if (e.target.id !== 'contact-form') return;
+  e.preventDefault();
+  const f = e.target;
+  const data = new FormData(f);
+  const products = data.getAll('products').join(', ') || '(none specified)';
+  const body = `From: ${data.get('name')} (${data.get('role')}, ${data.get('organisation')})
+
+Email: ${data.get('email')}
+Products of interest: ${products}
+
+${data.get('message') || ''}`;
+  const subject = `SkillGrow enquiry — ${data.get('organisation')}`;
+  window.location.href = `mailto:hello@skillgrow.co.uk?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  f.querySelector('.form-fields').style.display = 'none';
+  document.getElementById('form-success').classList.add('show');
+});
+</script>
+
+</body>
+</html>
