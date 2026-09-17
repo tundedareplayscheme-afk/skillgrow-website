@@ -1,6 +1,11 @@
 {
+  "functions": {
+    "api/page.js": {
+      "includeFiles": "index.html"
+    }
+  },
   "rewrites": [
-    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|contact|privacy|security)", "destination": "/index.html" },
-    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|contact|privacy|security)/", "destination": "/index.html" }
+    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|contact|privacy|security)", "destination": "/api/page?page=:page" },
+    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|contact|privacy|security)/", "destination": "/api/page?page=:page" }
   ]
 }

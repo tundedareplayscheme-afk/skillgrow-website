@@ -1,0 +1,24 @@
+<!-- Source for og-image.png. Social crawlers ignore SVG, so this is rendered
+     to a 1200x630 PNG and that PNG is what the meta tags point at. Re-render
+     after editing: see the note at the top of api/page.js. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" font-family="Georgia, 'Times New Roman', serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020B18"/>
+      <stop offset="0.55" stop-color="#0F2D52"/>
+      <stop offset="1" stop-color="#1B4F8A"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1200" height="6" fill="#FCD34D"/>
+
+  <text x="88" y="150" fill="#FCD34D" font-size="46" font-weight="700" letter-spacing="-0.5">SkillGrow</text>
+
+  <text x="88" y="300" fill="#FFFFFF" font-size="72" font-weight="500" letter-spacing="-2">The world&#8217;s first fully integrated</text>
+  <text x="88" y="386" fill="#FCD34D" font-size="72" font-weight="400" font-style="italic" letter-spacing="-2">0&#8211;25 SEND platform.</text>
+
+  <text x="88" y="470" fill="#FFFFFF" font-size="30" font-family="'DejaVu Sans', Arial, sans-serif" opacity="0.72">EHCPs · Safeguarding · Therapy · Behaviour · Outcomes</text>
+
+  <text x="88" y="556" fill="#FFFFFF" font-size="24" font-family="'DejaVu Sans', Arial, sans-serif" opacity="0.5" letter-spacing="2">WWW.SKILLGROW.CO.UK</text>
+</svg>

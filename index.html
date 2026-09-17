@@ -3,9 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- META:START — the homepage's tags, and the block api/page.js swaps out per
+     route. Social crawlers do not run JavaScript, so these must arrive in the
+     HTML: the router's document.title is for the browser tab, not for sharing.
+     Edit the copy in api/page.js (META), not here — '/' is served statically
+     from this file, so the two must say the same thing for the homepage. -->
 <title>SkillGrow — The world's first fully integrated 0–25 SEND platform</title>
-<meta name="description" content="SkillGrow Technologies — the world's first fully integrated 0–25 SEND platform. Every child at the centre. Every stakeholder connected.">
+<meta name="description" content="SkillGrow builds the world's first fully integrated 0–25 SEND platform: EHCPs, safeguarding, therapy and provision mapping in one connected child record.">
+<link rel="canonical" href="https://www.skillgrow.co.uk/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SkillGrow">
+<meta property="og:title" content="SkillGrow — The world's first fully integrated 0–25 SEND platform">
+<meta property="og:description" content="One connected platform for the whole 0–25 SEND journey. EHCPs, safeguarding, therapy, behaviour and outcomes, joined up around each child.">
+<meta property="og:url" content="https://www.skillgrow.co.uk/">
+<meta property="og:image" content="https://www.skillgrow.co.uk/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SkillGrow — the fully integrated 0–25 SEND platform">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SkillGrow — The world's first fully integrated 0–25 SEND platform">
+<meta name="twitter:description" content="One connected platform for the whole 0–25 SEND journey. EHCPs, safeguarding, therapy, behaviour and outcomes, joined up around each child.">
+<meta name="twitter:image" content="https://www.skillgrow.co.uk/og-image.png">
+<!-- META:END -->
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<!-- Plausible: cookieless, no personal data, no cross-site tracking. Inert
+     until skillgrow.co.uk is added to a Plausible account. -->
+<script defer data-domain="skillgrow.co.uk" src="https://plausible.io/js/script.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1014,7 +1037,7 @@ main { padding-top: var(--header-h); min-height: 100vh; }
       <span>© 2026 SkillGrow Technologies Ltd · Company No: 13535893</span>
       <span>ICO registered (ZC142603) · GDPR compliant · KCSIE 2025 aligned</span>
     </div>
-    <div class="footer-cookies">This site uses no cookies.</div>
+    <div class="footer-cookies">This site uses no cookies. Analytics by Plausible — privacy-friendly, no personal data collected.</div>
   </div>
 </footer>
 
@@ -1492,7 +1515,10 @@ const pages = {
             <li>Which products you told us interest you</li>
             <li>Anything you write in the message box</li>
           </ul>
-          <p>We do not use advertising or analytics cookies on this site, and we do not track you across other websites. We ask you not to include information about a child, or any other special category data, in the message box — this form is not a secure channel for it.</p>
+          <p>We ask you not to include information about a child, or any other special category data, in the message box — this form is not a secure channel for it.</p>
+
+          <h2>Analytics</h2>
+          <p>We measure how the site is used with <a href="https://plausible.io/privacy-focused-web-analytics" target="_blank" rel="noopener">Plausible Analytics</a>, which is EU-hosted and privacy-friendly. It sets <strong>no cookies</strong>, collects <strong>no personal data</strong>, and does not track you across other websites. We see aggregate counts — pages viewed, referring sites, country, device type — and never anything that identifies you. There is nothing to consent to, which is why this site shows no cookie banner.</p>
 
           <h2>Why we use it, and our lawful basis</h2>
           <p>We use it for one purpose: to read your enquiry and reply to it. Our lawful basis is your consent, which you give by ticking the box on the form. You can withdraw it at any time by emailing us — though if you have asked us a question, withdrawing consent means we can no longer answer it.</p>
