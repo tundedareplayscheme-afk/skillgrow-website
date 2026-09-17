@@ -704,6 +704,68 @@ main { padding-top: var(--header-h); min-height: 100vh; }
   stroke-linejoin: round;
 }
 
+/* ── CONTACT FORM: consent, honeypot, errors ── */
+/* Off-screen rather than display:none — a bot that skips hidden inputs
+   still fills this one, which is the point. */
+.hp-field {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px; height: 1px;
+  overflow: hidden;
+}
+.consent-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  margin-bottom: 20px;
+  font-size: 14px; line-height: 1.55;
+  color: var(--slate-500);
+}
+.consent-item label { cursor: pointer; }
+.consent-item input {
+  width: 18px; height: 18px;
+  margin: 1px 0 0;
+  flex-shrink: 0;
+  accent-color: var(--gold-deep);
+  cursor: pointer;
+}
+.consent-item a { color: var(--navy); font-weight: 600; text-decoration: underline; }
+.consent-item a:hover { color: var(--gold-deep); }
+.form-error {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  color: #991B1B;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 14px; line-height: 1.55;
+  margin-bottom: 18px;
+}
+.form-error a { color: #991B1B; font-weight: 600; text-decoration: underline; }
+.btn[aria-busy="true"] { opacity: .65; pointer-events: none; }
+
+/* ── PRIVACY PAGE ─────────────────────────── */
+.legal { max-width: 760px; }
+.legal h2 {
+  font-family: var(--serif);
+  font-size: 28px; font-weight: 600;
+  color: var(--navy);
+  margin: 40px 0 14px;
+  letter-spacing: -0.3px;
+}
+.legal p, .legal li {
+  font-size: 15px; line-height: 1.75;
+  color: var(--slate-500);
+  margin-bottom: 14px;
+}
+.legal ul { padding-left: 22px; }
+.legal a { color: var(--navy); font-weight: 600; text-decoration: underline; }
+.legal-note {
+  background: white;
+  border: 1px solid rgba(15,45,82,0.08);
+  border-left: 3px solid var(--gold-deep);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 8px;
+}
+
 @media (max-width: 900px) {
   .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
@@ -1116,7 +1178,16 @@ const pages = {
                 <label for="message">Message</label>
                 <textarea id="message" name="message" placeholder="Tell us a little about what you are looking for."></textarea>
               </div>
-              <button type="submit" class="btn btn-gold btn-lg" style="width: 100%;">Send enquiry →</button>
+              <div class="field hp-field" aria-hidden="true">
+                <label for="website">Website</label>
+                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+              </div>
+              <div class="consent-item">
+                <input type="checkbox" id="consent" name="consent" required>
+                <span><label for="consent">I agree to SkillGrow&rsquo;s</label> <a href="/privacy" data-link>privacy policy</a><label for="consent">.</label></span>
+              </div>
+              <div class="form-error" id="form-error" role="alert" hidden></div>
+              <button type="submit" class="btn btn-gold btn-lg" id="contact-submit" style="width: 100%;">Send enquiry →</button>
             </div>
             <div class="form-success" id="form-success">
               <div class="form-success-icon">✓</div>
@@ -1124,6 +1195,68 @@ const pages = {
               <p>Your message is on its way. We will reply within one working day.</p>
             </div>
           </form>
+        </div>
+      </div>
+    </section>
+  `,
+
+  /* NOTE FOR SKILLGROW: this notice describes exactly what the contact form
+     and site actually do today, and nothing more. It has NOT been reviewed by
+     a solicitor. Have it signed off before relying on it, and revisit it the
+     moment the site starts doing anything else with personal data. */
+  privacy: () => `
+    <section class="hero product-hero">
+      <div class="container">
+        <div class="reveal">
+          <span class="hero-eyebrow">Legal</span>
+          <h1 class="hero-h1">Privacy <span class="gold">policy.</span></h1>
+          <p class="hero-sub">How SkillGrow Technologies Ltd handles the personal data you give us through this website. Last updated 17 September 2026.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="legal reveal">
+          <div class="legal-note">
+            <p style="margin-bottom:0"><strong>Scope.</strong> This notice covers <strong>www.skillgrow.co.uk</strong> — the marketing site you are reading now. It does <em>not</em> cover the DARE platforms themselves, where we act as a data processor for schools, trusts and local authorities under a separate data processing agreement with each customer.</p>
+          </div>
+
+          <h2>Who we are</h2>
+          <p>SkillGrow Technologies Ltd, 18 Moat Farm Close, Bedford MK43 0AE, England. We are the data controller for personal data collected through this website. Contact us at <a href="mailto:hello@skillgrow.co.uk">hello@skillgrow.co.uk</a>.</p>
+
+          <h2>What we collect</h2>
+          <p>Only what you type into the contact form:</p>
+          <ul>
+            <li>Your name</li>
+            <li>Your organisation</li>
+            <li>Your role</li>
+            <li>Your email address</li>
+            <li>Which products you told us interest you</li>
+            <li>Anything you write in the message box</li>
+          </ul>
+          <p>We do not use advertising or analytics cookies on this site, and we do not track you across other websites. We ask you not to include information about a child, or any other special category data, in the message box — this form is not a secure channel for it.</p>
+
+          <h2>Why we use it, and our lawful basis</h2>
+          <p>We use it for one purpose: to read your enquiry and reply to it. Our lawful basis is your consent, which you give by ticking the box on the form. You can withdraw it at any time by emailing us — though if you have asked us a question, withdrawing consent means we can no longer answer it.</p>
+
+          <h2>Who else sees it</h2>
+          <p>Your enquiry is emailed to our team inbox. Two processors are involved in getting it there:</p>
+          <ul>
+            <li><strong>Brevo (Sendinblue SAS)</strong> — delivers the email to us. Brevo is based in France and stores email data within the EU.</li>
+            <li><strong>Vercel Inc.</strong> — hosts this website and runs the code that receives the form and passes it to Brevo.</li>
+          </ul>
+          <p>Both act on our instructions under contract. Brevo processes your data within the EU. Vercel is US-based, so data passing through our hosting is transferred outside the UK under the UK extension to the EU–US Data Privacy Framework and standard contractual clauses. We do not sell your data, and we do not share it with anyone else for their own purposes.</p>
+
+          <h2>How long we keep it</h2>
+          <p>Enquiry emails are kept in our inbox for up to <strong>24 months</strong> from your last contact with us, then deleted. If your enquiry turns into a customer relationship, your details move into our business records and are kept for as long as that relationship lasts, plus the period we are required to retain business records.</p>
+
+          <h2>Your rights</h2>
+          <p>Under UK GDPR you can ask us to give you a copy of your data, correct it, delete it, restrict or object to how we use it, or send it to someone else. You can also withdraw consent at any time. Email <a href="mailto:hello@skillgrow.co.uk">hello@skillgrow.co.uk</a> and we will respond within one month.</p>
+          <p>If you are unhappy with how we have handled your data, you can complain to the Information Commissioner&rsquo;s Office at <a href="https://ico.org.uk" target="_blank" rel="noopener">ico.org.uk</a> or on 0303 123 1113. We would rather you told us first so we can put it right.</p>
+
+          <h2>Changes</h2>
+          <p>If we change how this site handles personal data, we will update this page and change the date at the top.</p>
         </div>
       </div>
     </section>
@@ -1261,6 +1394,7 @@ const routes = {
   'trust': 'trust',
   'about': 'about',
   'contact': 'contact',
+  'privacy': 'privacy',
 };
 
 const titles = {
@@ -1272,6 +1406,7 @@ const titles = {
   trust: 'Trust Portal — SkillGrow',
   about: 'About — SkillGrow',
   contact: 'Contact — SkillGrow',
+  privacy: 'Privacy Policy — SkillGrow',
 };
 
 const app = document.getElementById('app');
@@ -1360,22 +1495,70 @@ document.addEventListener('change', (e) => {
   }
 });
 
-document.addEventListener('submit', (e) => {
+const CONTACT_ERROR = 'Something went wrong — please email us directly at ' +
+  '<a href="mailto:hello@skillgrow.co.uk">hello@skillgrow.co.uk</a>';
+
+document.addEventListener('submit', async (e) => {
   if (e.target.id !== 'contact-form') return;
   e.preventDefault();
+
   const f = e.target;
+  const btn = document.getElementById('contact-submit');
+  const errBox = document.getElementById('form-error');
   const data = new FormData(f);
-  const products = data.getAll('products').join(', ') || '(none specified)';
-  const body = `From: ${data.get('name')} (${data.get('role')}, ${data.get('organisation')})
 
-Email: ${data.get('email')}
-Products of interest: ${products}
+  const payload = {
+    name: data.get('name') || '',
+    organisation: data.get('organisation') || '',
+    role: data.get('role') || '',
+    email: data.get('email') || '',
+    message: data.get('message') || '',
+    products: data.getAll('products'),
+    consent: data.get('consent') === 'on',
+    website: data.get('website') || '',          // honeypot — humans leave this empty
+  };
 
-${data.get('message') || ''}`;
-  const subject = `SkillGrow enquiry — ${data.get('organisation')}`;
-  window.location.href = `mailto:hello@skillgrow.co.uk?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  f.querySelector('.form-fields').style.display = 'none';
-  document.getElementById('form-success').classList.add('show');
+  /* Populated once a Turnstile site key is added to the page; the API
+     verifies it only when TURNSTILE_SECRET_KEY is set server-side. */
+  const ts = f.querySelector('[name="cf-turnstile-response"]');
+  if (ts && ts.value) payload.turnstileToken = ts.value;
+
+  errBox.hidden = true;
+  btn.setAttribute('aria-busy', 'true');
+  const label = btn.textContent;
+  btn.textContent = 'Sending…';
+
+  try {
+    const r = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    /* Success only on a real 200 — never on the mere act of submitting. */
+    if (r.ok) {
+      f.querySelector('.form-fields').style.display = 'none';
+      document.getElementById('form-success').classList.add('show');
+      return;
+    }
+
+    let detail = '';
+    try {
+      const j = await r.json();
+      if (Array.isArray(j.fields) && j.fields.length) {
+        detail = ' (check: ' + j.fields.join(', ') + ')';
+      }
+    } catch (_) { /* non-JSON error body — the generic message still applies */ }
+    errBox.innerHTML = CONTACT_ERROR + detail;
+    errBox.hidden = false;
+  } catch (_) {
+    /* Offline, DNS failure, request blocked — the enquiry did not land. */
+    errBox.innerHTML = CONTACT_ERROR;
+    errBox.hidden = false;
+  } finally {
+    btn.removeAttribute('aria-busy');
+    btn.textContent = label;
+  }
 });
 </script>
 
