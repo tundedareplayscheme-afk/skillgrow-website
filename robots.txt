@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://www.skillgrow.co.uk/sitemap.xml

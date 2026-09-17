@@ -1,5 +1,6 @@
 {
   "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|contact|privacy|security)", "destination": "/index.html" },
+    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|contact|privacy|security)/", "destination": "/index.html" }
   ]
 }
