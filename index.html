@@ -659,6 +659,51 @@ main { padding-top: var(--header-h); min-height: 100vh; }
 }
 
 /* ── RESPONSIVE ───────────────────────────── */
+/* ── PRICING ──────────────────────────────── */
+.pricing { background: var(--ivory); }
+.pricing-card {
+  background: white;
+  border: 1px solid rgba(15,45,82,0.08);
+  border-radius: 20px;
+  padding: 44px 40px;
+  max-width: 720px;
+  box-shadow: 0 16px 48px rgba(15,45,82,0.05);
+}
+.pricing-price {
+  font-family: var(--serif);
+  font-size: 46px; font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+.pricing-unit {
+  font-size: 14px; font-weight: 600;
+  color: var(--gold-deep);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 22px;
+}
+.pricing-note {
+  font-size: 15px;
+  color: var(--slate-500);
+  line-height: 1.7;
+  padding-top: 22px;
+  border-top: 1px solid rgba(15,45,82,0.08);
+}
+.pricing-note strong { color: var(--navy); font-weight: 600; }
+.pricing-actions { margin-top: 28px; }
+
+/* ── CAPABILITY ICONS ─────────────────────── */
+.capability-num svg {
+  width: 26px; height: 26px;
+  stroke: var(--gold);
+  stroke-width: 1.6;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 @media (max-width: 900px) {
   .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
@@ -704,7 +749,7 @@ main { padding-top: var(--header-h); min-height: 100vh; }
 
 <nav class="nav">
   <div class="nav-inner">
-    <a href="#/" class="nav-logo" data-link>SkillGrow</a>
+    <a href="/" class="nav-logo" data-link>SkillGrow</a>
 
     <button class="nav-hamburger" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -714,26 +759,26 @@ main { padding-top: var(--header-h); min-height: 100vh; }
       <div class="nav-dropdown">
         <button class="nav-dropdown-trigger">Products</button>
         <div class="nav-dropdown-menu">
-          <a href="#/sen" class="nav-dropdown-item" data-link>
+          <a href="/sen" class="nav-dropdown-item" data-link>
             DARE SEN OS <small>The operating system for special schools</small>
           </a>
-          <a href="#/mainstream" class="nav-dropdown-item" data-link>
+          <a href="/mainstream" class="nav-dropdown-item" data-link>
             DARE Mainstream <small>SEND infrastructure for mainstream schools</small>
           </a>
-          <a href="#/staff-pwa" class="nav-dropdown-item" data-link>
+          <a href="/staff-pwa" class="nav-dropdown-item" data-link>
             Staff PWA <small>Real-time tools for frontline staff</small>
           </a>
-          <a href="#/parent" class="nav-dropdown-item" data-link>
+          <a href="/parent" class="nav-dropdown-item" data-link>
             Parent Portal <small>Every family in the loop</small>
           </a>
-          <a href="#/trust" class="nav-dropdown-item" data-link>
+          <a href="/trust" class="nav-dropdown-item" data-link>
             Trust Portal <small>Multi-school oversight</small>
           </a>
         </div>
       </div>
-      <a href="#/about" class="nav-link" data-link>About</a>
-      <a href="#/contact" class="nav-link" data-link>Contact</a>
-      <a href="#/contact" class="btn btn-gold" data-link>Book a Demo</a>
+      <a href="/about" class="nav-link" data-link>About</a>
+      <a href="/contact" class="nav-link" data-link>Contact</a>
+      <a href="https://hq.skillgrow.co.uk/book/tunde" class="btn btn-gold" target="_blank" rel="noopener">Book a Demo</a>
     </div>
   </div>
 </nav>
@@ -744,22 +789,22 @@ main { padding-top: var(--header-h); min-height: 100vh; }
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="#/" class="nav-logo" data-link>SkillGrow</a>
+        <a href="/" class="nav-logo" data-link>SkillGrow</a>
         <p>The world's first fully integrated 0–25 SEND platform. Built in Bedford, England, by people who have worked with SEN children.</p>
       </div>
       <div class="footer-col">
         <h4>Products</h4>
-        <a href="#/sen" data-link>DARE SEN OS</a>
-        <a href="#/mainstream" data-link>DARE Mainstream</a>
-        <a href="#/staff-pwa" data-link>Staff PWA</a>
-        <a href="#/parent" data-link>Parent Portal</a>
-        <a href="#/trust" data-link>Trust Portal</a>
+        <a href="/sen" data-link>DARE SEN OS</a>
+        <a href="/mainstream" data-link>DARE Mainstream</a>
+        <a href="/staff-pwa" data-link>Staff PWA</a>
+        <a href="/parent" data-link>Parent Portal</a>
+        <a href="/trust" data-link>Trust Portal</a>
       </div>
       <div class="footer-col">
         <h4>Company</h4>
-        <a href="#/about" data-link>About</a>
-        <a href="#/contact" data-link>Contact</a>
-        <a href="#/contact" data-link>Book a Demo</a>
+        <a href="/about" data-link>About</a>
+        <a href="/contact" data-link>Contact</a>
+        <a href="https://hq.skillgrow.co.uk/book/tunde" target="_blank" rel="noopener">Book a Demo</a>
       </div>
       <div class="footer-col">
         <h4>Get in touch</h4>
@@ -785,8 +830,8 @@ const pages = {
           <h1 class="hero-h1">The world's first fully integrated <span class="gold">0–25 SEND</span> platform.</h1>
           <p class="hero-sub">Every child at the centre. Every stakeholder connected. From early years to adulthood, one operating system for the entire SEND journey.</p>
           <div class="hero-actions">
-            <a href="#/contact" class="btn btn-gold btn-lg" data-link>Book a Demo →</a>
-            <a href="#/sen" class="btn btn-ghost btn-lg" data-link>Explore the Platform</a>
+            <a href="https://hq.skillgrow.co.uk/book/tunde" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a Demo →</a>
+            <a href="/sen" class="btn btn-ghost btn-lg" data-link>Explore the Platform</a>
           </div>
         </div>
       </div>
@@ -847,6 +892,7 @@ const pages = {
 
   sen: () => productPage({
     eyebrow: 'DARE SEN OS',
+    pricing: { price: '£3,500 – 8,500', unit: 'per year · per special school', note: 'Tiered by pupil count. Early-adopter programme: <strong>25% off for three years</strong>. Multi-school discounts: <strong>15%</strong> (2–5 schools), <strong>25%</strong> (6–10), <strong>35%</strong> (11–20). 20+ by bespoke negotiation.' },
     titleA: 'The operating system for',
     titleB: 'special schools.',
     sub: 'Thirty-plus integrated apps replacing twelve disconnected systems — built for the rhythm, complexity, and care of a SEN school.',
@@ -856,14 +902,15 @@ const pages = {
       { title: 'DSLs & Therapists', body: 'Real-time safeguarding, EHCP tracking, therapy notes, and medication — joined-up around each child.' },
     ],
     caps: [
-      { title: 'Real-time safeguarding', body: 'Instant alerts to the right person — DSL, parent, or duty leader — with full audit trail and KCSIE 2025-aligned workflow.' },
-      { title: 'EHCP at the core', body: 'Outcomes, provision, and review cycles built into every interaction, so every note connects back to the plan that matters.' },
-      { title: 'Whole-child record', body: 'Medical, behaviour, therapy, communication, attendance — one timeline per child, accessible to the right people only.' },
+      { icon: 'shield', title: 'Real-time safeguarding', body: 'Instant alerts to the right person — DSL, parent, or duty leader — with full audit trail and KCSIE 2025-aligned workflow.' },
+      { icon: 'target', title: 'EHCP at the core', body: 'Outcomes, provision, and review cycles built into every interaction, so every note connects back to the plan that matters.' },
+      { icon: 'timeline', title: 'Whole-child record', body: 'Medical, behaviour, therapy, communication, attendance — one timeline per child, accessible to the right people only.' },
     ],
   }),
 
   mainstream: () => productPage({
     eyebrow: 'DARE Mainstream',
+    pricing: { price: '£2,400 – 4,500', unit: 'per year · per mainstream school', note: 'Tiered by pupil count. Early-adopter programme: <strong>25% off for three years</strong>. Multi-school discounts: <strong>15%</strong> (2–5 schools), <strong>25%</strong> (6–10), <strong>35%</strong> (11–20). 20+ by bespoke negotiation.' },
     titleA: 'SEND infrastructure for',
     titleB: 'mainstream schools.',
     sub: "The SENCO's operating layer — provision mapping, statutory compliance, and parent engagement built for primaries, secondaries, and academy chains.",
@@ -873,14 +920,15 @@ const pages = {
       { title: 'Headteachers', body: 'Ofsted-ready evidence, local-authority reporting, and SEND outcome data available at any moment.' },
     ],
     caps: [
-      { title: 'Provision mapping that works', body: 'Drag-and-drop interventions, automatic costings, and a clean audit trail from assessment to outcome.' },
-      { title: 'Statutory compliance, automated', body: 'EHCP review cycles, annual reviews, and graduated-response evidence captured in the flow of teaching.' },
-      { title: 'Parents inside the conversation', body: 'Live parent portal access so families see plans, progress, and provision — and respond before the meeting, not in it.' },
+      { icon: 'map', title: 'Provision mapping that works', body: 'Drag-and-drop interventions, automatic costings, and a clean audit trail from assessment to outcome.' },
+      { icon: 'clipboard', title: 'Statutory compliance, automated', body: 'EHCP review cycles, annual reviews, and graduated-response evidence captured in the flow of teaching.' },
+      { icon: 'users', title: 'Parents inside the conversation', body: 'Live parent portal access so families see plans, progress, and provision — and respond before the meeting, not in it.' },
     ],
   }),
 
   'staff-pwa': () => productPage({
     eyebrow: 'Staff PWA',
+    pricing: { price: 'Included', unit: 'with every school licence', note: 'The Staff PWA is not licensed separately — it ships with DARE SEN OS and DARE Mainstream for every member of staff on your roll, at no extra cost.' },
     titleA: 'Real-time tools for',
     titleB: 'frontline staff.',
     sub: 'A progressive web app for teaching assistants, learning mentors, and care staff. Works offline. Designed for one-thumb logging in the middle of a busy day.',
@@ -890,14 +938,15 @@ const pages = {
       { title: 'Care & medical staff', body: 'Medication, observations, and incident logs straight from the phone — synced the moment you are back online.' },
     ],
     caps: [
-      { title: 'Offline-first by design', body: 'Logs the moment, syncs when reception returns. Works in playgrounds, swimming pools, hydrotherapy rooms, and minibuses.' },
-      { title: 'One-thumb fast', body: 'Designed by people who have done the job. Common entries take three taps. No deep menus. No lost work.' },
-      { title: 'Joined to the record', body: "Every entry attaches to the child's EHCP outcomes, behaviour timeline, and care plan automatically." },
+      { icon: 'offline', title: 'Offline-first by design', body: 'Logs the moment, syncs when reception returns. Works in playgrounds, swimming pools, hydrotherapy rooms, and minibuses.' },
+      { icon: 'tap', title: 'One-thumb fast', body: 'Designed by people who have done the job. Common entries take three taps. No deep menus. No lost work.' },
+      { icon: 'link', title: 'Joined to the record', body: "Every entry attaches to the child's EHCP outcomes, behaviour timeline, and care plan automatically." },
     ],
   }),
 
   parent: () => productPage({
     eyebrow: 'Parent Portal',
+    pricing: { price: 'Free', unit: 'always · for every family', note: 'Families are never charged. The Parent Portal is included with your school&rsquo;s DARE SEN OS or DARE Mainstream licence, for unlimited parents, carers, and consented family advocates.' },
     titleA: 'Every family',
     titleB: 'in the loop.',
     sub: 'Daily diaries, EHCP visibility, real-time safeguarding alerts, and direct two-way contact with the team around your child.',
@@ -907,14 +956,15 @@ const pages = {
       { title: 'Family advocates', body: 'Read-only visibility for grandparents, social workers, and IROs where consent has been given.' },
     ],
     caps: [
-      { title: 'A daily diary that tells a story', body: 'Not just a log — photos, audio, milestones, and the small wins, delivered every day.' },
-      { title: 'Plain-English EHCP', body: 'See exactly which outcomes the school is working on, and what progress looks like — without the jargon.' },
-      { title: 'Real two-way contact', body: 'Message the right person — class teacher, DSL, therapist — and get a reply, with a full audit trail.' },
+      { icon: 'diary', title: 'A daily diary that tells a story', body: 'Not just a log — photos, audio, milestones, and the small wins, delivered every day.' },
+      { icon: 'target', title: 'Plain-English EHCP', body: 'See exactly which outcomes the school is working on, and what progress looks like — without the jargon.' },
+      { icon: 'message', title: 'Real two-way contact', body: 'Message the right person — class teacher, DSL, therapist — and get a reply, with a full audit trail.' },
     ],
   }),
 
   trust: () => productPage({
     eyebrow: 'Trust Portal',
+    pricing: { price: '£12,000+', unit: 'per year · per MAT', note: 'Priced at MAT level across every school in the trust. Multi-school discounts: <strong>15%</strong> (2–5 schools), <strong>25%</strong> (6–10), <strong>35%</strong> (11–20). 20+ by bespoke negotiation.' },
     titleA: 'Multi-school oversight for',
     titleB: 'trust leadership.',
     sub: 'For MATs, local authorities, and federations operating SEND provision at scale — one pane of glass across every school.',
@@ -924,9 +974,9 @@ const pages = {
       { title: 'LA commissioners', body: 'Real-time visibility of provision and outcomes for every child placed across your commissioned schools.' },
     ],
     caps: [
-      { title: 'One pane of glass', body: 'Every school, every child, every safeguarding signal — aggregated, anonymised where required, and drill-down on demand.' },
-      { title: 'Governance built-in', body: 'Audit trails, role-based access, and statutory reporting bundled into the way trust leaders already work.' },
-      { title: 'Comparative outcomes', body: 'Benchmark provision and progress across sites — not to rank, but to learn what is working and replicate it.' },
+      { icon: 'pane', title: 'One pane of glass', body: 'Every school, every child, every safeguarding signal — aggregated, anonymised where required, and drill-down on demand.' },
+      { icon: 'lock', title: 'Governance built-in', body: 'Audit trails, role-based access, and statutory reporting bundled into the way trust leaders already work.' },
+      { icon: 'chart', title: 'Comparative outcomes', body: 'Benchmark provision and progress across sites — not to rank, but to learn what is working and replicate it.' },
     ],
   }),
 
@@ -1081,9 +1131,30 @@ const pages = {
 };
 
 /* ─── Helpers ─────────────────────────────── */
+/* ─── Capability icons ─────────────────────── */
+const ICONS = {
+  shield:   '<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/>',
+  target:   '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/>',
+  timeline: '<path d="M5 4v16"/><circle cx="5" cy="8" r="1.6"/><circle cx="5" cy="16" r="1.6"/><path d="M9 8h10"/><path d="M9 16h7"/>',
+  map:      '<path d="M4 6l5-2 6 2 5-2v14l-5 2-6-2-5 2z"/><path d="M9 4v14"/><path d="M15 6v14"/>',
+  clipboard:'<path d="M9 4h6v3H9z"/><path d="M15 5h3v15H6V5h3"/><path d="M9 12l2 2 4-4"/>',
+  users:    '<circle cx="9" cy="8" r="3"/><path d="M4 20c0-3 2.5-5 5-5s5 2 5 5"/><path d="M16 6.5a3 3 0 010 5.4"/><path d="M17 15c2 .6 3 2.4 3 5"/>',
+  offline:  '<path d="M5 8.5a11 11 0 0114 0"/><path d="M8 12a7 7 0 018 0"/><circle cx="12" cy="18" r="1"/><path d="M3 3l18 18"/>',
+  tap:      '<path d="M10 11V6a1.7 1.7 0 013.4 0v7"/><path d="M13.4 10.5a1.7 1.7 0 013.4 0V17a4 4 0 01-4 4h-1.6a4 4 0 01-3.3-1.8L6 16.5a1.7 1.7 0 012.6-2.1L10 16"/>',
+  link:     '<path d="M10 14a4 4 0 006 .5l2.5-2.5a4 4 0 00-5.7-5.7L11.5 8"/><path d="M14 10a4 4 0 00-6-.5L5.5 12a4 4 0 005.7 5.7L12.5 16"/>',
+  diary:    '<path d="M5 4h11a2 2 0 012 2v14H7a2 2 0 01-2-2z"/><path d="M5 17h13"/><path d="M9 8h6"/>',
+  message:  '<path d="M4 6h16v11H9l-5 4z"/><path d="M8 10h8"/><path d="M8 13h5"/>',
+  pane:     '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M11 10v10"/>',
+  lock:     '<rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/><path d="M12 14v2"/>',
+  chart:    '<path d="M4 20V4"/><path d="M4 20h16"/><rect x="8" y="12" width="3" height="8"/><rect x="14" y="7" width="3" height="13"/>',
+};
+function icon(name) {
+  return ICONS[name] ? `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]}</svg>` : '';
+}
+
 function productCard(slug, eyebrow, title, desc) {
   return `
-    <a href="#/${slug}" class="product-card reveal" data-link>
+    <a href="/${slug}" class="product-card reveal" data-link>
       <div class="product-card-eyebrow">${eyebrow}</div>
       <div class="product-card-title">${title}</div>
       <div class="product-card-desc">${desc}</div>
@@ -1092,7 +1163,7 @@ function productCard(slug, eyebrow, title, desc) {
   `;
 }
 
-function productPage({ eyebrow, titleA, titleB, sub, audiences, caps }) {
+function productPage({ eyebrow, titleA, titleB, sub, audiences, caps, pricing }) {
   const romans = ['i', 'ii', 'iii'];
   return `
     <section class="hero product-hero">
@@ -1102,7 +1173,7 @@ function productPage({ eyebrow, titleA, titleB, sub, audiences, caps }) {
           <h1 class="hero-h1">${titleA} <span class="gold">${titleB}</span></h1>
           <p class="hero-sub">${sub}</p>
           <div class="hero-actions">
-            <a href="#/contact" class="btn btn-gold btn-lg" data-link>Book a Demo →</a>
+            <a href="https://hq.skillgrow.co.uk/book/tunde" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a Demo →</a>
           </div>
         </div>
       </div>
@@ -1135,7 +1206,7 @@ function productPage({ eyebrow, titleA, titleB, sub, audiences, caps }) {
         <div class="capability-grid">
           ${caps.map((c, i) => `
             <div class="capability reveal">
-              <div class="capability-num">${romans[i]}</div>
+              <div class="capability-num">${icon(c.icon) || romans[i]}</div>
               <div class="capability-title">${c.title}</div>
               <div class="capability-body">${c.body}</div>
             </div>
@@ -1143,6 +1214,24 @@ function productPage({ eyebrow, titleA, titleB, sub, audiences, caps }) {
         </div>
       </div>
     </section>
+
+    ${pricing ? `
+    <section class="section pricing">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">Pricing</div>
+          <h2 class="section-h2">Transparent, <span class="gold">tiered, no surprises.</span></h2>
+        </div>
+        <div class="pricing-card reveal">
+          <div class="pricing-price">${pricing.price}</div>
+          <div class="pricing-unit">${pricing.unit}</div>
+          <div class="pricing-note">${pricing.note}</div>
+          <div class="pricing-actions">
+            <a href="https://hq.skillgrow.co.uk/book/tunde" class="btn btn-gold" target="_blank" rel="noopener">Book a Demo &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </section>` : ''}
 
     ${ctaBand('Want to see it', 'on your data?', 'A 30-minute demo, your real workflows, no slides. Book a time that suits you.')}
   `;
@@ -1155,7 +1244,7 @@ function ctaBand(h1, h2gold, body) {
         <div class="cta-band-inner reveal">
           <h2>${h1} <span class="gold">${h2gold}</span></h2>
           <p>${body}</p>
-          <a href="#/contact" class="btn btn-gold btn-lg" data-link>Book a Demo →</a>
+          <a href="https://hq.skillgrow.co.uk/book/tunde" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a Demo →</a>
         </div>
       </div>
     </section>
@@ -1164,14 +1253,14 @@ function ctaBand(h1, h2gold, body) {
 
 /* ─── Router ──────────────────────────────── */
 const routes = {
-  '': 'home', '/': 'home',
-  '/sen': 'sen',
-  '/mainstream': 'mainstream',
-  '/staff-pwa': 'staff-pwa',
-  '/parent': 'parent',
-  '/trust': 'trust',
-  '/about': 'about',
-  '/contact': 'contact',
+  '': 'home',
+  'sen': 'sen',
+  'mainstream': 'mainstream',
+  'staff-pwa': 'staff-pwa',
+  'parent': 'parent',
+  'trust': 'trust',
+  'about': 'about',
+  'contact': 'contact',
 };
 
 const titles = {
@@ -1188,16 +1277,33 @@ const titles = {
 const app = document.getElementById('app');
 let observer;
 
+/* Normalise any URL shape to a bare slug: '', 'sen', 'staff-pwa'.
+   Accepts clean paths (/sen), legacy hash routes (#/sen), trailing
+   slashes, and the Netlify 200-rewrite that serves index.html for
+   every path. */
+function slugFromLocation() {
+  const legacy = window.location.hash.replace(/^#\/?/, '').replace(/\/+$/, '');
+  if (legacy) return legacy;
+  return window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
+}
+
 function render() {
-  const hash = window.location.hash.replace('#', '') || '/';
-  const key = routes[hash] || 'home';
+  /* Old #/sen links (bookmarks, emails, search results) are upgraded to
+     the clean path once, in place, so there is a single canonical URL. */
+  if (window.location.hash.startsWith('#/')) {
+    const slug = window.location.hash.replace(/^#\/?/, '').replace(/\/+$/, '');
+    history.replaceState({}, '', '/' + slug);
+  }
+
+  const slug = slugFromLocation();
+  const key = routes[slug] || 'home';
   document.title = titles[key];
 
   app.innerHTML = `<div class="page">${pages[key]()}</div>`;
 
+  const canonical = '/' + (key === 'home' ? '' : key);
   document.querySelectorAll('.nav-link, .nav-dropdown-item').forEach(el => {
-    const h = el.getAttribute('href');
-    el.classList.toggle('active', h === `#${hash}` || (hash === '/' && h === '#/'));
+    el.classList.toggle('active', el.getAttribute('href') === canonical);
   });
 
   window.scrollTo({ top: 0, behavior: 'instant' });
@@ -1227,17 +1333,20 @@ function setupReveals() {
 document.addEventListener('click', (e) => {
   const a = e.target.closest('a[data-link]');
   if (!a) return;
+  /* Let modified clicks (new tab, new window, download) behave natively. */
+  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
   const href = a.getAttribute('href');
-  if (href && href.startsWith('#')) {
-    e.preventDefault();
-    if (window.location.hash === href || (href === '#/' && !window.location.hash)) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      window.location.hash = href.slice(1);
-    }
+  if (!href || !href.startsWith('/')) return;
+  e.preventDefault();
+  if (window.location.pathname === href) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    history.pushState({}, '', href);
+    render();
   }
 });
 
+window.addEventListener('popstate', render);
 window.addEventListener('hashchange', render);
 window.addEventListener('DOMContentLoaded', render);
 
