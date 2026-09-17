@@ -21,7 +21,7 @@ const SENDER_NAME_DEFAULT = 'SkillGrow Website';
 
 const PRODUCTS = ['DARE SEN OS', 'DARE Mainstream', 'Staff PWA', 'Parent Portal', 'Trust Portal'];
 
-const MAX = { name: 200, organisation: 200, role: 200, email: 320, message: 5000 };
+const MAX = { name: 200, organisation: 200, role: 200, email: 320, phone: 40, message: 5000 };
 
 /* Keep user text out of the header block of the email. A newline smuggled
    into the subject would let a sender forge headers. */
@@ -88,6 +88,8 @@ module.exports = async function handler(req, res) {
   const organisation = oneLine(body.organisation, MAX.organisation);
   const role = oneLine(body.role, MAX.role);
   const email = oneLine(body.email, MAX.email);
+  /* Optional — a blank phone must never block an enquiry. */
+  const phone = oneLine(body.phone, MAX.phone);
   const message = String(body.message == null ? '' : body.message).trim().slice(0, MAX.message);
 
   const missing = [];
@@ -135,6 +137,7 @@ module.exports = async function handler(req, res) {
     `Organisation:  ${organisation}`,
     `Role:          ${role}`,
     `Email:         ${email}`,
+    `Phone:         ${phone || '(not given)'}`,
     `Products:      ${productLine}`,
     '',
     'Message:',
@@ -152,6 +155,7 @@ module.exports = async function handler(req, res) {
     <tr><td style="padding:4px 16px 4px 0;color:#64748B">Organisation</td><td style="padding:4px 0"><strong>${escapeHtml(organisation)}</strong></td></tr>
     <tr><td style="padding:4px 16px 4px 0;color:#64748B">Role</td><td style="padding:4px 0">${escapeHtml(role)}</td></tr>
     <tr><td style="padding:4px 16px 4px 0;color:#64748B">Email</td><td style="padding:4px 0"><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></td></tr>
+    <tr><td style="padding:4px 16px 4px 0;color:#64748B">Phone</td><td style="padding:4px 0">${phone ? `<a href="tel:${escapeHtml(phone.replace(/[^\d+]/g, ''))}">${escapeHtml(phone)}</a>` : '<em style="color:#94A3B8">(not given)</em>'}</td></tr>
     <tr><td style="padding:4px 16px 4px 0;color:#64748B">Products</td><td style="padding:4px 0">${escapeHtml(productLine)}</td></tr>
   </table>
   <div style="color:#64748B;margin-bottom:6px">Message</div>
