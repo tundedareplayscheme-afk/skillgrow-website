@@ -780,6 +780,115 @@ main { padding-top: var(--header-h); min-height: 100vh; }
   margin-bottom: 8px;
 }
 
+/* ── DIFFERENTIATOR BAND ──────────────────── */
+.differentiator { background: var(--navy); padding: 64px 0; }
+.differentiator-inner { max-width: 900px; }
+.differentiator-eyebrow {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 18px;
+}
+.differentiator p {
+  font-family: var(--serif);
+  font-size: 32px; font-weight: 500;
+  line-height: 1.35;
+  color: white;
+  letter-spacing: -0.4px;
+  margin: 0;
+}
+.differentiator p .gold { font-style: italic; }
+
+/* ── URGENCY BAND (statutory deadlines) ───── */
+.urgency { background: white; }
+.urgency-card {
+  border: 1px solid rgba(15,45,82,0.1);
+  border-left: 4px solid var(--gold-deep);
+  border-radius: 16px;
+  padding: 36px 40px;
+  background: var(--ivory);
+}
+.urgency-date {
+  display: inline-block;
+  background: var(--navy);
+  color: var(--gold);
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 1.2px; text-transform: uppercase;
+  padding: 7px 14px;
+  border-radius: 99px;
+  margin-bottom: 18px;
+}
+.urgency-card h3 {
+  font-family: var(--serif);
+  font-size: 30px; font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -0.4px;
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+.urgency-card p {
+  font-size: 15px; line-height: 1.75;
+  color: var(--slate-500);
+  margin-bottom: 12px;
+}
+.urgency-card p:last-child { margin-bottom: 0; }
+.urgency-card strong { color: var(--navy); font-weight: 600; }
+.urgency-source {
+  font-size: 13px;
+  color: #94A3B8;
+  padding-top: 16px;
+  margin-top: 4px;
+  border-top: 1px solid rgba(15,45,82,0.08);
+}
+
+/* ── ROLE CARDS (named role + pain point) ─── */
+.role-grid {
+  display: grid;
+  /* 240px, not 268px: the four-role /sen layout misses a single row by ~2px
+     at container width otherwise, and orphans the fourth card. */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 22px;
+}
+.role-card {
+  background: white;
+  border: 1px solid rgba(15,45,82,0.08);
+  border-radius: 16px;
+  padding: 32px 28px;
+  transition: all .3s ease;
+  display: flex; flex-direction: column;
+}
+.role-card:hover {
+  border-color: rgba(252,211,77,0.35);
+  box-shadow: 0 16px 40px rgba(15,45,82,0.07);
+}
+.role-card-role {
+  font-family: var(--serif);
+  font-size: 23px; font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -0.3px;
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+.role-card-pain {
+  font-size: 14px; font-weight: 600;
+  line-height: 1.5;
+  color: var(--gold-deep);
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid rgba(15,45,82,0.08);
+}
+.role-card-body {
+  font-size: 14px;
+  color: var(--slate-500);
+  line-height: 1.7;
+}
+
+@media (max-width: 720px) {
+  .differentiator p { font-size: 24px; }
+  .urgency-card { padding: 28px 24px; }
+  .urgency-card h3 { font-size: 24px; }
+}
+
 @media (max-width: 900px) {
   .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
@@ -911,6 +1020,11 @@ main { padding-top: var(--header-h); min-height: 100vh; }
 
 <script>
 /* ─── Page templates ────────────────────── */
+/* Shared pricing footnote — DARE SEN and DARE Mainstream tier identically. */
+const TIER_NOTE = 'Tiered by pupil count. Early-adopter programme: <strong>25% off for three years</strong>. '
+  + 'Multi-school discounts: <strong>15%</strong> (2–5 schools), <strong>25%</strong> (6–10), '
+  + '<strong>35%</strong> (11–20). 20+ by bespoke negotiation.';
+
 const pages = {
   home: () => `
     <section class="hero">
@@ -982,92 +1096,198 @@ const pages = {
 
   sen: () => productPage({
     eyebrow: 'DARE SEN OS',
-    pricing: { price: '£3,500 – 8,500', unit: 'per year · per special school', note: 'Tiered by pupil count. Early-adopter programme: <strong>25% off for three years</strong>. Multi-school discounts: <strong>15%</strong> (2–5 schools), <strong>25%</strong> (6–10), <strong>35%</strong> (11–20). 20+ by bespoke negotiation.' },
-    titleA: 'The operating system for',
-    titleB: 'special schools.',
-    sub: '29+ integrated apps replacing twelve disconnected systems — built for the rhythm, complexity, and care of a SEN school.',
-    audiences: [
-      { title: 'Headteachers & SLT', body: 'A live operational picture, board-ready reporting, and the confidence of a single source of truth across every classroom and care space.' },
-      { title: 'Teachers & TAs', body: 'Daily diaries, behaviour, learning, and safeguarding logged in seconds — not at the end of the day.' },
-      { title: 'DSLs & Therapists', body: 'Real-time safeguarding, EHCP tracking, therapy notes, and medication — joined-up around each child.' },
+    titleA: 'Every concern reaches the right adult,',
+    titleB: 'and stays attached to the plan.',
+    sub: 'The safeguarding chain and the EHCP evidence trail, in one system — built for special schools, where the two are never separate.',
+    differentiator: {
+      eyebrow: 'What no one else can offer',
+      text: 'A concern logged by a TA in the playground reaches the DSL in seconds, attaches itself to that child&rsquo;s EHCP outcome, and is visible to the family the same day — <span class="gold">without anyone re-typing it into a second system.</span>',
+    },
+    rolesHeading: {
+      eyebrow: 'Who is this for?',
+      titleA: 'Built around the people',
+      titleB: 'who carry the risk.',
+      lead: 'Not "school staff" in the abstract. The four roles who are accountable when a SEND safeguarding chain breaks, and who currently hold it together with paper, memory, and goodwill.',
+    },
+    roles: [
+      { role: 'Designated Safeguarding Lead',
+        pain: 'You hear about the lunchtime incident at 4pm, from a folded paper slip.',
+        body: 'Concerns arrive the moment they are logged, routed to you by name, with the child&rsquo;s full context already attached — behaviour, medical, communication needs. Every action is timestamped and audit-ready, aligned to KCSIE.' },
+      { role: 'SENCO',
+        pain: 'Annual review season means rebuilding twelve months of evidence from six systems.',
+        body: 'Every note, session, and intervention already links back to the EHCP outcome it serves. The evidence for a review assembles itself as the year happens, instead of being reconstructed the week before.' },
+      { role: 'Headteacher',
+        pain: 'Governors ask how you know every child is safe. You have a spreadsheet and a feeling.',
+        body: 'A live operational picture across every classroom, therapy room, and care space — exception reporting that surfaces what needs you, and board-ready evidence that does not need a fortnight of preparation.' },
+      { role: 'Therapist',
+        pain: 'Your notes sit in a system the class team cannot see, so the strategy never reaches the classroom.',
+        body: 'SaLT, OT, and physio notes live on the same child record as behaviour and learning — so a communication strategy written on Tuesday is in front of the TA on Wednesday morning.' },
     ],
+    capsHeading: { eyebrow: 'Capabilities', titleA: 'The chain, end', titleB: 'to end.' },
     caps: [
-      { icon: 'shield', title: 'Real-time safeguarding', body: 'Instant alerts to the right person — DSL, parent, or duty leader — with full audit trail and KCSIE 2025-aligned workflow.' },
-      { icon: 'target', title: 'EHCP at the core', body: 'Outcomes, provision, and review cycles built into every interaction, so every note connects back to the plan that matters.' },
-      { icon: 'timeline', title: 'Whole-child record', body: 'Medical, behaviour, therapy, communication, attendance — one timeline per child, accessible to the right people only.' },
+      { icon: 'shield', title: 'Safeguarding that moves at the speed of the incident', body: 'Instant routing to the named DSL or duty leader, escalation if unacknowledged, and a complete audit trail. KCSIE-aligned, and built for children who cannot always tell you what happened.' },
+      { icon: 'target', title: 'EHCP evidence, gathered as you go', body: 'Outcomes and provision sit underneath every interaction, so the evidence for the annual review is a by-product of the work rather than a second job.' },
+      { icon: 'timeline', title: 'One timeline per child', body: 'Medical, behaviour, therapy, communication, attendance, safeguarding — a single chronology, visible only to the people entitled to see each part of it.' },
     ],
+    pricing: { headingA: 'Transparent,', headingB: 'tiered, no surprises.', price: '£3,500 – 8,500', unit: 'per year · per special school', note: TIER_NOTE },
+    cta: { titleA: 'See it with', titleB: 'your own safeguarding chain.', body: 'Thirty minutes, your real workflows, your escalation routes. No slides.' },
   }),
 
   mainstream: () => productPage({
     eyebrow: 'DARE Mainstream',
-    pricing: { price: '£2,400 – 4,500', unit: 'per year · per mainstream school', note: 'Tiered by pupil count. Early-adopter programme: <strong>25% off for three years</strong>. Multi-school discounts: <strong>15%</strong> (2–5 schools), <strong>25%</strong> (6–10), <strong>35%</strong> (11–20). 20+ by bespoke negotiation.' },
-    titleA: 'SEND infrastructure for',
-    titleB: 'mainstream schools.',
-    sub: "The SENCO's operating layer — provision mapping, statutory compliance, and parent engagement built for primaries, secondaries, and academy chains.",
-    audiences: [
-      { title: 'SENCOs', body: 'A single dashboard for the SEND register, provision maps, EHCP review cycles, and graduated-response evidence.' },
-      { title: 'Class teachers', body: 'See exactly which adjustments each child needs, this lesson, without trawling through a shared drive.' },
-      { title: 'Headteachers', body: 'Ofsted-ready evidence, local-authority reporting, and SEND outcome data available at any moment.' },
+    titleA: 'Individual Support Plans are coming.',
+    titleB: 'Be ready before you have to be.',
+    sub: 'The Schools White Paper 2026 makes an ISP statutory for every pupil on Targeted or Specialist support from September 2029. The graduated-response evidence behind them takes years to build, not months.',
+    differentiator: {
+      eyebrow: 'What no one else can offer',
+      text: 'The same platform runs the special school your local authority places into — so when a child moves between mainstream and specialist provision, <span class="gold">the record moves with them instead of starting again.</span>',
+    },
+    urgency: {
+      eyebrow: 'The deadline',
+      titleA: 'What changes,',
+      titleB: 'and when.',
+      date: 'Statutory from September 2029',
+      heading: 'Every pupil on Targeted or Specialist support will need an Individual Support Plan.',
+      body: [
+        'Under the Schools White Paper 2026, <strong>Every child achieving and thriving</strong>, the ISP becomes the baseline plan beneath the tiered support model, with EHCPs as the highest tier. ISPs are digital by design, are developed with parents, and require no diagnosis.',
+        'The plan itself is the easy part. What takes time is the <strong>graduated approach evidence underneath it</strong> — assess, plan, do, review, cycle after cycle, for every child on the register. A school starting that trail in 2029 is starting three years too late.',
+        'DARE Mainstream captures that evidence in the flow of teaching now, so the ISP is something you generate rather than something you scramble to write.',
+      ],
+      source: 'Subject to legislation. Timings and detail per the Schools White Paper 2026 and the House of Commons Library briefing on SEND reform.',
+    },
+    rolesHeading: {
+      eyebrow: 'Who is this for?',
+      titleA: 'The people who will be',
+      titleB: 'asked to evidence it.',
+      lead: 'When the mandate lands, two people in every school get the question. This is built for them.',
+    },
+    roles: [
+      { role: 'SENCO',
+        pain: 'You are one person, part-time, holding the register, the reviews, and now a statutory plan for every child on Targeted support.',
+        body: 'One dashboard for the SEND register, provision maps, review cycles, and graduated-response evidence — with ISP-shaped records building quietly underneath from the day you start, not the term before the deadline.' },
+      { role: 'Headteacher',
+        pain: 'Ofsted asks what difference your SEND provision makes. The honest answer is in six spreadsheets.',
+        body: 'Outcome data, provision costings, and local-authority reporting available the moment they are asked for — and a defensible answer to the inspection question about impact, not just spend.' },
+      { role: 'Class teacher',
+        pain: 'You find out a child needs a specific adjustment after the lesson has gone wrong.',
+        body: 'The adjustments each child needs, visible for this lesson, on the device already in your hand — and a two-tap way to record what worked, which becomes the evidence the SENCO needs.' },
     ],
+    capsHeading: { eyebrow: 'Capabilities', titleA: 'Compliance as a by-product', titleB: 'of good teaching.' },
     caps: [
-      { icon: 'map', title: 'Provision mapping that works', body: 'Drag-and-drop interventions, automatic costings, and a clean audit trail from assessment to outcome.' },
-      { icon: 'clipboard', title: 'Statutory compliance, automated', body: 'EHCP review cycles, annual reviews, and graduated-response evidence captured in the flow of teaching.' },
-      { icon: 'users', title: 'Parents inside the conversation', body: 'Live parent portal access so families see plans, progress, and provision — and respond before the meeting, not in it.' },
+      { icon: 'clipboard', title: 'ISP-ready from day one', body: 'Graduated-approach cycles captured as they happen — assess, plan, do, review — so the statutory plan assembles from evidence you already hold instead of being written from memory.' },
+      { icon: 'map', title: 'Provision mapping that costs itself', body: 'Drag-and-drop interventions with automatic costings and a clean audit trail from assessment to outcome, ready for the LA and the finance committee alike.' },
+      { icon: 'users', title: 'Parents in the plan, not after it', body: 'ISPs are developed with parents by design. Live portal access means families see provision and progress, and respond before the meeting rather than during it.' },
     ],
+    pricing: { headingA: 'Transparent,', headingB: 'tiered, no surprises.', price: '£2,400 – 4,500', unit: 'per year · per mainstream school', note: TIER_NOTE },
+    cta: { titleA: 'Three years sounds like a lot.', titleB: 'It is four review cycles.', body: 'Thirty minutes on what ISP readiness actually requires, against your current register.' },
   }),
 
   'staff-pwa': () => productPage({
     eyebrow: 'Staff PWA',
-    pricing: { price: 'Included', unit: 'with every school licence', note: 'The Staff PWA is not licensed separately — it ships with DARE SEN OS and DARE Mainstream for every member of staff on your roll, at no extra cost.' },
-    titleA: 'Real-time tools for',
-    titleB: 'frontline staff.',
-    sub: 'A progressive web app for teaching assistants, learning mentors, and care staff. Works offline. Designed for one-thumb logging in the middle of a busy day.',
-    audiences: [
-      { title: 'Teaching assistants', body: 'Log behaviour, learning, and care moments in seconds — without leaving the child you are with.' },
-      { title: 'Learning mentors', body: 'Capture interventions, track engagement, and surface concerns to the right adult instantly.' },
-      { title: 'Care & medical staff', body: 'Medication, observations, and incident logs straight from the phone — synced the moment you are back online.' },
+    titleA: 'Any device, any staff member,',
+    titleB: 'in real time.',
+    sub: 'No licences to count, no laptops to find, no waiting until the end of the day. Every adult who works with a child can log what just happened, from whatever is in their pocket.',
+    differentiator: {
+      eyebrow: 'What no one else can offer',
+      text: 'It works in the hydrotherapy pool, on the minibus, and in the far corner of the field with no signal at all — and the moment it reconnects, <span class="gold">the DSL already knows.</span>',
+    },
+    rolesHeading: {
+      eyebrow: 'Who is this for?',
+      titleA: 'The two people who feel',
+      titleB: 'the gaps first.',
+      lead: 'One is accountable for what gets missed. The other is accountable for what it costs. Both are usually told the same thing: buy more licences.',
+    },
+    roles: [
+      { role: 'Designated Safeguarding Lead',
+        pain: 'The staff most likely to witness something are the least likely to have a device.',
+        body: 'Every TA, midday supervisor, minibus driver, and care assistant can log a concern the moment it happens, from their own phone. Offline entries queue and sync, arriving with the original timestamp — not the time the signal came back.' },
+      { role: 'School Business Manager',
+        pain: 'Per-seat pricing means you ration access to the exact staff who need it most.',
+        body: 'Included with the school licence for every member of staff on your roll, with no per-seat charge and no device procurement. It is a progressive web app — nothing to install, nothing to manage through MDM, no app-store approvals.' },
+      { role: 'Teaching assistants & care staff',
+        pain: 'Logging anything means leaving the child you are with.',
+        body: 'Common entries take three taps and no deep menus. Designed by people who have done the job, for one thumb, mid-corridor, without looking away for long.' },
     ],
+    capsHeading: { eyebrow: 'Capabilities', titleA: 'Built for the places', titleB: 'a laptop never goes.' },
     caps: [
-      { icon: 'offline', title: 'Offline-first by design', body: 'Logs the moment, syncs when reception returns. Works in playgrounds, swimming pools, hydrotherapy rooms, and minibuses.' },
-      { icon: 'tap', title: 'One-thumb fast', body: 'Designed by people who have done the job. Common entries take three taps. No deep menus. No lost work.' },
-      { icon: 'link', title: 'Joined to the record', body: "Every entry attaches to the child's EHCP outcomes, behaviour timeline, and care plan automatically." },
+      { icon: 'offline', title: 'Offline-first, genuinely', body: 'Logs the moment, syncs when reception returns, and preserves when it actually happened. Playgrounds, pools, minibuses, residential settings, school trips.' },
+      { icon: 'tap', title: 'Three taps, no training day', body: 'Behaviour, learning, care, and concern entries designed for speed under pressure. New staff are productive in a shift, not a term.' },
+      { icon: 'link', title: 'Attached to the record automatically', body: 'Every entry lands on the child&rsquo;s EHCP outcomes, behaviour timeline, and care plan without anyone choosing where to file it.' },
     ],
+    pricing: { headingA: 'No per-seat charge.', headingB: 'Ever.', price: 'Included', unit: 'with every school licence', note: 'The Staff PWA is not licensed separately. It ships with DARE SEN OS and DARE Mainstream for <strong>every member of staff on your roll</strong>, at no additional cost — because a safeguarding tool that some staff cannot reach is not a safeguarding tool.' },
+    cta: { titleA: 'See it work', titleB: 'with the signal off.', body: 'Thirty minutes. Bring your worst notspot — the swimming pool, the minibus, the back field.' },
   }),
 
   parent: () => productPage({
     eyebrow: 'Parent Portal',
-    pricing: { price: 'Free', unit: 'always · for every family', note: 'Families are never charged. The Parent Portal is included with your school&rsquo;s DARE SEN OS or DARE Mainstream licence, for unlimited parents, carers, and consented family advocates.' },
-    titleA: 'Every family',
-    titleB: 'in the loop.',
-    sub: 'Daily diaries, EHCP visibility, real-time safeguarding alerts, and direct two-way contact with the team around your child.',
-    audiences: [
-      { title: 'Parents & carers', body: 'See what happened today, what is being worked on, and what comes next — without chasing the school.' },
-      { title: 'Foster carers', body: 'Multi-carer access with role-based permissions so the right adults see the right information at the right time.' },
-      { title: 'Family advocates', body: 'Read-only visibility for grandparents, social workers, and IROs where consent has been given.' },
+    titleA: 'Always free,',
+    titleB: 'for every family.',
+    sub: 'See how your child&rsquo;s day actually went, what the school is working on, and who to talk to — without chasing anyone. Families are never charged. Not now, not later.',
+    differentiator: {
+      eyebrow: 'What no one else can offer',
+      text: 'You see the same record the school sees. Not a summary of it, not a printout sent home on a Friday — <span class="gold">the same record, the same day.</span>',
+    },
+    rolesHeading: {
+      eyebrow: 'Who is this for?',
+      titleA: 'The people who love them',
+      titleB: 'most.',
+      lead: 'Families of children with additional needs spend hours every term asking for information that already exists. This gives it to you directly.',
+    },
+    roles: [
+      { role: 'Parents and carers',
+        pain: 'Your child cannot always tell you how their day went, so you ask the school and wait.',
+        body: 'A daily diary with photos, moments, and small wins — sent every day, not just when something goes wrong. You will know what they ate, how they slept, what made them laugh, and what they are working on next.' },
+      { role: 'Foster carers',
+        pain: 'Several adults care for one child, and information reaches some of them and not others.',
+        body: 'Each adult gets their own secure access with the right permissions — so carers, social workers, and the school are working from the same picture, and nobody is left guessing.' },
+      { role: 'Grandparents and family advocates',
+        pain: 'You help with pick-ups and appointments but are told nothing, because you are not on a form.',
+        body: 'Where you have been given permission, you can see what you need to see and nothing you should not. The family decides who is included.' },
     ],
+    capsHeading: { eyebrow: 'What you get', titleA: 'Simple things,', titleB: 'done properly.' },
     caps: [
-      { icon: 'diary', title: 'A daily diary that tells a story', body: 'Not just a log — photos, audio, milestones, and the small wins, delivered every day.' },
-      { icon: 'target', title: 'Plain-English EHCP', body: 'See exactly which outcomes the school is working on, and what progress looks like — without the jargon.' },
-      { icon: 'message', title: 'Real two-way contact', body: 'Message the right person — class teacher, DSL, therapist — and get a reply, with a full audit trail.' },
+      { icon: 'diary', title: 'A diary that tells a story', body: 'Photos, audio, milestones, and the small wins that never make it onto a report. Written by the people who were there, on the day it happened.' },
+      { icon: 'target', title: 'Their plan, in plain English', body: 'What the school is working on with your child, and what progress actually looks like — explained without the jargon and the acronyms.' },
+      { icon: 'message', title: 'A real reply from a real person', body: 'Message the right adult — class teacher, safeguarding lead, therapist — and get an answer. Every message is logged, so nothing gets lost between people.' },
     ],
+    pricing: { headingA: 'Free.', headingB: 'Always.', price: 'Free', unit: 'always · for every family', note: 'Families are never charged, and never will be. The Parent Portal is included with your school&rsquo;s licence, for unlimited parents, carers, and family members you have given permission to. <strong>There is no upgrade, no premium tier, and nothing behind a paywall.</strong>' },
+    cta: { titleA: 'Ask your school', titleB: 'about SkillGrow.', body: 'If your school already uses DARE, your access is waiting. If not, tell them — or send us their name and we will talk to them for you.' },
   }),
 
   trust: () => productPage({
     eyebrow: 'Trust Portal',
-    pricing: { price: '£12,000+', unit: 'per year · per MAT', note: 'Priced at MAT level across every school in the trust. Multi-school discounts: <strong>15%</strong> (2–5 schools), <strong>25%</strong> (6–10), <strong>35%</strong> (11–20). 20+ by bespoke negotiation.' },
-    titleA: 'Multi-school oversight for',
-    titleB: 'trust leadership.',
-    sub: 'For MATs, local authorities, and federations operating SEND provision at scale — one pane of glass across every school.',
-    audiences: [
-      { title: 'Trust executives', body: 'Cross-site analytics, exception reporting, and operational visibility from a single dashboard.' },
-      { title: 'Trustees & governors', body: 'Board-ready dashboards covering safeguarding, outcomes, finance, and statutory compliance — refreshed live.' },
-      { title: 'LA commissioners', body: 'Real-time visibility of provision and outcomes for every child placed across your commissioned schools.' },
+    titleA: 'One safeguarding picture,',
+    titleB: 'across every school.',
+    sub: 'Live visibility of concerns, patterns, and provision across the whole trust — without waiting for twelve DSLs to compile twelve returns at the end of term.',
+    differentiator: {
+      eyebrow: 'What no one else can offer',
+      text: 'The same safeguarding entry a TA logged this morning is already counted in the trust&rsquo;s picture this morning — <span class="gold">not aggregated into a return three weeks after it stopped mattering.</span>',
+    },
+    rolesHeading: {
+      eyebrow: 'Who is this for?',
+      titleA: 'The people accountable',
+      titleB: 'for schools they are not standing in.',
+      lead: 'Trust leadership carries safeguarding accountability across every site, and usually sees it last and second-hand.',
+    },
+    roles: [
+      { role: 'MAT Chief Executive',
+        pain: 'You are accountable for safeguarding in twelve schools and see it in a termly summary someone else wrote.',
+        body: 'A live cross-site picture with exception reporting — so an emerging pattern in one school surfaces while it is still a pattern, not after it becomes an incident and a headline.' },
+      { role: 'Trust SEND & Safeguarding Lead',
+        pain: 'Every school records things differently, so nothing can honestly be compared.',
+        body: 'One vocabulary and one set of definitions across every site. Genuinely comparable data, drill-down from trust to school to child where your role permits it, and no reconciliation work before you can trust a number.' },
+      { role: 'Trustees and governors',
+        pain: 'You must assure yourselves on safeguarding using a paper pack assembled a fortnight ago.',
+        body: 'Board-ready dashboards covering safeguarding, outcomes, and statutory compliance, refreshed live — so the question at the meeting can be answered in the meeting.' },
     ],
+    capsHeading: { eyebrow: 'Capabilities', titleA: 'Oversight without', titleB: 'another data return.' },
     caps: [
-      { icon: 'pane', title: 'One pane of glass', body: 'Every school, every child, every safeguarding signal — aggregated, anonymised where required, and drill-down on demand.' },
-      { icon: 'lock', title: 'Governance built-in', body: 'Audit trails, role-based access, and statutory reporting bundled into the way trust leaders already work.' },
-      { icon: 'chart', title: 'Comparative outcomes', body: 'Benchmark provision and progress across sites — not to rank, but to learn what is working and replicate it.' },
+      { icon: 'pane', title: 'Every school, one pane of glass', body: 'Concerns, provision, and outcomes aggregated across sites — anonymised where required, with drill-down on demand for those entitled to it.' },
+      { icon: 'lock', title: 'Governance built in', body: 'Role-based access, full audit trails, and statutory reporting shaped around how trust leaders already work — not a separate compliance exercise bolted on.' },
+      { icon: 'chart', title: 'Comparative outcomes', body: 'Benchmark provision and progress across schools — not to rank them, but to find what is working in one place and move it to the others.' },
     ],
+    pricing: { headingA: 'One licence,', headingB: 'whole trust.', price: '£12,000+', unit: 'per year · per MAT', note: 'Priced at MAT level across every school in the trust. Multi-school discounts: <strong>15%</strong> (2–5 schools), <strong>25%</strong> (6–10), <strong>35%</strong> (11–20). 20+ by bespoke negotiation.' },
+    cta: { titleA: 'See your trust', titleB: 'in one view.', body: 'Thirty minutes with your structure, your schools, and the reporting your board actually asks for.' },
   }),
 
   about: () => `
@@ -1389,7 +1609,14 @@ function productCard(slug, eyebrow, title, desc) {
   `;
 }
 
-function productPage({ eyebrow, titleA, titleB, sub, audiences, caps, pricing }) {
+function productPage({
+  eyebrow, titleA, titleB, sub,
+  differentiator,          // the one sentence a competitor cannot repeat
+  urgency,                 // optional statutory-deadline band
+  rolesHeading, roles,     // "Who is this for?" — 2-4 named roles, each with a pain point
+  capsHeading, caps,
+  pricing, cta,
+}) {
   const romans = ['i', 'ii', 'iii'];
   return `
     <section class="hero product-hero">
@@ -1405,18 +1632,45 @@ function productPage({ eyebrow, titleA, titleB, sub, audiences, caps, pricing })
       </div>
     </section>
 
+    ${differentiator ? `
+    <section class="differentiator">
+      <div class="container">
+        <div class="differentiator-inner reveal">
+          <div class="differentiator-eyebrow">${differentiator.eyebrow}</div>
+          <p>${differentiator.text}</p>
+        </div>
+      </div>
+    </section>` : ''}
+
+    ${urgency ? `
+    <section class="section urgency">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">${urgency.eyebrow}</div>
+          <h2 class="section-h2">${urgency.titleA} <span class="gold">${urgency.titleB}</span></h2>
+        </div>
+        <div class="urgency-card reveal">
+          <div class="urgency-date">${urgency.date}</div>
+          <h3>${urgency.heading}</h3>
+          ${urgency.body.map(b => `<p>${b}</p>`).join('')}
+          <p class="urgency-source">${urgency.source}</p>
+        </div>
+      </div>
+    </section>` : ''}
+
     <section class="section">
       <div class="container">
         <div class="reveal">
-          <div class="section-eyebrow">Who it is for</div>
-          <h2 class="section-h2">Designed for <span class="gold">three audiences.</span></h2>
+          <div class="section-eyebrow">${rolesHeading.eyebrow}</div>
+          <h2 class="section-h2">${rolesHeading.titleA} <span class="gold">${rolesHeading.titleB}</span></h2>
+          ${rolesHeading.lead ? `<p class="section-lead">${rolesHeading.lead}</p>` : ''}
         </div>
-        <div class="audience-grid">
-          ${audiences.map((a, i) => `
-            <div class="audience-card reveal">
-              <div class="audience-card-num">${romans[i]}.</div>
-              <div class="audience-card-title">${a.title}</div>
-              <div class="audience-card-body">${a.body}</div>
+        <div class="role-grid">
+          ${roles.map(r => `
+            <div class="role-card reveal">
+              <div class="role-card-role">${r.role}</div>
+              <div class="role-card-pain">${r.pain}</div>
+              <div class="role-card-body">${r.body}</div>
             </div>
           `).join('')}
         </div>
@@ -1426,8 +1680,8 @@ function productPage({ eyebrow, titleA, titleB, sub, audiences, caps, pricing })
     <section class="section capabilities">
       <div class="container">
         <div class="reveal">
-          <div class="section-eyebrow">Capabilities</div>
-          <h2 class="section-h2">Three things it does <span class="gold">very well.</span></h2>
+          <div class="section-eyebrow">${capsHeading.eyebrow}</div>
+          <h2 class="section-h2">${capsHeading.titleA} <span class="gold">${capsHeading.titleB}</span></h2>
         </div>
         <div class="capability-grid">
           ${caps.map((c, i) => `
@@ -1446,7 +1700,7 @@ function productPage({ eyebrow, titleA, titleB, sub, audiences, caps, pricing })
       <div class="container">
         <div class="reveal">
           <div class="section-eyebrow">Pricing</div>
-          <h2 class="section-h2">Transparent, <span class="gold">tiered, no surprises.</span></h2>
+          <h2 class="section-h2">${pricing.headingA} <span class="gold">${pricing.headingB}</span></h2>
         </div>
         <div class="pricing-card reveal">
           <div class="pricing-price">${pricing.price}</div>
@@ -1459,7 +1713,7 @@ function productPage({ eyebrow, titleA, titleB, sub, audiences, caps, pricing })
       </div>
     </section>` : ''}
 
-    ${ctaBand('Want to see it', 'on your data?', 'A 30-minute demo, your real workflows, no slides. Book a time that suits you.')}
+    ${ctaBand(cta.titleA, cta.titleB, cta.body)}
   `;
 }
 
