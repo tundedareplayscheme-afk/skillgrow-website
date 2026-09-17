@@ -974,7 +974,7 @@ main { padding-top: var(--header-h); min-height: 100vh; }
             DARE Mainstream <small>SEND infrastructure for mainstream schools</small>
           </a>
           <a href="/staff-pwa" class="nav-dropdown-item" data-link>
-            Staff PWA <small>Real-time tools for frontline staff</small>
+            Staff PWA <small>A personal workspace for every member of staff</small>
           </a>
           <a href="/parent" class="nav-dropdown-item" data-link>
             Parent Portal <small>Every family in the loop</small>
@@ -1075,7 +1075,7 @@ const pages = {
         <div class="product-grid">
           ${productCard('sen', 'Operating System', 'DARE SEN OS', 'The complete platform for special schools. 29+ integrated apps spanning safeguarding, EHCPs, therapy, medication, behaviour, and outcomes.')}
           ${productCard('mainstream', 'Mainstream', 'DARE Mainstream', 'SEND infrastructure for mainstream schools. SENCO workflows, provision mapping, parent engagement, and statutory compliance.')}
-          ${productCard('staff-pwa', 'Frontline', 'Staff PWA', 'A real-time progressive web app for teaching assistants, learning mentors, and care staff. Works offline. Logs in seconds.')}
+          ${productCard('staff-pwa', 'Every staff member', 'Staff PWA', 'A personal digital workspace for every member of school staff. Clock in and out, log CPD, check your own record and notifications — on any device you already own.')}
           ${productCard('parent', 'Families', 'Parent Portal', 'Every family in the loop. Daily diaries, EHCP visibility, real-time safeguarding alerts, and direct two-way contact.')}
           ${productCard('trust', 'Leadership', 'Trust Portal', 'Multi-school oversight for MATs and local authorities. Cross-site analytics, governance, and a single pane of glass for SEND.')}
         </div>
@@ -1207,38 +1207,39 @@ const pages = {
 
   'staff-pwa': () => productPage({
     eyebrow: 'Staff PWA',
-    titleA: 'Any device, any staff member,',
-    titleB: 'in real time.',
-    sub: 'No licences to count, no laptops to find, no waiting until the end of the day. Every adult who works with a child can log what just happened, from whatever is in their pocket.',
+    titleA: 'A personal workspace for',
+    titleB: 'every member of staff.',
+    sub: 'Clock in and out, track your training, check your own record and notifications — on whatever device is already in your pocket. No app store, no school system login to learn.',
     differentiator: {
       eyebrow: 'What no one else can offer',
-      text: 'It works in the hydrotherapy pool, on the minibus, and in the far corner of the field with no signal at all — and the moment it reconnects, <span class="gold">the DSL already knows.</span>',
+      text: 'Every member of staff gets their own professional space — <span class="gold">not just teaching staff</span> — on any device they already own.',
     },
     rolesHeading: {
       eyebrow: 'Who is this for?',
-      titleA: 'The two people who feel',
-      titleB: 'the gaps first.',
-      lead: 'One is accountable for what gets missed. The other is accountable for what it costs. Both are usually told the same thing: buy more licences.',
+      titleA: 'Everyone on the payroll,',
+      titleB: 'not just everyone in a classroom.',
+      lead: 'Most school software is built for the people who teach. The kitchen, the site team, and the office are handed a paper timesheet and a noticeboard. This is for all of them.',
     },
     roles: [
-      { role: 'Designated Safeguarding Lead',
-        pain: 'The staff most likely to witness something are the least likely to have a device.',
-        body: 'Every TA, midday supervisor, minibus driver, and care assistant can log a concern the moment it happens, from their own phone. Offline entries queue and sync, arriving with the original timestamp — not the time the signal came back.' },
-      { role: 'School Business Manager',
-        pain: 'Per-seat pricing means you ration access to the exact staff who need it most.',
-        body: 'Included with the school licence for every member of staff on your roll, with no per-seat charge and no device procurement. It is a progressive web app — nothing to install, nothing to manage through MDM, no app-store approvals.' },
-      { role: 'Teaching assistants & care staff',
-        pain: 'Logging anything means leaving the child you are with.',
-        body: 'Common entries take three taps and no deep menus. Designed by people who have done the job, for one thumb, mid-corridor, without looking away for long.' },
+      { role: 'Teachers and teaching assistants',
+        pain: 'Your CPD certificates live in your inbox, and the office asks for them once a year.',
+        body: 'One place for your training record, your certificates, and your own profile — kept by you, visible when someone needs to see it, and not reconstructed from memory every September.' },
+      { role: 'Site, kitchen and admin staff',
+        pain: 'You sign a paper sheet by the door, and your hours are somebody else&rsquo;s spreadsheet.',
+        body: 'Clock in and out from your own phone. Lateness and absence recorded the same way for every member of staff, with your own record visible to you — not just to the person keeping the register.' },
+      { role: 'Anyone without a full system login',
+        pain: 'You need your rota, your hours, and your training — not a whole school management system.',
+        body: 'A personal workspace with only what is yours: your record, your notifications, your hours, your CPD. No permissions to request, no modules to navigate past.' },
     ],
-    capsHeading: { eyebrow: 'Capabilities', titleA: 'Built for the places', titleB: 'a laptop never goes.' },
+    capsHeading: { eyebrow: 'What it does', titleA: 'Your working life,', titleB: 'in one place.' },
     caps: [
-      { icon: 'offline', title: 'Offline-first, genuinely', body: 'Logs the moment, syncs when reception returns, and preserves when it actually happened. Playgrounds, pools, minibuses, residential settings, school trips.' },
-      { icon: 'tap', title: 'Three taps, no training day', body: 'Behaviour, learning, care, and concern entries designed for speed under pressure. New staff are productive in a shift, not a term.' },
-      { icon: 'link', title: 'Attached to the record automatically', body: 'Every entry lands on the child&rsquo;s EHCP outcomes, behaviour timeline, and care plan without anyone choosing where to file it.' },
+      { icon: 'clock', title: 'Clock in, clock out', body: 'Start and end your shift from your own device. Lateness and absence recorded consistently for every member of staff, and visible to you as well as to the office.' },
+      { icon: 'badge', title: 'Training and CPD, kept by you', body: 'Your courses, certificates, and professional development in one log that stays current — so renewal dates are something you can see coming rather than something you are chased about.' },
+      { icon: 'bell', title: 'Your record, your notifications', body: 'Your own profile and school record, and notifications that are actually about you. Nothing school-wide, nothing about other people&rsquo;s work.' },
+      { icon: 'devices', title: 'Any device, no app store', body: 'Installs as a progressive web app straight from the browser — phone, tablet, or personal laptop. Nothing to approve through an app store, nothing to manage through MDM.' },
     ],
-    pricing: { headingA: 'No per-seat charge.', headingB: 'Ever.', price: 'Included', unit: 'with every school licence', note: 'The Staff PWA is not licensed separately. It ships with DARE SEN OS and DARE Mainstream for <strong>every member of staff on your roll</strong>, at no additional cost — because a safeguarding tool that some staff cannot reach is not a safeguarding tool.' },
-    cta: { titleA: 'See it work', titleB: 'with the signal off.', body: 'Thirty minutes. Bring your worst notspot — the swimming pool, the minibus, the back field.' },
+    pricing: { headingA: 'No per-seat charge.', headingB: 'Ever.', price: 'Included', unit: 'with every school licence', note: 'The Staff PWA is not licensed separately. It ships with DARE SEN OS and DARE Mainstream for <strong>every member of staff on your roll</strong>, at no additional cost — because a workspace that only some of your staff can reach is not much of a workspace.' },
+    cta: { titleA: 'See it on', titleB: 'your own phone.', body: 'Thirty minutes. Bring a phone, a tablet, and someone from the kitchen or the site team.' },
   }),
 
   parent: () => productPage({
@@ -1619,6 +1620,10 @@ const ICONS = {
   pane:     '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M11 10v10"/>',
   lock:     '<rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/><path d="M12 14v2"/>',
   chart:    '<path d="M4 20V4"/><path d="M4 20h16"/><rect x="8" y="12" width="3" height="8"/><rect x="14" y="7" width="3" height="13"/>',
+  clock:    '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  badge:    '<circle cx="12" cy="9" r="5"/><path d="M8.5 13.2L7 21l5-2.5L17 21l-1.5-7.8"/>',
+  bell:     '<path d="M18 9a6 6 0 10-12 0c0 5-2 6-2 6h16s-2-1-2-6"/><path d="M13.7 20a2 2 0 01-3.4 0"/>',
+  devices:  '<rect x="2" y="5" width="13" height="10" rx="1.5"/><path d="M6 19h6"/><rect x="17" y="9" width="5" height="11" rx="1.5"/>',
 };
 function icon(name) {
   return ICONS[name] ? `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]}</svg>` : '';
