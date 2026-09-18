@@ -5,7 +5,7 @@
  * this, every shared link would preview as the homepage, whichever page was
  * shared, and every page would carry the same meta description.
  *
- * vercel.json rewrites the twelve non-home routes here. '/' is NOT routed here:
+ * vercel.json rewrites the thirteen non-home routes here. '/' is NOT routed here:
  * static files win over rewrites on Vercel, so the root is served straight
  * from index.html, whose META block already holds the homepage's tags. Keep
  * the 'home' entry below in step with that block.
@@ -120,6 +120,13 @@ const META = {
     description: 'The terms on which SkillGrow Technologies Ltd provides its SEND platform: subscriptions, acceptable use, data ownership, liability and termination.',
     ogTitle: 'Terms of Service — SkillGrow',
     ogDescription: 'Subscription and payment, acceptable use, who owns what, liability and termination. Schools own their data; governed by the law of England and Wales.',
+  },
+  dpa: {
+    path: '/dpa',
+    title: 'Data Processing Agreement — SkillGrow',
+    description: 'How SkillGrow processes school data as a data processor: sub-processors, data subject rights, breach notification and deletion within 30 days of contract end.',
+    ogTitle: 'Data Processing Agreement — SkillGrow',
+    ogDescription: 'The school is the controller, SkillGrow the processor. Sub-processors, data subject rights, breach notification and retention, in plain English.',
   },
 };
 

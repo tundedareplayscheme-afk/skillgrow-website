@@ -1199,6 +1199,7 @@ fieldset.field legend { padding: 0; }
         <a href="/privacy" data-link>Privacy Policy</a>
         <a href="/security" data-link>Security</a>
         <a href="/terms" data-link>Terms of Service</a>
+        <a href="/dpa" data-link>Data Processing Agreement</a>
         <a href="/contact" data-link>Contact</a>
       </div>
     </div>
@@ -2025,6 +2026,68 @@ const pages = {
     </section>
   `,
 
+  /* NOTE FOR SKILLGROW: this is a SUMMARY of the data processing agreement,
+     not the agreement itself — the full DPA is sent on request. Keep the
+     sub-processor list here in step with the privacy and security pages and
+     with the signed DPA: adding a sub-processor without updating all of them
+     makes this page untrue. Not reviewed by a solicitor. */
+  dpa: () => `
+    <section class="hero product-hero">
+      <div class="container">
+        <div class="reveal">
+          <span class="hero-eyebrow">Legal</span>
+          <h1 class="hero-h1">Data processing <span class="gold">agreement.</span></h1>
+          <p class="hero-sub">A summary of how SkillGrow processes personal data on behalf of schools. Last updated: September 2026.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="legal reveal">
+          <div class="legal-note">
+            <p><strong>This is a summary.</strong> Every customer signs a data processing agreement with us. This page sets out its main terms in plain English.</p>
+            <p style="margin-bottom:0"><strong>Full DPA available on request</strong> — email <a href="mailto:hello@skillgrow.co.uk">hello@skillgrow.co.uk</a>.</p>
+          </div>
+
+          <h2>Who does what</h2>
+          <ul>
+            <li><strong>Data controller: the school.</strong> Your school, trust or local authority decides what personal data is held about pupils, families and staff, and why. You remain responsible for having a lawful basis for it.</li>
+            <li><strong>Data processor: SkillGrow Technologies Ltd.</strong> We process that data only to provide the platform, only on your documented instructions, and never for our own purposes. We do not sell it.</li>
+          </ul>
+          <p>Everyone at SkillGrow who can access customer data is bound by confidentiality, and access is limited to what their role requires.</p>
+
+          <h2>Sub-processors</h2>
+          <p>We use the following sub-processors to deliver the platform. Each is bound by a written contract that gives your data the same protection we do.</p>
+          <ul>
+            <li><strong>AWS (eu-west-2, London)</strong> — hosting and storage</li>
+            <li><strong>Supabase</strong> — database</li>
+            <li><strong>Vercel</strong> — application delivery</li>
+            <li><strong>Brevo</strong> — transactional email</li>
+            <li><strong>Anthropic API</strong> — AI features (no pupil identifiers sent)</li>
+            <li><strong>Plausible</strong> — analytics (no personal data)</li>
+          </ul>
+          <p>We will tell you before we add or replace a sub-processor, so that you have the chance to object.</p>
+
+          <h2>Data subject rights</h2>
+          <p>Pupils, parents and staff have rights under UK GDPR to access, correct, erase, restrict and port their data, and to object to how it is used. Because the school is the controller, these requests go to the school. If one reaches us, we pass it to you without delay and do not respond to it ourselves. We help you meet every request, including by providing the tools to find, export, correct and delete the data concerned.</p>
+
+          <h2>Breach notification</h2>
+          <p>If we become aware of a personal data breach affecting your data, we notify you without undue delay, with what we know about its nature, the data and people affected, and the steps we are taking. That lets you report it to the Information Commissioner&rsquo;s Office within the <strong>72 hours</strong> UK GDPR requires, and we support you in doing so.</p>
+
+          <h2>Security</h2>
+          <p>Data is encrypted at rest and in transit, access is controlled by role and enforced by row-level security at database level, and backups run daily. More detail is on our <a href="/security" data-link>security page</a>.</p>
+
+          <h2>Retention and deletion</h2>
+          <p>While your contract runs, we keep your data for as long as you instruct us to. When it ends, you can export your data, and <strong>we delete it within 30 days of contract end</strong>, unless the law requires us to keep it.</p>
+
+          <h2>Contact</h2>
+          <p>Data protection questions, or to request the full DPA: <a href="mailto:hello@skillgrow.co.uk">hello@skillgrow.co.uk</a>. Our ICO registration number is <a href="https://ico.org.uk/ESDWebPages/Entry/ZC142603" target="_blank" rel="noopener">ZC142603</a>.</p>
+        </div>
+      </div>
+    </section>
+  `,
+
   notfound: () => `
     <section class="hero product-hero">
       <div class="container">
@@ -2216,6 +2279,7 @@ const routes = {
   'pricing': 'pricing',
   'faq': 'faq',
   'terms': 'terms',
+  'dpa': 'dpa',
 };
 
 const titles = {
@@ -2232,6 +2296,7 @@ const titles = {
   pricing: 'Pricing — SkillGrow',
   faq: 'FAQ — SkillGrow',
   terms: 'Terms of Service — SkillGrow',
+  dpa: 'Data Processing Agreement — SkillGrow',
   notfound: 'Page not found — SkillGrow',
 };
 
