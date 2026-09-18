@@ -5,7 +5,7 @@
  * this, every shared link would preview as the homepage, whichever page was
  * shared, and every page would carry the same meta description.
  *
- * vercel.json rewrites the eleven non-home routes here. '/' is NOT routed here:
+ * vercel.json rewrites the twelve non-home routes here. '/' is NOT routed here:
  * static files win over rewrites on Vercel, so the root is served straight
  * from index.html, whose META block already holds the homepage's tags. Keep
  * the 'home' entry below in step with that block.
@@ -113,6 +113,13 @@ const META = {
     description: 'Answers on SkillGrow pricing and contracts, UK data storage and security, getting started with DARE, and what each product in the DARE platform actually does.',
     ogTitle: 'SkillGrow FAQ — pricing, data, setup and the platform',
     ogDescription: 'Where your data lives, how pricing works, what setup involves, and what DARE SEN OS, DARE Mainstream and the portals do.',
+  },
+  terms: {
+    path: '/terms',
+    title: 'Terms of Service — SkillGrow',
+    description: 'The terms on which SkillGrow Technologies Ltd provides its SEND platform: subscriptions, acceptable use, data ownership, liability and termination.',
+    ogTitle: 'Terms of Service — SkillGrow',
+    ogDescription: 'Subscription and payment, acceptable use, who owns what, liability and termination. Schools own their data; governed by the law of England and Wales.',
   },
 };
 
