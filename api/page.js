@@ -5,7 +5,7 @@
  * this, every shared link would preview as the homepage, whichever page was
  * shared, and every page would carry the same meta description.
  *
- * vercel.json rewrites the fifteen non-home routes here. '/' is NOT routed here:
+ * vercel.json rewrites the seventeen non-home routes here. '/' is NOT routed here:
  * static files win over rewrites on Vercel, so the root is served straight
  * from index.html, whose META block already holds the homepage's tags. Keep
  * the 'home' entry below in step with that block.
@@ -141,6 +141,20 @@ const META = {
     description: 'Accessibility statement for www.skillgrow.co.uk: we aim to meet WCAG 2.2 Level AA. Known issues, and how to tell us about a problem with the site.',
     ogTitle: 'Accessibility Statement — SkillGrow',
     ogDescription: 'We aim to meet WCAG 2.2 Level AA. What we know is not yet right, and how to tell us if something on the site does not work for you.',
+  },
+  integrations: {
+    path: '/integrations',
+    title: 'Integrations — SkillGrow',
+    description: 'How SkillGrow connects to your school: SIMS, Arbor, Bromcom and iSAMS via Wonde, Microsoft 365 sign-in, safeguarding data migration, and UK hosting on AWS.',
+    ogTitle: 'SkillGrow integrations — works with what your school uses',
+    ogDescription: 'MIS import via Wonde, Microsoft 365 sign-in, CPOMS and My Concern records migrated by our team, UK hosting. Don’t see yours? We build on request.',
+  },
+  implementation: {
+    path: '/implementation',
+    title: 'Implementation — SkillGrow',
+    description: 'Getting started with SkillGrow: live in two weeks, staff training and support, data migration from your MIS and safeguarding system, and our SLA targets.',
+    ogTitle: 'Up and running in days, not months',
+    ogDescription: 'Sign-up to live in two weeks. Live staff training, role-specific guides, data migration, a 99.9% uptime target and a 1-hour response to P1 issues.',
   },
 };
 
