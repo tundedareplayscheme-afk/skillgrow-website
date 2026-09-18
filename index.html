@@ -1200,6 +1200,7 @@ fieldset.field legend { padding: 0; }
         <a href="/security" data-link>Security</a>
         <a href="/terms" data-link>Terms of Service</a>
         <a href="/dpa" data-link>Data Processing Agreement</a>
+        <a href="/accessibility" data-link>Accessibility</a>
         <a href="/contact" data-link>Contact</a>
       </div>
     </div>
@@ -2088,6 +2089,46 @@ const pages = {
     </section>
   `,
 
+  /* NOTE FOR SKILLGROW: update "Known issues" and the review date whenever
+     the site is re-tested. A statement that lists fixed problems, or misses
+     new ones, is worse than none. */
+  accessibility: () => `
+    <section class="hero product-hero">
+      <div class="container">
+        <div class="reveal">
+          <span class="hero-eyebrow">Legal</span>
+          <h1 class="hero-h1">Accessibility <span class="gold">statement.</span></h1>
+          <p class="hero-sub">How accessible this website is, what we know is not yet right, and how to tell us. Last reviewed: September 2026.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="legal reveal">
+          <h2>Our commitment</h2>
+          <p>SkillGrow Technologies Ltd is committed to making its website accessible. We build software for children and young people with special educational needs and disabilities, and for the adults around them; our own website should work for everyone who uses it.</p>
+          <p>This statement covers <strong>www.skillgrow.co.uk</strong>.</p>
+
+          <h2>The standard we aim for</h2>
+          <p>We aim to meet the <a href="https://www.w3.org/TR/WCAG22/" target="_blank" rel="noopener">Web Content Accessibility Guidelines (WCAG) 2.2</a> at <strong>Level AA</strong>.</p>
+
+          <h2>Known issues</h2>
+          <ul>
+            <li><strong>Colour contrast:</strong> colour contrast on some dark/gold combinations is under review. Some gold text on dark navy backgrounds may not meet the WCAG 2.2 AA contrast ratio.</li>
+          </ul>
+          <p>If you find a problem that is not listed here, please tell us.</p>
+
+          <h2>Feedback</h2>
+          <p>If you have difficulty using any part of this site, or need information in a different format, email <a href="mailto:hello@skillgrow.co.uk">hello@skillgrow.co.uk</a>. Tell us the page and what went wrong, and we will get back to you.</p>
+
+          <h2>Last reviewed</h2>
+          <p>This statement was last reviewed in September 2026.</p>
+        </div>
+      </div>
+    </section>
+  `,
+
   notfound: () => `
     <section class="hero product-hero">
       <div class="container">
@@ -2280,6 +2321,7 @@ const routes = {
   'faq': 'faq',
   'terms': 'terms',
   'dpa': 'dpa',
+  'accessibility': 'accessibility',
 };
 
 const titles = {
@@ -2297,6 +2339,7 @@ const titles = {
   faq: 'FAQ — SkillGrow',
   terms: 'Terms of Service — SkillGrow',
   dpa: 'Data Processing Agreement — SkillGrow',
+  accessibility: 'Accessibility Statement — SkillGrow',
   notfound: 'Page not found — SkillGrow',
 };
 
