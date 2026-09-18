@@ -5,7 +5,7 @@
     }
   },
   "rewrites": [
-    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|contact|privacy|security|pricing|faq|terms|dpa)", "destination": "/api/page?page=:page" },
-    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|contact|privacy|security|pricing|faq|terms|dpa)/", "destination": "/api/page?page=:page" }
+    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|contact|privacy|security|pricing|faq|terms|dpa|accessibility)", "destination": "/api/page?page=:page" },
+    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|contact|privacy|security|pricing|faq|terms|dpa|accessibility)/", "destination": "/api/page?page=:page" }
   ]
 }
