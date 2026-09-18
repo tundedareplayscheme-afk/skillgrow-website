@@ -573,6 +573,43 @@ main { padding-top: var(--header-h); min-height: 100vh; }
   .onboard-what { font-size: 20px; }
 }
 
+/* ── BLOG ─────────────────────────────────── */
+.post-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+.post-card {
+  display: flex; flex-direction: column;
+  background: white; border: 1px solid rgba(15,45,82,0.08); border-radius: 20px;
+  padding: 28px 26px; box-shadow: 0 16px 48px rgba(15,45,82,0.05);
+  text-decoration: none; transition: transform .2s ease, box-shadow .2s ease;
+}
+.post-card:hover { transform: translateY(-3px); box-shadow: 0 20px 56px rgba(15,45,82,0.10); }
+.post-meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.post-tag {
+  display: inline-block; padding: 4px 12px; border-radius: 999px;
+  font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
+  background: rgba(245,158,11,0.14); color: var(--navy);
+}
+.post-date { font-size: 13px; color: var(--slate-500); }
+.hero .post-date { color: rgba(255,255,255,0.75); }
+.hero .post-tag { background: rgba(252,211,77,0.18); color: var(--gold); }
+.post-card-title { font-family: var(--serif); font-size: 26px; font-weight: 600; line-height: 1.2; color: var(--navy); margin-bottom: 12px; letter-spacing: -0.3px; }
+.post-card-summary { font-size: 15px; line-height: 1.65; color: var(--slate-500); margin-bottom: 20px; }
+.post-card-cta { margin-top: auto; font-size: 14px; font-weight: 700; color: var(--navy); }
+.post-card:hover .post-card-cta { color: var(--gold-deep); }
+.post-back { display: inline-block; margin-bottom: 22px; font-size: 14px; font-weight: 600; color: var(--gold); text-decoration: none; }
+.post-back:hover { text-decoration: underline; }
+.legal .post-back-foot { display: inline-block; margin-top: 32px; color: var(--navy); }
+.hero-h1.post-h1 { font-size: clamp(32px, 4.4vw, 54px); max-width: 900px; }
+.post-byline { margin-top: 18px; font-size: 15px; color: rgba(255,255,255,0.8); }
+.post-body h2 { font-size: 30px; }
+.post-body li strong, .post-body p strong { color: var(--navy); }
+.post-sources { margin-top: 44px; border-top: 1px solid rgba(15,45,82,0.1); }
+.post-sources h2 { font-size: 22px; margin-top: 28px; }
+.post-sources li { font-size: 14px; }
+.post-cta { margin-top: 40px; padding: 32px; border-radius: 20px; text-align: center; background: var(--navy); }
+.legal .post-cta p { color: white; font-family: var(--serif); font-size: 24px; line-height: 1.3; margin-bottom: 20px; }
+.legal .post-cta a.btn { color: var(--navy); text-decoration: none; }
+.post-related { background: white; }
+
 /* ── CTA BAND ─────────────────────────────── */
 .cta-band {
   background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
@@ -1373,6 +1410,7 @@ fieldset.field legend { padding: 0; }
         </div>
       </div>
       <a href="/pricing" class="nav-link" data-link>Pricing</a>
+      <a href="/blog" class="nav-link" data-link>Blog</a>
       <a href="/about" class="nav-link" data-link>About</a>
       <a href="/contact" class="nav-link" data-link>Contact</a>
       <a href="https://hq.skillgrow.co.uk" class="nav-link nav-login">Log in</a>
@@ -1404,6 +1442,7 @@ fieldset.field legend { padding: 0; }
         <a href="/team" data-link>Team</a>
         <a href="/pricing" data-link>Pricing</a>
         <a href="/faq" data-link>FAQ</a>
+        <a href="/blog" data-link>Blog</a>
         <a href="/implementation" data-link>Implementation</a>
         <a href="/integrations" data-link>Integrations</a>
         <a href="/contact" data-link>Contact</a>
@@ -3094,6 +3133,24 @@ const pages = {
     </section>
   `,
 
+  blog: () => `
+    <section class="hero product-hero">
+      <div class="container">
+        <div class="reveal">
+          <span class="hero-eyebrow">Insights</span>
+          <h1 class="hero-h1">SEND <span class="gold">Insights</span></h1>
+          <p class="hero-sub">Practical guidance for school leaders, SENCOs, and trust leads navigating the SEND landscape.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="post-grid">${ARTICLES.map(postCard).join('')}</div>
+      </div>
+    </section>
+  `,
+
   notfound: () => `
     <section class="hero product-hero">
       <div class="container">
@@ -3113,6 +3170,189 @@ const pages = {
     </section>
   `,
 };
+
+/* ─── Blog ─────────────────────────────────── */
+/* NOTE FOR SKILLGROW: every figure in these articles is from a named, linked
+   source — keep it that way. The SEND reform detail is from the Schools White
+   Paper and the SEND reform consultation (Feb 2026) and is subject to
+   legislation; revisit Article 1 when the Bill and the consultation response
+   are published. Adding an article = one entry here, plus api/page.js META,
+   the vercel.json /blog/:slug pattern and sitemap.xml. */
+const BLOG_AUTHOR = 'Tunde Alabi, Founder &amp; CEO';
+
+const ARTICLES = [
+  {
+    slug: 'isps-what-every-senco-needs-to-know',
+    title: 'ISPs are coming: what every SENCO needs to know before September 2029',
+    category: 'Policy',
+    date: 'September 2026',
+    summary: 'Individual Support Plans are set to become a legal duty for every child receiving Targeted or Specialist support, with the new law expected from September 2029. Here&rsquo;s what that means for your school and how to prepare now.',
+    body: `
+      <p>In February 2026 the Department for Education published its Schools White Paper, <em>Every child achieving and thriving</em>, alongside a consultation, <em>SEND reform: putting children and young people first</em>. Together they set out the biggest change to SEND support in schools since the 2014 reforms. At the centre of it for most SENCOs is a new document: the Individual Support Plan, or ISP.</p>
+
+      <h2>What is changing</h2>
+      <p>Support for children with SEND is to be organised in layers. Beneath a strengthened Universal offer for every child sit two further layers: <strong>Targeted</strong> (including Targeted Plus), delivering structured, evidence-based interventions in mainstream schools, and <strong>Specialist</strong>, built on new nationally defined Specialist Provision Packages for children with the most complex needs.</p>
+      <p>The government proposes a duty on settings to produce a digital ISP for any child or young person receiving Targeted or Specialist support. EHCPs remain, but only for children who need a Specialist Provision Package, and those children will have an ISP as well, describing their day-to-day provision.</p>
+
+      <h2>What an ISP will contain</h2>
+      <p>According to the consultation, the ISP will set out the child&rsquo;s identified barriers to learning, their provision, any reasonable adjustments and intended outcomes. It must be developed with parents, reviewed at least annually, and its use and quality will be assessed through Ofsted inspection. The reforms are explicit that support should not wait for a formal diagnosis.</p>
+
+      <h2>When it happens</h2>
+      <p>The consultation is clear that new legislation is not expected to come into effect until <strong>September 2029</strong>, and that until then the current system, with its existing duties, rights and funding routes, remains in place. The first children to move are those at the end of primary, secondary and post-16 in 2029/30: they will be assessed from September 2029 and move to the new system in September 2030. A child due to move from an EHCP to an ISP keeps their EHCP until the end of that academic year.</p>
+      <p>All of this is subject to the consultation response and to Parliament. Details may change. The direction of travel is not likely to.</p>
+
+      <h2>How to prepare now</h2>
+      <ul>
+        <li><strong>Get the graduated approach evidence in order.</strong> An ISP describes provision that is working. The assess, plan, do, review cycles behind it are what make it credible, and they take years to build up, not weeks.</li>
+        <li><strong>Know what you provide.</strong> The reforms also propose a duty on schools to publish an Inclusion Strategy setting out their Universal, Targeted and Targeted Plus offer. A current provision map is the obvious starting point.</li>
+        <li><strong>Make parent involvement routine.</strong> ISPs must be developed with parents. Schools that already review support with families will find the change far smaller.</li>
+        <li><strong>Look hard at your systems.</strong> ISPs are to be digital by design. If your SEN records live in documents, spreadsheets and inboxes, now is the time to change that, not 2029.</li>
+        <li><strong>Watch for the detail.</strong> The National Inclusion Standards are due by 2028, alongside an updated SEND Code of Practice. Both will shape what a good ISP looks like.</li>
+      </ul>
+      <p>September 2029 sounds a long way off. But the evidence your ISPs will rest on is being created, or not, in classrooms this term.</p>
+    `,
+    sources: [
+      ['Schools White Paper: Every child achieving and thriving (DfE, February 2026)', 'https://www.gov.uk/government/publications/every-child-achieving-and-thriving'],
+      ['SEND reform: putting children and young people first (DfE consultation)', 'https://www.gov.uk/government/consultations/send-reform-putting-children-and-young-people-first'],
+    ],
+  },
+  {
+    slug: 'graduated-approach-practical-guide',
+    title: 'The graduated approach: from first concern to EHCP — a practical guide',
+    category: 'Practice',
+    date: 'September 2026',
+    summary: 'The graduated approach is the backbone of SEND support in every school. This guide walks through each stage, what evidence you need, and where most schools get it wrong.',
+    body: `
+      <p>The SEND Code of Practice (2015) describes SEN support in schools as a <strong>graduated approach</strong>: a four-part cycle of assess, plan, do and review, repeated and refined as the school learns more about what helps a child. It is the everyday mechanism of SEND support, and the evidence it produces is what every later decision, including an EHC needs assessment, rests on.</p>
+
+      <h2>Before the cycle: the first concern</h2>
+      <p>Most needs first show up in the classroom. High-quality, adaptive teaching comes first. When a child is still not making the expected progress, the teacher raises it with the SENCO and the family. If the school decides the child has SEN and starts making special educational provision, it must tell the parents.</p>
+
+      <h2>Assess</h2>
+      <p>Bring together what you know: the teacher&rsquo;s observations, attainment and progress data, the child&rsquo;s own views, the parents&rsquo; experience at home, and advice from specialists where it is needed. The aim is a clear picture of the barriers to learning, not a label.</p>
+
+      <h2>Plan</h2>
+      <p>Agree, with the parents, the outcomes you are working towards, the support and interventions you will put in place, the expected impact, and a date to review. Everyone who works with the child should know the plan.</p>
+
+      <h2>Do</h2>
+      <p>The class or subject teacher remains responsible for working with the child every day, including where interventions happen away from the main class. The SENCO supports, advises and helps solve problems.</p>
+
+      <h2>Review</h2>
+      <p>On the agreed date, look at what actually changed: did the support have the impact you expected? Involve the child and parents, then feed what you learned into the next cycle. Adjust, step up or step down.</p>
+
+      <h2>From SEN support to an EHC needs assessment</h2>
+      <p>Where a school has taken relevant and purposeful action to identify, assess and meet a child&rsquo;s needs and the child has still not made expected progress, the school or the parents should consider requesting an EHC needs assessment. The local authority must decide within six weeks whether to assess, and the whole process to a final plan should take no more than 20 weeks.</p>
+      <p>The strongest requests show the cycles themselves: what was tried, for how long, how often, what it cost, what specialists advised, and what happened.</p>
+
+      <h2>Where schools get it wrong</h2>
+      <ul>
+        <li><strong>Outcomes too vague to review.</strong> &ldquo;Improve reading&rdquo; cannot be reviewed. &ldquo;Read a Year 3 text aloud with 90% accuracy by February&rdquo; can.</li>
+        <li><strong>Reviews that restate the plan.</strong> A review should record impact, not just repeat what was intended.</li>
+        <li><strong>Evidence scattered everywhere.</strong> Notes in emails, spreadsheets and exercise books are hard to pull together when a request or tribunal needs them.</li>
+        <li><strong>Parents informed, not involved.</strong> The Code expects parents to be part of each stage, not told the outcome.</li>
+        <li><strong>Waiting for a diagnosis.</strong> SEN support is based on need. A child does not need a diagnosis to receive it.</li>
+      </ul>
+      <p>The reforms proposed in 2026 build on this same cycle. Schools that run it well now will find the move to Individual Support Plans a small step, not a leap.</p>
+    `,
+    sources: [
+      ['SEND Code of Practice: 0 to 25 years (DfE and DHSC, 2015)', 'https://www.gov.uk/government/publications/send-code-of-practice-0-to-25'],
+      ['SEND reform: putting children and young people first (DfE consultation)', 'https://www.gov.uk/government/consultations/send-reform-putting-children-and-young-people-first'],
+    ],
+  },
+  {
+    slug: 'senco-admin-burden',
+    title: 'Why your SENCO is spending most of their time on admin — and how to fix it',
+    category: 'Leadership',
+    date: 'September 2026',
+    summary: 'Nearly three in four SENCOs say administration takes up most of their SENCO time. It&rsquo;s a problem hiding in plain sight — and much of it is fixable.',
+    body: `
+      <p>Ask a SENCO what they would do with an extra day a week and the answers are almost always the same: time with teachers, time with children, time with families. Ask them where their time actually goes and the answer is usually paperwork.</p>
+
+      <h2>What the evidence says</h2>
+      <p>The most detailed picture comes from national surveys of SENCOs run by Bath Spa University and nasen. In the 2020 National SENCO Workload Survey, which heard from 1,601 SENCOs in post, <strong>74% said administration tasks took up the majority of their allocated SENCO time</strong>, up from 71% in the 2018 survey. EHC needs assessment requests and local authority paperwork were singled out as particularly time-consuming.</p>
+      <p>The same survey found that of the 267 SENCOs given extra time that year, 169 said they were mainly spending it on administration: annual review paperwork, phone calls and referrals. 96% said SENCOs should have legally protected time.</p>
+      <p>The companion National SENCO Workforce Survey 2020 found that around 85% of SENCOs were without dedicated administrative support.</p>
+      <p>These surveys pre-date the 2026 reforms, but the government has reached the same conclusion. The Schools White Paper says it expects the role to become &ldquo;more strategic and less administrative&rdquo;, with digital processes reducing routine administration.</p>
+
+      <h2>Where the time goes</h2>
+      <ul>
+        <li><strong>Typing the same information again.</strong> Pupil details, needs and provision are copied from the MIS into plans, into provision maps, into LA forms and into review reports.</li>
+        <li><strong>Chasing evidence.</strong> An annual review or assessment request means gathering notes from teachers, TAs and therapists, often by email.</li>
+        <li><strong>Meetings and their follow-up.</strong> Planning them, attending them and then acting on the actions.</li>
+        <li><strong>Writing from scratch.</strong> Reports built by hand from records that already exist somewhere else.</li>
+      </ul>
+
+      <h2>How to fix it</h2>
+      <ul>
+        <li><strong>Measure it first.</strong> Ask your SENCO to log two typical weeks. Leaders are often surprised by how little of the time is strategic.</li>
+        <li><strong>Give them administrative support.</strong> Around 85% of SENCOs in the 2020 survey had none, and it is one of the cheapest gaps to close.</li>
+        <li><strong>Capture evidence once, at the source.</strong> When teachers and support staff record observations and interventions as they happen, the SENCO stops being the person who collects them.</li>
+        <li><strong>Keep one record per child.</strong> Every place the same fact is stored is another place it has to be updated.</li>
+        <li><strong>Generate, don&rsquo;t write.</strong> Review paperwork and assessment requests should be assembled from the record, not rewritten from memory.</li>
+        <li><strong>Protect strategic time.</strong> Put it on the timetable, and defend it like teaching time.</li>
+      </ul>
+      <p>A SENCO&rsquo;s value is their expertise: knowing the children, coaching the teachers, working with the families. Every hour spent re-typing is an hour of that expertise the school is not getting.</p>
+    `,
+    sources: [
+      ['The time is now: National SENCO Workload Survey (Bath Spa University and nasen, 2020)', 'https://www.bathspa.ac.uk/media/bathspaacuk/education-/research/senco-workload/National-SENCO-Workload-Survey-Report-Jan-2020.pdf'],
+      ['National SENCO Workforce Survey 2020: Time to review 2018–2020 (nasen and Bath Spa University)', 'https://www.bathspa.ac.uk/media/bathspaacuk/projects/National-SENCO-Workforce-Survey--Full-Report--24.06.21.pdf'],
+      ['Schools White Paper: Every child achieving and thriving (DfE, February 2026)', 'https://www.gov.uk/government/publications/every-child-achieving-and-thriving'],
+    ],
+  },
+];
+
+function postCard(a) {
+  return `
+    <a href="/blog/${a.slug}" class="post-card reveal" data-link>
+      <div class="post-meta"><span class="post-tag">${a.category}</span><span class="post-date">${a.date}</span></div>
+      <h2 class="post-card-title">${a.title}</h2>
+      <p class="post-card-summary">${a.summary}</p>
+      <span class="post-card-cta">Read more <span aria-hidden="true">→</span></span>
+    </a>
+  `;
+}
+
+function articlePage(a) {
+  const related = ARTICLES.filter(r => r.slug !== a.slug);
+  return `
+    <section class="hero product-hero">
+      <div class="container">
+        <div class="reveal">
+          <a href="/blog" class="post-back" data-link>← Back to insights</a>
+          <div class="post-meta"><span class="post-tag">${a.category}</span><span class="post-date">${a.date}</span></div>
+          <h1 class="hero-h1 post-h1">${a.title}</h1>
+          <p class="post-byline">By ${BLOG_AUTHOR}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <article class="legal post-body reveal">
+          ${a.body}
+          <div class="post-sources">
+            <h2>Sources</h2>
+            <ul>${a.sources.map(([label, url]) => `<li><a href="${url}" target="_blank" rel="noopener">${label}</a></li>`).join('')}</ul>
+          </div>
+          <div class="post-cta">
+            <p>Want to see how SkillGrow handles this in practice?</p>
+            <a href="https://hq.skillgrow.co.uk/book/tunde" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a demo →</a>
+          </div>
+          <a href="/blog" class="post-back post-back-foot" data-link>← Back to insights</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section post-related">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">Related articles</div>
+        </div>
+        <div class="post-grid">${related.map(postCard).join('')}</div>
+      </div>
+    </section>
+  `;
+}
 
 /* ─── Helpers ─────────────────────────────── */
 /* ─── Capability icons ─────────────────────── */
@@ -3307,6 +3547,7 @@ const routes = {
   'accessibility': 'accessibility',
   'integrations': 'integrations',
   'implementation': 'implementation',
+  'blog': 'blog',
 };
 
 const titles = {
@@ -3328,8 +3569,17 @@ const titles = {
   accessibility: 'Accessibility Statement — SkillGrow',
   integrations: 'Integrations — SkillGrow',
   implementation: 'Implementation — SkillGrow',
+  blog: 'SEND Insights — SkillGrow',
   notfound: 'Page not found — SkillGrow',
 };
+
+/* Each article is a route of its own: /blog/<slug>. */
+ARTICLES.forEach(a => {
+  const key = 'blog/' + a.slug;
+  routes[key] = key;
+  titles[key] = a.title + ' — SkillGrow';
+  pages[key] = () => articlePage(a);
+});
 
 const app = document.getElementById('app');
 let observer;
@@ -3360,7 +3610,9 @@ function render() {
 
   const canonical = '/' + (key === 'home' ? '' : key);
   document.querySelectorAll('.nav-link, .nav-dropdown-item').forEach(el => {
-    el.classList.toggle('active', el.getAttribute('href') === canonical);
+    const href = el.getAttribute('href');
+    /* An article keeps its section (/blog) highlighted. */
+    el.classList.toggle('active', href === canonical || (href !== '/' && canonical.startsWith(href + '/')));
   });
 
   window.scrollTo({ top: 0, behavior: 'instant' });
