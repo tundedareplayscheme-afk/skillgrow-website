@@ -973,6 +973,49 @@ fieldset.field legend { padding: 0; }
 .form-error a { color: #991B1B; font-weight: 600; text-decoration: underline; }
 .btn[aria-busy="true"] { opacity: .65; pointer-events: none; }
 
+/* ── TEAM PAGE ────────────────────────────── */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.team-card {
+  background: var(--navy);
+  color: white;
+  border-radius: 20px;
+  padding: 32px 30px;
+  box-shadow: 0 16px 48px rgba(15,45,82,0.12);
+}
+.team-head { display: flex; align-items: center; gap: 18px; margin-bottom: 20px; }
+.team-avatar {
+  flex: 0 0 72px; width: 72px; height: 72px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--navy-mid);
+  border: 2px solid var(--gold);
+  color: var(--gold);
+  font-family: var(--serif); font-size: 28px; font-weight: 600;
+  overflow: hidden;
+}
+.team-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.team-name {
+  font-family: var(--serif);
+  font-size: 28px; font-weight: 600;
+  color: var(--gold);
+  line-height: 1.15;
+}
+.team-role {
+  font-size: 13px; font-weight: 600;
+  color: var(--slate-300);
+  text-transform: uppercase; letter-spacing: 1px;
+  margin-top: 4px;
+}
+.team-bio { font-size: 15px; line-height: 1.75; color: rgba(255,255,255,0.85); }
+@media (max-width: 720px) {
+  .team-grid { grid-template-columns: 1fr; }
+  .team-card { padding: 26px 22px; }
+}
+
 /* ── PRIVACY PAGE ─────────────────────────── */
 .legal { max-width: 760px; }
 .legal h2 {
@@ -1309,6 +1352,7 @@ fieldset.field legend { padding: 0; }
       <div class="footer-col">
         <h4>Company</h4>
         <a href="/about" data-link>About</a>
+        <a href="/team" data-link>Team</a>
         <a href="/pricing" data-link>Pricing</a>
         <a href="/faq" data-link>FAQ</a>
         <a href="/contact" data-link>Contact</a>
@@ -1437,6 +1481,32 @@ const ZERO25_PARAS = [
   'SkillGrow currently serves the school and trust years of that journey — from early identification in mainstream and specialist settings, through EHCP, transition planning, and post-16 pathways. Our platform is designed from the ground up to extend across the full 0–25 continuum as we grow, with each new product building on the connected foundation we&rsquo;ve established.',
   'We believe every child deserves one connected journey — not a series of handoffs between disconnected systems.',
 ];
+/* Team page. Add `photo: '/team/<file>.jpg'` to a member to replace the
+   initials avatar with their photo. */
+const TEAM = [
+  { name: 'Tunde Alabi', role: 'Founder & CEO',
+    bio: "21 years working directly with children with SEND. Tunde built SkillGrow because the platform he needed didn't exist. He leads product, strategy, and every early adopter relationship personally." },
+  { name: 'Hansa Tunde-Alabi', role: 'COO',
+    bio: 'Hansa oversees operations across the SkillGrow Employer Group, ensuring every school we work with receives the highest standard of support.' },
+  { name: 'Rubab Sherali', role: 'Business Development Manager',
+    bio: 'Rubab works with schools and trusts across the UK, helping them discover how SkillGrow can transform their SEND provision.' },
+  { name: 'Kajal Patel', role: 'Business Development Manager',
+    bio: 'Kajal supports school leaders and SENCOs in finding the right SkillGrow solution for their setting.' },
+];
+const initials = (name) => { const w = name.split(/\s+/); return (w[0][0] + w[w.length - 1][0]).toUpperCase(); };
+const teamCards = () => TEAM.map(m => `
+  <div class="team-card reveal">
+    <div class="team-head">
+      <div class="team-avatar">${m.photo ? `<img src="${m.photo}" alt="${m.name}">` : `<span aria-hidden="true">${initials(m.name)}</span>`}</div>
+      <div>
+        <h2 class="team-name">${m.name}</h2>
+        <div class="team-role">${m.role}</div>
+      </div>
+    </div>
+    <p class="team-bio">${m.bio}</p>
+  </div>
+`).join('');
+
 const zero25Paras = () => ZERO25_PARAS.map(t => `<p>${t}</p>`).join('');
 
 function escAttr(v) {
@@ -2504,6 +2574,17 @@ const pages = {
           <h2>Where your data lives</h2>
           <p>All data stored in AWS eu-west-2 (London). Data is processed by Vercel (EU regions where possible) and Anthropic API for AI features. No pupil identifiers are sent to AI processing.</p>
 
+          <h2>Our approach to AI</h2>
+          <p>SkillGrow uses AI to help school staff work more efficiently — drafting EHCP sections, summarising observations, and surfacing patterns in data.</p>
+          <p>Our principles:</p>
+          <ul>
+            <li><strong>AI suggests. Professionals decide.</strong> No AI output is applied without human review.</li>
+            <li>No pupil identifiers are sent to AI models. Content is anonymised before processing.</li>
+            <li>We use Anthropic&rsquo;s Claude via its commercial API. Anthropic does not train on data sent through its commercial API.</li>
+            <li>AI features are clearly labelled in the platform.</li>
+            <li>We do not use AI for assessment, diagnosis, or any statutory decision.</li>
+          </ul>
+
           <h2>How it is protected</h2>
           <ul>
             <li>All data encrypted at rest and in transit</li>
@@ -2523,6 +2604,24 @@ const pages = {
           <h2>Contact</h2>
           <p>Security questions or concerns: <a href="mailto:hello@skillgrow.co.uk">hello@skillgrow.co.uk</a>.</p>
         </div>
+      </div>
+    </section>
+  `,
+
+  team: () => `
+    <section class="hero product-hero">
+      <div class="container">
+        <div class="reveal">
+          <span class="hero-eyebrow">Our Team</span>
+          <h1 class="hero-h1">The people <span class="gold">behind SkillGrow.</span></h1>
+          <p class="hero-sub">A small team led by frontline SEND experience, working directly with every school we support.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="team-grid">${teamCards()}</div>
       </div>
     </section>
   `,
@@ -3000,6 +3099,7 @@ const routes = {
   'parent': 'parent',
   'trust': 'trust',
   'about': 'about',
+  'team': 'team',
   'contact': 'contact',
   'privacy': 'privacy',
   'security': 'security',
@@ -3018,6 +3118,7 @@ const titles = {
   parent: 'Parent Portal — SkillGrow',
   trust: 'Trust Portal — SkillGrow',
   about: 'About — SkillGrow',
+  team: 'Our Team — SkillGrow',
   contact: 'Contact — SkillGrow',
   privacy: 'Privacy Policy — SkillGrow',
   security: 'Security — SkillGrow',

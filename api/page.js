@@ -5,7 +5,7 @@
  * this, every shared link would preview as the homepage, whichever page was
  * shared, and every page would carry the same meta description.
  *
- * vercel.json rewrites the fourteen non-home routes here. '/' is NOT routed here:
+ * vercel.json rewrites the fifteen non-home routes here. '/' is NOT routed here:
  * static files win over rewrites on Vercel, so the root is served straight
  * from index.html, whose META block already holds the homepage's tags. Keep
  * the 'home' entry below in step with that block.
@@ -79,6 +79,13 @@ const META = {
     description: 'SkillGrow Technologies builds SEND software from twenty-one years of frontline SEN practice. Independent, UK-built, and designed for the whole 0–25 journey.',
     ogTitle: 'About SkillGrow — built by people who have done the job',
     ogDescription: 'Twenty-one years in SEND, twelve on the frontline. No venture capital, no private equity — built to last by the people who build it.',
+  },
+  team: {
+    path: '/team',
+    title: 'Our Team — SkillGrow',
+    description: 'Meet the SkillGrow team: founder and CEO Tunde Alabi, with 21 years working directly with children with SEND, COO Hansa Tunde-Alabi, and our business development managers.',
+    ogTitle: 'The people behind SkillGrow',
+    ogDescription: 'A small team led by 21 years of frontline SEND experience, working directly with every school we support.',
   },
   contact: {
     path: '/contact',
