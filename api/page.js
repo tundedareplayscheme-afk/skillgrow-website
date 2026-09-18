@@ -5,7 +5,9 @@
  * this, every shared link would preview as the homepage, whichever page was
  * shared, and every page would carry the same meta description.
  *
- * vercel.json rewrites the seventeen non-home routes here. '/' is NOT routed here:
+ * vercel.json rewrites the eighteen non-home routes here, plus every
+ * /blog/<slug> article (a second pattern, since a :page segment cannot
+ * contain a slash). '/' is NOT routed here:
  * static files win over rewrites on Vercel, so the root is served straight
  * from index.html, whose META block already holds the homepage's tags. Keep
  * the 'home' entry below in step with that block.
@@ -155,6 +157,34 @@ const META = {
     description: 'Getting started with SkillGrow: live in two weeks, staff training and support, data migration from your MIS and safeguarding system, and our SLA targets.',
     ogTitle: 'Up and running in days, not months',
     ogDescription: 'Sign-up to live in two weeks. Live staff training, role-specific guides, data migration, a 99.9% uptime target and a 1-hour response to P1 issues.',
+  },
+  blog: {
+    path: '/blog',
+    title: 'SEND Insights — SkillGrow',
+    description: 'Practical SEND guidance for school leaders, SENCOs and trust leads: SEND reform, Individual Support Plans, the graduated approach, EHCPs and SENCO workload.',
+    ogTitle: 'SEND Insights from SkillGrow',
+    ogDescription: 'Practical guidance for school leaders, SENCOs, and trust leads navigating the SEND landscape.',
+  },
+  'blog/isps-what-every-senco-needs-to-know': {
+    path: '/blog/isps-what-every-senco-needs-to-know',
+    title: 'ISPs are coming: what every SENCO needs to know — SkillGrow',
+    description: 'Individual Support Plans are set to become a legal duty for every child on Targeted or Specialist support, with the new law expected from September 2029.',
+    ogTitle: 'ISPs are coming: what every SENCO needs to know before September 2029',
+    ogDescription: 'What the 2026 SEND reforms mean for Individual Support Plans, when the new duty is expected, and five things schools can do to prepare now.',
+  },
+  'blog/graduated-approach-practical-guide': {
+    path: '/blog/graduated-approach-practical-guide',
+    title: 'The graduated approach: a practical guide — SkillGrow',
+    description: 'A practical guide to the graduated approach: assess, plan, do, review, the evidence an EHC needs assessment request needs, and where schools most often go wrong.',
+    ogTitle: 'The graduated approach: from first concern to EHCP',
+    ogDescription: 'Each stage of assess, plan, do, review, the evidence you need for an EHC needs assessment request, and the common mistakes to avoid.',
+  },
+  'blog/senco-admin-burden': {
+    path: '/blog/senco-admin-burden',
+    title: 'Why your SENCO is spending most of their time on admin — SkillGrow',
+    description: 'Nearly three in four SENCOs say administration takes up most of their SENCO time. What the national surveys show, and practical ways to give that time back.',
+    ogTitle: 'Why your SENCO is spending most of their time on admin',
+    ogDescription: 'What the National SENCO Workload Survey found, where the admin comes from, and six practical ways school leaders can fix it.',
   },
 };
 

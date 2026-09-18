@@ -5,7 +5,9 @@
     }
   },
   "rewrites": [
-    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation)", "destination": "/api/page?page=:page" },
-    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation)/", "destination": "/api/page?page=:page" }
+    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation|blog)", "destination": "/api/page?page=:page" },
+    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation|blog)/", "destination": "/api/page?page=:page" },
+    { "source": "/blog/:slug(isps-what-every-senco-needs-to-know|graduated-approach-practical-guide|senco-admin-burden)", "destination": "/api/page?page=blog/:slug" },
+    { "source": "/blog/:slug(isps-what-every-senco-needs-to-know|graduated-approach-practical-guide|senco-admin-burden)/", "destination": "/api/page?page=blog/:slug" }
   ]
 }
