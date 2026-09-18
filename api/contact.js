@@ -21,7 +21,7 @@ const SENDER_NAME_DEFAULT = 'SkillGrow Website';
 
 const PRODUCTS = ['DARE SEN OS', 'DARE Mainstream', 'Staff PWA', 'Parent Portal', 'Trust Portal'];
 
-const MAX = { name: 200, organisation: 200, role: 200, email: 320, phone: 40, message: 5000 };
+const MAX = { name: 200, organisation: 200, role: 200, email: 320, phone: 40, subject: 150, message: 5000 };
 
 /* Keep user text out of the header block of the email. A newline smuggled
    into the subject would let a sender forge headers. */
@@ -90,6 +90,8 @@ module.exports = async function handler(req, res) {
   const email = oneLine(body.email, MAX.email);
   /* Optional — a blank phone must never block an enquiry. */
   const phone = oneLine(body.phone, MAX.phone);
+  /* Optional — pre-filled by links such as the Parent Portal page's. */
+  const topic = oneLine(body.subject, MAX.subject);
   const message = String(body.message == null ? '' : body.message).trim().slice(0, MAX.message);
 
   const missing = [];
@@ -128,11 +130,12 @@ module.exports = async function handler(req, res) {
   const to = process.env.CONTACT_TO || TO_DEFAULT;
   const senderEmail = process.env.BREVO_SENDER_EMAIL || SENDER_EMAIL_DEFAULT;
   const senderName = process.env.BREVO_SENDER_NAME || SENDER_NAME_DEFAULT;
-  const subject = `New enquiry — ${name} from ${organisation}`;
+  const subject = `${topic || 'New enquiry'} — ${name} from ${organisation}`;
   const productLine = products.length ? products.join(', ') : '(none specified)';
   const received = new Date().toISOString();
 
   const textContent = [
+    `Subject:       ${topic || '(none)'}`,
     `Name:          ${name}`,
     `Organisation:  ${organisation}`,
     `Role:          ${role}`,
@@ -151,6 +154,7 @@ module.exports = async function handler(req, res) {
   const htmlContent = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;color:#0F2D52;line-height:1.6">
   <h2 style="font-size:18px;margin:0 0 16px">New SkillGrow enquiry</h2>
   <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:20px">
+    <tr><td style="padding:4px 16px 4px 0;color:#64748B">Subject</td><td style="padding:4px 0">${topic ? escapeHtml(topic) : '<em style="color:#94A3B8">(none)</em>'}</td></tr>
     <tr><td style="padding:4px 16px 4px 0;color:#64748B">Name</td><td style="padding:4px 0"><strong>${escapeHtml(name)}</strong></td></tr>
     <tr><td style="padding:4px 16px 4px 0;color:#64748B">Organisation</td><td style="padding:4px 0"><strong>${escapeHtml(organisation)}</strong></td></tr>
     <tr><td style="padding:4px 16px 4px 0;color:#64748B">Role</td><td style="padding:4px 0">${escapeHtml(role)}</td></tr>

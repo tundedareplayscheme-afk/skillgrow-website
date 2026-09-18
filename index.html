@@ -25,6 +25,7 @@
 <meta name="twitter:description" content="One connected platform for the whole 0–25 SEND journey. EHCPs, safeguarding, therapy, behaviour and outcomes, joined up around each child.">
 <meta name="twitter:image" content="https://www.skillgrow.co.uk/og-image.png">
 <!-- META:END -->
+<link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <!-- Privacy-friendly analytics by Plausible -->
 <script async src="https://plausible.io/js/pa-JTgISJsEgEJqA9SFCQWLz.js"></script>
@@ -104,6 +105,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   padding: 6px 0;
 }
 .nav-link:hover, .nav-link.active { color: var(--gold); }
+/* Existing customers only — kept quieter than the marketing links. */
+.notfound-links { display: flex; flex-wrap: wrap; gap: 12px 28px; margin-top: 32px; font-size: 15px; font-weight: 500; }
+.notfound-links a { color: rgba(255,255,255,0.85); border-bottom: 1px solid rgba(255,255,255,0.25); padding-bottom: 2px; }
+.notfound-links a:hover { color: var(--gold); border-color: var(--gold); }
+.nav-login { font-size: 13px; color: rgba(255,255,255,0.55); }
 
 .nav-dropdown { position: relative; }
 .nav-dropdown-trigger {
@@ -1024,6 +1030,8 @@ fieldset.field legend { padding: 0; }
 }
 .urgency-card p:last-child { margin-bottom: 0; }
 .urgency-card strong { color: var(--navy); font-weight: 600; }
+.urgency-source a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.urgency-source a:hover { color: var(--navy); }
 .urgency-source {
   font-size: 13px;
   color: #94A3B8;
@@ -1155,6 +1163,7 @@ fieldset.field legend { padding: 0; }
       <a href="/pricing" class="nav-link" data-link>Pricing</a>
       <a href="/about" class="nav-link" data-link>About</a>
       <a href="/contact" class="nav-link" data-link>Contact</a>
+      <a href="https://hq.skillgrow.co.uk" class="nav-link nav-login">Log in</a>
       <a href="https://hq.skillgrow.co.uk/book/tunde" class="btn btn-gold" target="_blank" rel="noopener">Book a Demo</a>
     </div>
   </div>
@@ -1188,8 +1197,8 @@ fieldset.field legend { padding: 0; }
       <div class="footer-col">
         <h4>Get in touch</h4>
         <a href="mailto:hello@skillgrow.co.uk">hello@skillgrow.co.uk</a>
-        <a href="tel:+447523895579">📞 07523 895579</a>
-        <span class="footer-text">Bedford, England</span>
+        <a href="tel:+447523895579">07523 895579</a>
+        <span class="footer-text">Marston Moretaine, Bedford MK43 0AE</span>
         <a href="https://www.linkedin.com/company/skillgrow-technologies-ltd" target="_blank" rel="noopener">LinkedIn</a>
         <a href="https://www.facebook.com/share/19f4HjZa2E/" target="_blank" rel="noopener">Facebook</a>
         <a href="https://www.instagram.com/skillgrow_edtech" target="_blank" rel="noopener">Instagram</a>
@@ -1201,7 +1210,6 @@ fieldset.field legend { padding: 0; }
         <a href="/terms" data-link>Terms of Service</a>
         <a href="/dpa" data-link>Data Processing Agreement</a>
         <a href="/accessibility" data-link>Accessibility</a>
-        <a href="/contact" data-link>Contact</a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -1303,6 +1311,10 @@ const OVERVIEW_VIDEO_URL = '#';
 const OVERVIEW_PDF_URL = '/overview.pdf';
 
 /* tone: 'dark' on navy sections, 'light' on white cards. */
+function escAttr(v) {
+  return String(v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
 function ctaAlt(tone = 'dark') {
   return `
     <div class="cta-alt cta-alt-${tone}">
@@ -1440,7 +1452,7 @@ const pages = {
         'The plan itself is the easy part. What takes time is the <strong>graduated approach evidence underneath it</strong> — assess, plan, do, review, cycle after cycle, for every child on the register. A school starting that trail in 2029 is starting three years too late.',
         'DARE Mainstream captures that evidence in the flow of teaching now, so the ISP is something you generate rather than something you scramble to write.',
       ],
-      source: 'Subject to legislation. Timings and detail per the Schools White Paper 2026 and the House of Commons Library briefing on SEND reform.',
+      source: 'Subject to legislation. Timings and detail per the <a href="https://www.gov.uk/government/publications/every-child-achieving-and-thriving" target="_blank" rel="noopener">Schools White Paper 2026, <em>Every child achieving and thriving</em> (DfE)</a> and the House of Commons Library briefing on SEND reform.',
     },
     rolesHeading: {
       eyebrow: 'Who is this for?',
@@ -1539,6 +1551,8 @@ const pages = {
       { icon: 'message', title: 'A real reply from a real person', body: 'Message the right adult — class teacher, safeguarding lead, therapist — and get an answer. Every message is logged, so nothing gets lost between people.' },
     ],
     pricing: { headingA: 'Free.', headingB: 'Always.', price: 'Free', unit: 'always · for every family', note: 'Families are never charged, and never will be. The Parent Portal is included with your school&rsquo;s licence, for unlimited parents, carers, and family members you have given permission to. <strong>There is no upgrade, no premium tier, and nothing behind a paywall.</strong>' },
+    /* Parents do not book demos. */
+    primary: { href: '/contact?subject=Parent%20Portal%20enquiry', label: 'Learn more about the Parent Portal', external: false },
     cta: { titleA: 'Ask your school', titleB: 'about SkillGrow.', body: 'If your school already uses DARE, your access is waiting. If not, tell them — or send us their name and we will talk to them for you.' },
   }),
 
@@ -1634,7 +1648,7 @@ const pages = {
           <div class="audience-card reveal">
             <div class="audience-card-num">i.</div>
             <div class="audience-card-title">Bedford, England</div>
-            <div class="audience-card-body">18 Moat Farm Close, Bedford MK43 0AE. Built in the UK, hosted on UK infrastructure, with UK data residency.</div>
+            <div class="audience-card-body">18 Moat Farm Close, Marston Moretaine, Bedford MK43 0AE. Built in the UK, hosted on UK infrastructure, with UK data residency.</div>
           </div>
           <div class="audience-card reveal">
             <div class="audience-card-num">ii.</div>
@@ -1674,9 +1688,9 @@ const pages = {
             <h3>Email</h3>
             <p><a href="mailto:hello@skillgrow.co.uk">hello@skillgrow.co.uk</a></p>
             <h3>Phone</h3>
-            <p><a href="tel:+447523895579">📞 07523 895579</a></p>
+            <p><a href="tel:+447523895579">07523 895579</a></p>
             <h3>Office</h3>
-            <p>SkillGrow Technologies Ltd<br>18 Moat Farm Close<br>Bedford MK43 0AE<br>England</p>
+            <p>SkillGrow Technologies Ltd<br>18 Moat Farm Close<br>Marston Moretaine, Bedford MK43 0AE<br>England</p>
             <h3>Response time</h3>
             <p>Within one working day, Monday to Friday.</p>
           </div>
@@ -1709,6 +1723,10 @@ const pages = {
                 </div>
               </div>
               <div class="field">
+                <label for="subject">Subject <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
+                <input type="text" id="subject" name="subject" maxlength="150" value="${escAttr(new URLSearchParams(window.location.search).get('subject') || '')}">
+              </div>
+              <div class="field">
                 <label for="phone">Phone <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
                 <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="If you would rather we called you">
               </div>
@@ -1726,8 +1744,8 @@ const pages = {
                 <textarea id="message" name="message" placeholder="Tell us a little about what you are looking for."></textarea>
               </div>
               <div class="field hp-field" aria-hidden="true">
-                <label for="website">Website</label>
-                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                <label for="website" aria-hidden="true" tabindex="-1">Website</label>
+                <input type="text" id="website" name="website" aria-hidden="true" tabindex="-1" autocomplete="off">
               </div>
               <div class="consent-item">
                 <input type="checkbox" id="consent" name="consent" required aria-describedby="consent-error">
@@ -1768,7 +1786,6 @@ const pages = {
         <div class="legal reveal">
           <div class="legal-note">
             <p><strong>Scope.</strong> This notice covers <strong>www.skillgrow.co.uk</strong> — the marketing site you are reading now — and summarises where data in the DARE platforms is stored. Within the platforms we act as a data processor for schools, trusts and local authorities under a separate data processing agreement with each customer.</p>
-            <p style="margin-bottom:0"><strong>Please note:</strong> this page has not been reviewed by a solicitor and will be updated.</p>
           </div>
 
           <h2>Who we are</h2>
@@ -2138,6 +2155,12 @@ const pages = {
           <h1 class="hero-h1">Page <span class="gold">not found.</span></h1>
           <p class="hero-sub">The page you are looking for does not exist or has moved.</p>
           <a href="/" class="btn btn-gold btn-lg" data-link>Back to the homepage →</a>
+          <nav class="notfound-links" aria-label="Main pages">
+            <a href="/" data-link>Home</a>
+            <a href="/sen" data-link>Products</a>
+            <a href="/pricing" data-link>Pricing</a>
+            <a href="/contact" data-link>Contact</a>
+          </nav>
         </div>
       </div>
     </section>
@@ -2188,6 +2211,7 @@ function productPage({
   rolesHeading, roles,     // "Who is this for?" — 2-4 named roles, each with a pain point
   capsHeading, caps,
   pricing, cta,
+  primary = DEMO_CTA,      // { href, label, external } — the page's main call to action
 }) {
   const romans = ['i', 'ii', 'iii'];
   return `
@@ -2198,7 +2222,7 @@ function productPage({
           <h1 class="hero-h1">${titleA} <span class="gold">${titleB}</span></h1>
           <p class="hero-sub">${sub}</p>
           <div class="hero-actions">
-            <a href="https://hq.skillgrow.co.uk/book/tunde" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a Demo →</a>
+            ${ctaLink(primary, 'btn btn-gold btn-lg')}
           </div>
           ${ctaAlt()}
         </div>
@@ -2280,25 +2304,32 @@ function productPage({
           <div class="pricing-unit">${pricing.unit}</div>
           <div class="pricing-note">${pricing.note}</div>
           <div class="pricing-actions">
-            <a href="https://hq.skillgrow.co.uk/book/tunde" class="btn btn-gold" target="_blank" rel="noopener">Book a Demo &rarr;</a>
+            ${ctaLink(primary, 'btn btn-gold')}
             ${ctaAlt('light')}
           </div>
         </div>
       </div>
     </section>` : ''}
 
-    ${ctaBand(cta.titleA, cta.titleB, cta.body)}
+    ${ctaBand(cta.titleA, cta.titleB, cta.body, primary)}
   `;
 }
 
-function ctaBand(h1, h2gold, body) {
+const DEMO_CTA = { href: 'https://hq.skillgrow.co.uk/book/tunde', label: 'Book a Demo', external: true };
+
+function ctaLink({ href, label, external }, cls) {
+  const target = external ? ' target="_blank" rel="noopener"' : ' data-link';
+  return `<a href="${href}" class="${cls}"${target}>${label} &rarr;</a>`;
+}
+
+function ctaBand(h1, h2gold, body, primary = DEMO_CTA) {
   return `
     <section class="cta-band">
       <div class="container">
         <div class="cta-band-inner reveal">
           <h2>${h1} <span class="gold">${h2gold}</span></h2>
           <p>${body}</p>
-          <a href="https://hq.skillgrow.co.uk/book/tunde" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a Demo →</a>
+          ${ctaLink(primary, 'btn btn-gold btn-lg')}
           ${ctaAlt()}
         </div>
       </div>
@@ -2501,6 +2532,7 @@ document.addEventListener('submit', async (e) => {
     email: data.get('email') || '',
     phone: data.get('phone') || '',
     message: data.get('message') || '',
+    subject: data.get('subject') || '',
     products: data.getAll('products'),
     consent: data.get('consent') === 'on',
     website: data.get('website') || '',          // honeypot — humans leave this empty
