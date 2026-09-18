@@ -5,7 +5,7 @@
  * this, every shared link would preview as the homepage, whichever page was
  * shared, and every page would carry the same meta description.
  *
- * vercel.json rewrites the nine non-home routes here. '/' is NOT routed here:
+ * vercel.json rewrites the eleven non-home routes here. '/' is NOT routed here:
  * static files win over rewrites on Vercel, so the root is served straight
  * from index.html, whose META block already holds the homepage's tags. Keep
  * the 'home' entry below in step with that block.
@@ -100,6 +100,19 @@ const META = {
     description: 'How SkillGrow protects SEND data: UK data residency in AWS London, encryption at rest and in transit, role-based access, row-level security and daily backups.',
     ogTitle: 'Security at SkillGrow',
     ogDescription: 'UK data residency, encryption at rest and in transit, role-based access, row-level security, daily backups. ICO registered, KCSIE 2025 aligned.',
+  },  pricing: {
+    path: '/pricing',
+    title: 'Pricing — SkillGrow',
+    description: 'SkillGrow pricing: DARE SEN OS from £3,500/yr, DARE Mainstream from £2,400/yr, Trust Portal from £12,000/yr. No setup fees and no per-user charges, ever.',
+    ogTitle: 'SkillGrow pricing — transparent, no surprises',
+    ogDescription: 'Annual licences tiered by school size, with 25% off for three years for schools joining before April 2027. The Parent Portal is always free.',
+  },
+  faq: {
+    path: '/faq',
+    title: 'FAQ — SkillGrow',
+    description: 'Answers on SkillGrow pricing and contracts, UK data storage and security, getting started with DARE, and what each product in the DARE platform actually does.',
+    ogTitle: 'SkillGrow FAQ — pricing, data, setup and the platform',
+    ogDescription: 'Where your data lives, how pricing works, what setup involves, and what DARE SEN OS, DARE Mainstream and the portals do.',
   },
 };
 

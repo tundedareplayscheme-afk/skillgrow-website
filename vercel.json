@@ -5,7 +5,7 @@
     }
   },
   "rewrites": [
-    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|contact|privacy|security)", "destination": "/api/page?page=:page" },
-    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|contact|privacy|security)/", "destination": "/api/page?page=:page" }
+    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|contact|privacy|security|pricing|faq)", "destination": "/api/page?page=:page" },
+    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|contact|privacy|security|pricing|faq)/", "destination": "/api/page?page=:page" }
   ]
 }
