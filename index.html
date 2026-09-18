@@ -1073,8 +1073,9 @@ const TIER_NOTE = 'Tiered by pupil count. Early-adopter programme: <strong>25% o
 /* PLACEHOLDERS — the two lower-commitment CTAs have nothing to point at yet.
    OVERVIEW_VIDEO_URL: the 2-minute Loom/YouTube walkthrough, once recorded.
      While it is '#' the link is inert (see the click handler below).
-   OVERVIEW_PDF_URL: /overview.pdf does NOT exist yet — commit it to the repo
-     root, or every click lands on the 404 page. */
+   OVERVIEW_PDF_URL: /overview.pdf does NOT exist yet, so the download link is
+     commented out in ctaAlt() below. To restore it: commit overview.pdf to
+     the repo root, then uncomment that line. */
 const OVERVIEW_VIDEO_URL = '#';
 const OVERVIEW_PDF_URL = '/overview.pdf';
 
@@ -1083,7 +1084,7 @@ function ctaAlt(tone = 'dark') {
   return `
     <div class="cta-alt cta-alt-${tone}">
       <a href="${OVERVIEW_VIDEO_URL}" target="_blank" rel="noopener">&#9654; Watch 2-min overview</a>
-      <a href="${OVERVIEW_PDF_URL}" download>&darr; Download overview (PDF)</a>
+      <!-- PDF coming soon <a href="${OVERVIEW_PDF_URL}" download>&darr; Download overview (PDF)</a> -->
     </div>`;
 }
 
