@@ -1198,6 +1198,7 @@ fieldset.field legend { padding: 0; }
         <h4>Legal</h4>
         <a href="/privacy" data-link>Privacy Policy</a>
         <a href="/security" data-link>Security</a>
+        <a href="/terms" data-link>Terms of Service</a>
         <a href="/contact" data-link>Contact</a>
       </div>
     </div>
@@ -1939,6 +1940,91 @@ const pages = {
     ${ctaBand('Still have', 'a question?', 'Book a 30-minute demo and ask the founding team directly.')}
   `,
 
+  /* NOTE FOR SKILLGROW: these terms have NOT been reviewed by a solicitor —
+     the page says so. The liability cap (fees paid in the previous 12 months)
+     is a common starting point, not a figure anyone has agreed. Have the whole
+     page signed off before relying on it. Where an order form or signed
+     contract says something different, the contract should win. */
+  terms: () => `
+    <section class="hero product-hero">
+      <div class="container">
+        <div class="reveal">
+          <span class="hero-eyebrow">Legal</span>
+          <h1 class="hero-h1">Terms of <span class="gold">service.</span></h1>
+          <p class="hero-sub">The terms on which SkillGrow Technologies Ltd provides its platform. Last updated: September 2026.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="legal reveal">
+          <div class="legal-note">
+            <p><strong>Scope.</strong> These terms apply to every school, trust and local authority that subscribes to a SkillGrow product. Where your signed order form or contract says something different, the order form or contract takes precedence.</p>
+            <p style="margin-bottom:0"><strong>Please note:</strong> this document has not been reviewed by a solicitor.</p>
+          </div>
+
+          <h2>Who we are</h2>
+          <p>SkillGrow Technologies Ltd, a company registered in England and Wales (company number 13535893), 18 Moat Farm Close, Marston Moretaine, Bedford MK43 0AE. In these terms, &ldquo;we&rdquo; and &ldquo;us&rdquo; means SkillGrow, and &ldquo;you&rdquo; means the organisation that subscribes.</p>
+
+          <h2>The service</h2>
+          <p>SkillGrow provides software as a service: web-based platforms for special educational needs and disabilities (SEND), including DARE SEN OS, DARE Mainstream, the Staff PWA, the Parent Portal and the Trust Portal. The service is hosted by us and accessed through a web browser. We maintain, update and support it for as long as your subscription runs, and we may improve or change features over time, provided we do not materially reduce what you have subscribed to.</p>
+
+          <h2>Subscription and payment</h2>
+          <ul>
+            <li>Your subscription, its price and its term are set out in your order form or quote.</li>
+            <li>Fees are invoiced in advance for each subscription period and are payable within 30 days of the invoice date unless your order form says otherwise.</li>
+            <li>Prices are exclusive of VAT, which is added at the prevailing rate.</li>
+            <li>The Parent Portal is free for every family and is never charged to parents.</li>
+            <li>If an invoice remains unpaid after a written reminder, we may suspend access until it is settled. We will never delete your data because of a late payment without the notice described under <em>Termination</em>.</li>
+          </ul>
+
+          <h2>Acceptable use</h2>
+          <p>You are responsible for the people you give access to, and for making sure they use the service lawfully and for its intended purpose. You must not:</p>
+          <ul>
+            <li>share login details, or let anyone use an account that is not theirs;</li>
+            <li>attempt to access data your role does not permit, or to bypass any security control;</li>
+            <li>upload malicious code, or probe, scan or load-test the service without our written agreement;</li>
+            <li>copy, resell, sublicense or reverse-engineer the platform;</li>
+            <li>use the service to store or send content that is unlawful, abusive or infringes anyone&rsquo;s rights.</li>
+          </ul>
+          <p>If you suspect an account has been compromised, tell us straight away at <a href="mailto:hello@skillgrow.co.uk">hello@skillgrow.co.uk</a>.</p>
+
+          <h2>Your data</h2>
+          <p><strong>Schools own their data.</strong> Everything you and your staff put into the platform — pupil records, plans, notes, documents — belongs to you. We process it only to provide the service and only on your instructions, as your data processor. You are the data controller. How we do that is summarised in our <a href="/dpa" data-link>data processing agreement</a> and described on our <a href="/security" data-link>security page</a>.</p>
+          <p>You can export your data at any time while your subscription is active.</p>
+
+          <h2>Intellectual property</h2>
+          <p><strong>SkillGrow owns the platform.</strong> The software, its design, code, documentation and branding, and any improvements we make to them, belong to SkillGrow Technologies Ltd. Your subscription gives you a non-exclusive, non-transferable right to use the service for your own organisation during the subscription term. Nothing in these terms transfers ownership of the platform to you, or of your data to us.</p>
+
+          <h2>Limitation of liability</h2>
+          <ul>
+            <li>Nothing in these terms limits liability for death or personal injury caused by negligence, for fraud, or for anything else that cannot lawfully be limited.</li>
+            <li>Subject to that, neither party is liable for indirect or consequential loss, or for loss of profit, revenue or goodwill.</li>
+            <li>Subject to that, our total liability in any contract year is limited to the fees you paid us in the 12 months before the claim arose.</li>
+          </ul>
+          <p>The platform supports professional judgement; it does not replace it. Decisions about a child&rsquo;s safeguarding, care and education remain with your staff.</p>
+
+          <h2>Termination</h2>
+          <ul>
+            <li>Either party may end the subscription by giving <strong>30 days&rsquo; written notice</strong>.</li>
+            <li>Either party may end it immediately if the other materially breaches these terms and does not put the breach right within 30 days of being asked to.</li>
+            <li>When the subscription ends, you can export your data. We then delete it within 30 days of the contract ending, as set out in our <a href="/dpa" data-link>data processing agreement</a>, unless the law requires us to keep it.</li>
+          </ul>
+
+          <h2>Changes to these terms</h2>
+          <p>If we change these terms, we will update this page and change the date at the top. We will tell existing customers about any material change before it takes effect.</p>
+
+          <h2>Governing law</h2>
+          <p>These terms are governed by the law of England and Wales, and the courts of England and Wales have exclusive jurisdiction over any dispute arising from them.</p>
+
+          <h2>Contact</h2>
+          <p>Questions about these terms: <a href="mailto:hello@skillgrow.co.uk">hello@skillgrow.co.uk</a>.</p>
+        </div>
+      </div>
+    </section>
+  `,
+
   notfound: () => `
     <section class="hero product-hero">
       <div class="container">
@@ -2129,6 +2215,7 @@ const routes = {
   'security': 'security',
   'pricing': 'pricing',
   'faq': 'faq',
+  'terms': 'terms',
 };
 
 const titles = {
@@ -2144,6 +2231,7 @@ const titles = {
   security: 'Security — SkillGrow',
   pricing: 'Pricing — SkillGrow',
   faq: 'FAQ — SkillGrow',
+  terms: 'Terms of Service — SkillGrow',
   notfound: 'Page not found — SkillGrow',
 };
 
