@@ -96,8 +96,11 @@ module.exports = async function handler(req, res) {
 
   const missing = [];
   if (!name) missing.push('name');
-  if (!organisation) missing.push('organisation');
-  if (!role) missing.push('role');
+  /* Parents have no organisation or role to give — optional for them only.
+     Must match PARENT_SUBJECT in index.html. */
+  const parentEnquiry = oneLine(body.subject, MAX.subject).toLowerCase() === 'parent portal enquiry';
+  if (!organisation && !parentEnquiry) missing.push('organisation');
+  if (!role && !parentEnquiry) missing.push('role');
   if (!email) missing.push('email');
   if (missing.length) {
     return res.status(400).json({ error: 'Missing required fields', fields: missing });
@@ -130,15 +133,15 @@ module.exports = async function handler(req, res) {
   const to = process.env.CONTACT_TO || TO_DEFAULT;
   const senderEmail = process.env.BREVO_SENDER_EMAIL || SENDER_EMAIL_DEFAULT;
   const senderName = process.env.BREVO_SENDER_NAME || SENDER_NAME_DEFAULT;
-  const subject = `${topic || 'New enquiry'} — ${name} from ${organisation}`;
+  const subject = `${topic || 'New enquiry'} — ${name}${organisation ? ` from ${organisation}` : ''}`;
   const productLine = products.length ? products.join(', ') : '(none specified)';
   const received = new Date().toISOString();
 
   const textContent = [
     `Subject:       ${topic || '(none)'}`,
     `Name:          ${name}`,
-    `Organisation:  ${organisation}`,
-    `Role:          ${role}`,
+    `Organisation:  ${organisation || '(not given)'}`,
+    `Role:          ${role || '(not given)'}`,
     `Email:         ${email}`,
     `Phone:         ${phone || '(not given)'}`,
     `Products:      ${productLine}`,
@@ -156,8 +159,8 @@ module.exports = async function handler(req, res) {
   <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:20px">
     <tr><td style="padding:4px 16px 4px 0;color:#64748B">Subject</td><td style="padding:4px 0">${topic ? escapeHtml(topic) : '<em style="color:#94A3B8">(none)</em>'}</td></tr>
     <tr><td style="padding:4px 16px 4px 0;color:#64748B">Name</td><td style="padding:4px 0"><strong>${escapeHtml(name)}</strong></td></tr>
-    <tr><td style="padding:4px 16px 4px 0;color:#64748B">Organisation</td><td style="padding:4px 0"><strong>${escapeHtml(organisation)}</strong></td></tr>
-    <tr><td style="padding:4px 16px 4px 0;color:#64748B">Role</td><td style="padding:4px 0">${escapeHtml(role)}</td></tr>
+    <tr><td style="padding:4px 16px 4px 0;color:#64748B">Organisation</td><td style="padding:4px 0">${organisation ? `<strong>${escapeHtml(organisation)}</strong>` : '<em style="color:#94A3B8">(not given)</em>'}</td></tr>
+    <tr><td style="padding:4px 16px 4px 0;color:#64748B">Role</td><td style="padding:4px 0">${role ? escapeHtml(role) : '<em style="color:#94A3B8">(not given)</em>'}</td></tr>
     <tr><td style="padding:4px 16px 4px 0;color:#64748B">Email</td><td style="padding:4px 0"><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></td></tr>
     <tr><td style="padding:4px 16px 4px 0;color:#64748B">Phone</td><td style="padding:4px 0">${phone ? `<a href="tel:${escapeHtml(phone.replace(/[^\d+]/g, ''))}">${escapeHtml(phone)}</a>` : '<em style="color:#94A3B8">(not given)</em>'}</td></tr>
     <tr><td style="padding:4px 16px 4px 0;color:#64748B">Products</td><td style="padding:4px 0">${escapeHtml(productLine)}</td></tr>

@@ -1752,14 +1752,14 @@ const pages = {
                   <p class="field-error" id="name-error" hidden></p>
                 </div>
                 <div class="field">
-                  <label for="org">Organisation<span class="req" aria-hidden="true">*</span></label>
+                  <label for="org">Organisation<span class="req" data-parent-optional aria-hidden="true">*</span></label>
                   <input type="text" id="org" name="organisation" required placeholder="School, trust, or LA" aria-describedby="org-error">
                   <p class="field-error" id="org-error" hidden></p>
                 </div>
               </div>
               <div class="field-row">
                 <div class="field">
-                  <label for="role">Your role<span class="req" aria-hidden="true">*</span></label>
+                  <label for="role">Your role<span class="req" data-parent-optional aria-hidden="true">*</span></label>
                   <input type="text" id="role" name="role" required placeholder="e.g. Headteacher, SENCO, CEO" aria-describedby="role-error">
                   <p class="field-error" id="role-error" hidden></p>
                 </div>
@@ -2462,6 +2462,7 @@ function render() {
   });
 
   setupReveals();
+  syncParentEnquiry();
   document.getElementById('nav-links').classList.remove('open');
 }
 
@@ -2525,6 +2526,25 @@ const FIELD_MESSAGES = {
   consent: 'Tick to agree to the privacy policy so we can reply.',
 };
 
+/* Parents do not have an organisation or a job title to give us. When the
+   subject is a Parent Portal enquiry, those two fields become optional —
+   the API applies the same rule. */
+const PARENT_SUBJECT = 'parent portal enquiry';
+function syncParentEnquiry() {
+  const subject = document.getElementById('subject');
+  if (!subject) return;
+  const parent = subject.value.trim().toLowerCase() === PARENT_SUBJECT;
+  ['org', 'role'].forEach(id => {
+    const input = document.getElementById(id);
+    input.required = !parent;
+    if (parent) {
+      input.removeAttribute('aria-invalid');
+      document.getElementById(id + '-error').hidden = true;
+    }
+  });
+  document.querySelectorAll('[data-parent-optional]').forEach(el => { el.hidden = parent; });
+}
+
 function validateField(input) {
   const box = document.getElementById(input.id + '-error');
   if (!box) return true;
@@ -2548,6 +2568,7 @@ document.addEventListener('focusout', (e) => {
   if (e.target.closest('#contact-form') && e.target.matches('[required]')) validateField(e.target);
 });
 document.addEventListener('input', (e) => {
+  if (e.target.id === 'subject') syncParentEnquiry();
   if (e.target.closest('#contact-form') && e.target.getAttribute('aria-invalid') === 'true') validateField(e.target);
 });
 document.addEventListener('change', (e) => {
