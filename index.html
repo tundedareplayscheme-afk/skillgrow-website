@@ -524,6 +524,55 @@ main { padding-top: var(--header-h); min-height: 100vh; }
   line-height: 1.7;
 }
 
+/* ── IMPLEMENTATION + INTEGRATIONS ────────── */
+.onboard { list-style: none; max-width: 760px; border-left: 2px solid rgba(15,45,82,0.12); margin-left: 8px; }
+.onboard li { position: relative; padding: 0 0 28px 32px; }
+.onboard li:last-child { padding-bottom: 0; }
+.onboard li::before {
+  content: ''; position: absolute; left: -9px; top: 4px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--gold); box-shadow: 0 0 0 4px white;
+}
+.onboard-when {
+  font-size: 12px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gold-deep); margin-bottom: 4px;
+}
+.onboard-what { font-family: var(--serif); font-size: 24px; font-weight: 600; color: var(--navy); line-height: 1.25; }
+.onboard-what a { color: var(--navy); text-decoration: underline; }
+.check-list { list-style: none; max-width: 760px; }
+.check-list li {
+  position: relative; padding-left: 28px; margin-bottom: 14px;
+  font-size: 16px; line-height: 1.6; color: var(--slate-700);
+}
+.check-list li::before { content: '✓'; position: absolute; left: 0; top: 0; color: var(--gold-deep); font-weight: 700; }
+.sla-table { width: 100%; max-width: 760px; border-collapse: collapse; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 16px 48px rgba(15,45,82,0.05); }
+.sla-table th, .sla-table td { text-align: left; padding: 16px 20px; border-bottom: 1px solid rgba(15,45,82,0.08); font-size: 15px; color: var(--slate-700); vertical-align: top; }
+.sla-table th { font-weight: 700; color: var(--navy); width: 42%; }
+.sla-table tr:last-child th, .sla-table tr:last-child td { border-bottom: 0; }
+.integ-group { margin-bottom: 56px; }
+.integ-group:last-of-type { margin-bottom: 0; }
+.integ-group h2 { font-family: var(--serif); font-size: 30px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+.integ-group > p { font-size: 15px; color: var(--slate-500); margin-bottom: 22px; max-width: 640px; }
+.integ-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.integ-card {
+  background: white; border: 1px solid rgba(15,45,82,0.08); border-radius: 16px;
+  padding: 22px 22px 20px; box-shadow: 0 16px 48px rgba(15,45,82,0.05);
+}
+.integ-name { font-family: var(--serif); font-size: 24px; font-weight: 600; color: var(--navy); line-height: 1.2; margin-bottom: 6px; }
+.integ-how { font-size: 14px; line-height: 1.55; color: var(--slate-500); }
+.integ-tag {
+  display: inline-block; margin-top: 12px; padding: 3px 10px; border-radius: 999px;
+  font-size: 11px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase;
+  background: rgba(15,45,82,0.06); color: var(--navy);
+}
+.integ-note { margin-top: 56px; max-width: 760px; }
+.check-list a, .integ-note a, .plans-terms p a { color: var(--navy); font-weight: 600; text-decoration: underline; }
+@media (max-width: 640px) {
+  .sla-table th, .sla-table td { display: block; width: 100%; padding: 10px 18px; }
+  .sla-table th { padding-top: 16px; border-bottom: 0; }
+  .onboard-what { font-size: 20px; }
+}
+
 /* ── CTA BAND ─────────────────────────────── */
 .cta-band {
   background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
@@ -1355,6 +1404,8 @@ fieldset.field legend { padding: 0; }
         <a href="/team" data-link>Team</a>
         <a href="/pricing" data-link>Pricing</a>
         <a href="/faq" data-link>FAQ</a>
+        <a href="/implementation" data-link>Implementation</a>
+        <a href="/integrations" data-link>Integrations</a>
         <a href="/contact" data-link>Contact</a>
         <a href="https://hq.skillgrow.co.uk/book/tunde" target="_blank" rel="noopener">Book a Demo</a>
       </div>
@@ -2897,6 +2948,152 @@ const pages = {
     </section>
   `,
 
+  /* NOTE FOR SKILLGROW: only list a system here if the connection is real
+     today, and say HOW it connects. Anything we do by hand from an export
+     is labelled that way, not as an integration. */
+  integrations: () => {
+    const card = (name, how, tag) => `
+      <div class="integ-card">
+        <div class="integ-name">${name}</div>
+        <div class="integ-how">${how}</div>
+        ${tag ? `<span class="integ-tag">${tag}</span>` : ''}
+      </div>`;
+    const group = (heading, lead, cards) => `
+      <div class="integ-group reveal">
+        <h2>${heading}</h2>
+        <p>${lead}</p>
+        <div class="integ-grid">${cards.join('')}</div>
+      </div>`;
+    return `
+    <section class="hero product-hero">
+      <div class="container">
+        <div class="reveal">
+          <span class="hero-eyebrow">Integrations</span>
+          <h1 class="hero-h1">SkillGrow connects with the tools <span class="gold">your school already uses.</span></h1>
+          <p class="hero-sub">What connects to SkillGrow, what each connection does, and how it works.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        ${group('MIS systems', 'Import pupil, staff and class data from your management information system.', [
+          card('SIMS', 'Pupil and staff import via Wonde.', 'Via Wonde'),
+          card('Arbor', 'Pupil and staff import via Wonde.', 'Via Wonde'),
+          card('Bromcom', 'Pupil and staff import via Wonde.', 'Via Wonde'),
+          card('iSAMS', 'Pupil and staff import via Wonde.', 'Via Wonde'),
+        ])}
+        ${group('Safeguarding', 'Bring your safeguarding history with you when you move to DARE.', [
+          card('CPOMS', 'Safeguarding records migrated by our team from your export.', 'Migrated by our team'),
+          card('My Concern', 'Safeguarding records migrated by our team from your export.', 'Migrated by our team'),
+        ])}
+        ${group('Communication', 'Sign-in and messaging that fit how your school already works.', [
+          card('Microsoft 365', 'Staff sign in with their existing school Microsoft account.', 'Single sign-on'),
+          card('Google Workspace', 'Available on request — talk to us about your setup.', 'On request'),
+          card('Brevo', 'Transactional email from the platform.', 'Email delivery'),
+        ])}
+        ${group('Infrastructure', 'Where the platform runs. All platform data is stored in the UK.', [
+          card('AWS', 'Hosting and storage in eu-west-2 (London).', 'Hosting'),
+          card('Supabase', 'The platform database, with row-level security.', 'Database'),
+          card('Vercel', 'Application delivery.', 'Delivery'),
+        ])}
+
+        <div class="legal-note integ-note reveal">
+          <p style="margin-bottom:0"><strong>Don&rsquo;t see your system?</strong> <a href="/contact" data-link>Contact us</a> — we build integrations on request.</p>
+        </div>
+      </div>
+    </section>
+  `;
+  },
+
+  /* NOTE FOR SKILLGROW: procurement teams read this page as a commitment.
+     Every line must be something we deliver today. MIS import runs through
+     Wonde; CPOMS, My Concern and Provision Map data is migrated by our team
+     from the school's own export — there is no automated connector for them.
+     Update the SLA table the moment a figure changes, and link the status
+     page once it exists. */
+  implementation: () => `
+    <section class="hero product-hero">
+      <div class="container">
+        <div class="reveal">
+          <span class="hero-eyebrow">Implementation</span>
+          <h1 class="hero-h1">Up and running in days, <span class="gold">not months.</span></h1>
+          <p class="hero-sub">How a school gets started with SkillGrow: the onboarding timeline, training and support, data migration, and the service levels we work to.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">Onboarding timeline</div>
+          <h2 class="section-h2">From sign-up to live <span class="gold">in two weeks.</span></h2>
+        </div>
+        <ol class="onboard reveal">
+          <li><div class="onboard-when">Day 1</div><div class="onboard-what">Your school signs up at <a href="https://join.skillgrow.co.uk" target="_blank" rel="noopener">join.skillgrow.co.uk</a></div></li>
+          <li><div class="onboard-when">Days 1–3</div><div class="onboard-what">SkillGrow configures your school environment</div></li>
+          <li><div class="onboard-when">Days 3–5</div><div class="onboard-what">Staff accounts created and roles assigned</div></li>
+          <li><div class="onboard-when">Week 1</div><div class="onboard-what">Live training session with your team</div></li>
+          <li><div class="onboard-when">Week 2</div><div class="onboard-what">Platform live — pupils and parents connected</div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" style="background:white">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">Training and support</div>
+          <h2 class="section-h2">Every role trained, <span class="gold">nobody left guessing.</span></h2>
+        </div>
+        <ul class="check-list reveal">
+          <li>A live onboarding session for all staff</li>
+          <li>Role-specific guides for SENCOs, DSLs, teachers and admin staff</li>
+          <li>Video walkthroughs for every key workflow</li>
+          <li>A dedicated support contact throughout onboarding</li>
+          <li>Ongoing email support at <a href="mailto:hello@skillgrow.co.uk">hello@skillgrow.co.uk</a>, with a response within one working day</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">Data migration</div>
+          <h2 class="section-h2">Bring your records <span class="gold">with you.</span></h2>
+        </div>
+        <ul class="check-list reveal">
+          <li><strong>SIMS, Arbor, Bromcom and iSAMS</strong> — pupil, staff and class data imported through a connection to your MIS via <a href="https://www.wonde.com" target="_blank" rel="noopener">Wonde</a></li>
+          <li><strong>CPOMS, My Concern and Provision Map</strong> — migrated by our team from your export</li>
+          <li><strong>Spreadsheets</strong> — imported from CSV, including files saved from Excel</li>
+          <li>Your existing EHCP and pupil data is transferred securely and stored in the UK (AWS London). See our <a href="/security" data-link>security page</a>.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" style="background:white">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">SLA and uptime</div>
+          <h2 class="section-h2">The service levels <span class="gold">we work to.</span></h2>
+        </div>
+        <table class="sla-table reveal">
+          <tbody>
+            <tr><th scope="row">Target uptime</th><td>99.9%</td></tr>
+            <tr><th scope="row">Planned maintenance</th><td>Outside school hours only</td></tr>
+            <tr><th scope="row">P1 — platform down</th><td>Response within 1 hour</td></tr>
+            <tr><th scope="row">P2 — feature broken</th><td>Response within 4 hours</td></tr>
+            <tr><th scope="row">P3 — cosmetic issue</th><td>Response within 2 working days</td></tr>
+            <tr><th scope="row">Status page</th><td>Coming soon</td></tr>
+          </tbody>
+        </table>
+        <div class="plans-terms reveal">
+          <a href="https://hq.skillgrow.co.uk/book/tunde" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a Demo →</a>
+          <p>Questions about getting started? See <a href="/integrations" data-link>integrations</a>, the <a href="/faq" data-link>FAQ</a>, or <a href="/contact" data-link>contact us</a>.</p>
+        </div>
+      </div>
+    </section>
+  `,
+
   notfound: () => `
     <section class="hero product-hero">
       <div class="container">
@@ -3108,6 +3305,8 @@ const routes = {
   'terms': 'terms',
   'dpa': 'dpa',
   'accessibility': 'accessibility',
+  'integrations': 'integrations',
+  'implementation': 'implementation',
 };
 
 const titles = {
@@ -3127,6 +3326,8 @@ const titles = {
   terms: 'Terms of Service — SkillGrow',
   dpa: 'Data Processing Agreement — SkillGrow',
   accessibility: 'Accessibility Statement — SkillGrow',
+  integrations: 'Integrations — SkillGrow',
+  implementation: 'Implementation — SkillGrow',
   notfound: 'Page not found — SkillGrow',
 };
 
