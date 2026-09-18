@@ -998,6 +998,105 @@ fieldset.field legend { padding: 0; }
   margin-bottom: 8px;
 }
 
+/* ── SHOWCASE (inline-SVG product mockups) ─ */
+.showcase { background: white; }
+.mockup-browser, .mockup-phone { margin: 0; }
+.mockup-svg { display: block; width: 100%; height: auto; }
+.mockup-svg text { font-family: var(--sans); }
+.mockup-svg .mk-serif { font-family: var(--serif); }
+.mockup-browser .mockup-svg {
+  border-radius: 14px;
+  box-shadow: 0 32px 80px rgba(15,45,82,0.16), 0 0 0 1px rgba(15,45,82,0.08);
+}
+.mockup-phone .mockup-svg {
+  max-width: 340px; margin: 0 auto;
+  filter: drop-shadow(0 28px 48px rgba(15,45,82,0.22));
+}
+.mockup-caption {
+  display: flex; justify-content: space-between; align-items: baseline;
+  flex-wrap: wrap; gap: 6px 16px;
+  margin-top: 22px;
+  font-size: 14px;
+}
+.mockup-caption strong { color: var(--navy); font-weight: 700; }
+.mockup-caption span { color: var(--slate-500); font-size: 12px; letter-spacing: 0.4px; }
+.mockup-phone .mockup-caption { justify-content: center; text-align: center; flex-direction: column; align-items: center; }
+.showcase-cta { margin-top: 36px; text-align: center; }
+.mockup-hint { display: none; font-size: 12px; font-weight: 700; color: var(--gold-deep); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+.showcase-cta a {
+  font-family: var(--serif); font-size: 26px; font-weight: 600;
+  color: var(--navy); border-bottom: 2px solid var(--gold);
+  transition: color .2s;
+}
+.showcase-cta a:hover { color: var(--gold-deep); }
+.showcase-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 380px);
+  gap: 72px; align-items: center;
+}
+.showcase-points { list-style: none; }
+.showcase-points li {
+  position: relative;
+  padding: 0 0 16px 30px;
+  font-size: 16px; line-height: 1.6;
+  color: var(--slate-700);
+}
+.showcase-points li::before {
+  content: ''; position: absolute; left: 0; top: 7px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--gold); box-shadow: 0 0 0 4px rgba(252,211,77,0.2);
+}
+
+/* ── HOW IT WORKS ─────────────────────────── */
+.how { background: var(--ivory); border-top: 1px solid rgba(15,45,82,0.08); }
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  position: relative;
+  counter-reset: how;
+}
+.how-grid::before {
+  content: ''; position: absolute;
+  top: 28px; left: 16%; right: 16%; height: 2px;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-deep) 100%);
+  opacity: 0.45;
+}
+.how-step { position: relative; text-align: center; padding: 0 12px; }
+.how-num {
+  width: 56px; height: 56px; margin: 0 auto 24px;
+  border-radius: 50%;
+  background: var(--navy); color: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-size: 26px; font-weight: 600; font-style: italic;
+  box-shadow: 0 0 0 8px var(--ivory);
+  position: relative;
+}
+.how-title {
+  font-family: var(--serif);
+  font-size: 26px; font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -0.3px; line-height: 1.2;
+  margin-bottom: 12px;
+}
+.how-body { font-size: 15px; line-height: 1.7; color: var(--slate-500); max-width: 320px; margin: 0 auto; }
+.how-body a { color: var(--navy); font-weight: 700; border-bottom: 1px solid var(--gold-deep); }
+
+@media (max-width: 900px) {
+  .showcase-split { grid-template-columns: 1fr; gap: 48px; }
+  .how-grid { grid-template-columns: 1fr; gap: 40px; }
+  .how-grid::before { display: none; }
+}
+@media (max-width: 720px) {
+  /* A 1200-wide screen shrunk to a phone is ~3px text. Keep it legible and
+     let it scroll sideways inside its own frame — never the page. */
+  .mockup-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -24px; padding: 0 24px 24px; }
+  .mockup-browser .mockup-svg { width: 760px; max-width: none; }
+  .mockup-hint { display: block; }
+  .mockup-caption { flex-direction: column; }
+  .showcase-cta a { font-size: 22px; }
+}
+
 /* ── DIFFERENTIATOR BAND ──────────────────── */
 .differentiator { background: var(--navy); padding: 64px 0; }
 .differentiator-inner { max-width: 900px; }
@@ -1352,6 +1451,446 @@ function ctaAlt(tone = 'dark') {
     </div>`;
 }
 
+/* ─── Product mockups ─────────────────────── */
+/* Designed inline-SVG screens, standing in until real screenshots exist.
+   Every figure, name and school below is SAMPLE DATA — each mockup renders
+   with an "Illustrative mockup · sample data" caption, and must keep it. */
+const MK = {
+  navy: '#0F2D52', deep: '#020B18', mid: '#1B4F8A',
+  gold: '#FCD34D', goldDeep: '#F59E0B', goldTint: '#FEF3C7',
+  ivory: '#FAFAF7', line: '#E5E9F0', s100: '#F1F5F9', s300: '#CBD5E1',
+  s500: '#64748B', s700: '#334155', white: '#FFFFFF',
+  dim: 'rgba(255,255,255,0.6)', faint: 'rgba(255,255,255,0.08)',
+};
+
+/* Tiny SVG builders — keep the screens below readable as layout, not markup. */
+function T(x, y, s, size = 13, fill = MK.s700, weight = 500, extra = '') {
+  return `<text x="${x}" y="${y}" font-size="${size}" fill="${fill}" font-weight="${weight}" ${extra}>${s}</text>`;
+}
+const END = 'text-anchor="end"', MID = 'text-anchor="middle"', SERIF = 'class="mk-serif"';
+function R(x, y, w, h, fill, rx = 0, extra = '') {
+  return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${fill}" ${extra}/>`;
+}
+function card(x, y, w, h, fill = MK.white) {
+  return R(x, y, w, h, fill, 12, `stroke="${MK.line}"`);
+}
+/* Pill width is estimated from the label; fine for the short labels used here. */
+function pill(x, y, label, bg, fg, size = 11) {
+  const w = Math.round(label.length * size * 0.62 + 18);
+  return R(x, y, w, 22, bg, 11) + T(x + w / 2, y + 15, label, size, fg, 700, MID);
+}
+function bar(x, y, w, pct, fill = MK.goldDeep, track = MK.s100, h = 8) {
+  return R(x, y, w, h, track, h / 2) + R(x, y, Math.round(w * pct), h, fill, h / 2);
+}
+function avatar(cx, cy, r, initials, bg = MK.s100, fg = MK.navy) {
+  return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${bg}"/>` + T(cx, cy + r * 0.3, initials, r * 0.75, fg, 700, MID);
+}
+
+function mockSvg(viewW, viewH, label, body) {
+  return `<svg class="mockup-svg" viewBox="0 0 ${viewW} ${viewH}" role="img" aria-label="${label} (illustrative mockup, sample data)" xmlns="http://www.w3.org/2000/svg"><title>${label}</title>${body}</svg>`;
+}
+
+/* Desktop screen inside a neutral browser frame (1200 wide). */
+function browserFrame(label, url, h, body) {
+  return mockSvg(1200, h + 40, label, `
+    ${R(0, 0, 1200, h + 40, MK.ivory)}
+    ${R(0, 0, 1200, 40, '#E8ECF2')}
+    <circle cx="22" cy="20" r="6" fill="${MK.s300}"/><circle cx="42" cy="20" r="6" fill="${MK.s300}"/><circle cx="62" cy="20" r="6" fill="${MK.s300}"/>
+    ${R(330, 9, 540, 22, MK.white, 11)}
+    ${T(600, 25, `&#128274; ${url}`, 12, MK.s500, 500, MID)}
+    <g transform="translate(0,40)">${body}</g>`);
+}
+
+/* Navy product bar — the SkillGrow wordmark sits where it does in the real apps. */
+function appBar(product, school, initials) {
+  return `
+    ${R(0, 0, 1200, 56, MK.navy)}
+    ${T(28, 37, 'SkillGrow', 24, MK.gold, 600, SERIF)}
+    ${R(146, 18, 1, 20, 'rgba(255,255,255,0.2)')}
+    ${T(164, 34, product, 14, 'rgba(255,255,255,0.88)', 600)}
+    ${T(1122, 34, school, 13, MK.dim, 500, END)}
+    ${avatar(1156, 28, 16, initials, MK.gold, MK.navy)}`;
+}
+
+/* Phone (400 × 820). `id` keeps the clip path unique on the page. */
+function phoneFrame(label, id, clock, body) {
+  return mockSvg(400, 820, label, `
+    <defs><clipPath id="scr-${id}"><rect x="16" y="16" width="368" height="788" rx="38"/></clipPath></defs>
+    ${R(0, 0, 400, 820, MK.deep, 52)}
+    <g clip-path="url(#scr-${id})">
+      ${R(16, 16, 368, 788, MK.ivory)}
+      ${body}
+      ${T(44, 48, clock, 14, MK.white, 700)}
+      ${R(330, 38, 24, 11, 'none', 3, `stroke="${MK.white}" stroke-width="1.5"`)}${R(333, 41, 16, 5, MK.white, 1)}
+    </g>
+    ${R(150, 26, 100, 26, MK.deep, 13)}
+    ${R(140, 786, 120, 5, MK.s300, 3)}`);
+}
+
+function tabBar(tabs, active) {
+  const w = 368 / tabs.length;
+  return R(16, 728, 368, 76, MK.white, 0, `stroke="${MK.line}"`) + tabs.map((t, i) => {
+    const cx = 16 + w * i + w / 2, on = i === active;
+    return `<circle cx="${cx}" cy="752" r="${on ? 5 : 4}" fill="${on ? MK.goldDeep : MK.s300}"/>`
+      + T(cx, 776, t, 11, on ? MK.navy : MK.s500, on ? 700 : 500, MID);
+  }).join('');
+}
+
+/* HOME — DARE SEN OS headteacher dashboard: pupils, EHCP progress, safeguarding. */
+function mockHeadDashboard() {
+  const kpis = [
+    ['ATTENDANCE TODAY', '94.2%', '+1.3 on last week'],
+    ['PUPILS ON ROLL', '128', '86 with an EHCP'],
+    ['OPEN CONCERNS', '3', 'none overdue'],
+    ['EHCP REVIEWS DUE', '5', 'next 30 days'],
+  ];
+  const pupils = [
+    ['JM', 'Jayden M.', 'Willow · Year 2', 'EHCP', 0.97],
+    ['AO', 'Amara O.', 'Oak · Year 4', 'EHCP', 0.93],
+    ['LT', 'Leo T.', 'Oak · Year 4', 'SEN Support', 0.88],
+    ['PS', 'Priya S.', 'Cedar · Year 6', 'EHCP', 0.99],
+    ['TK', 'Tomasz K.', 'Willow · Year 3', 'EHCP', 0.91],
+    ['RH', 'Ruby H.', 'Cedar · Year 5', 'SEN Support', 0.95],
+  ];
+  const areas = [
+    ['Communication &amp; interaction', 0.72], ['Cognition &amp; learning', 0.64],
+    ['Social, emotional &amp; mental health', 0.58], ['Sensory &amp; physical', 0.81],
+  ];
+  const concerns = [
+    ['Behaviour · playground', 'Logged 10:42 by TA · Oak', 'Acknowledged', MK.gold],
+    ['Medical · first aid', 'Logged 11:05 · Willow', 'Actioned', MK.s300],
+    ['Wellbeing · check-in', 'Logged 13:20 · Cedar', 'With DSL', MK.goldDeep],
+  ];
+  const week = [18, 30, 12, 0, 0];
+  return browserFrame('DARE SEN OS — Headteacher dashboard', 'dare.skillgrow.co.uk', 640, `
+    ${appBar('DARE SEN OS', 'Oakfield School', 'HT')}
+    ${T(32, 100, 'Headteacher dashboard', 28, MK.navy, 600, SERIF)}
+    ${T(32, 124, 'Wednesday 14 October · Oakfield School', 13, MK.s500)}
+    <circle cx="1034" cy="96" r="4" fill="#16A34A"/>${T(1168, 100, 'Live · updated 09:14', 12, MK.s500, 600, END)}
+
+    ${kpis.map(([l, v, d], i) => {
+      const x = 32 + i * 288;
+      return card(x, 144, 272, 72) + T(x + 18, 170, l, 10, MK.s500, 700, 'letter-spacing="1.2"')
+        + T(x + 18, 200, v, 24, MK.navy, 700) + T(x + 254, 200, d, 11, MK.s500, 500, END);
+    }).join('')}
+
+    ${card(32, 232, 420, 384)}
+    ${T(52, 262, 'Pupils', 16, MK.navy, 700)}${T(432, 262, 'View all 128 &#8594;', 12, MK.goldDeep, 700, END)}
+    ${R(32, 278, 420, 1, MK.line)}
+    ${pupils.map(([ini, n, c, tag, att], i) => {
+      const y = 290 + i * 52, ehcp = tag === 'EHCP';
+      return avatar(68, y + 24, 16, ini, i === 0 ? MK.navy : MK.s100, i === 0 ? MK.gold : MK.navy)
+        + T(96, y + 20, n, 14, MK.navy, 600) + T(96, y + 38, c, 12, MK.s500)
+        + pill(238, y + 13, tag, ehcp ? MK.navy : MK.s100, ehcp ? MK.gold : MK.s700, 10)
+        + bar(338, y + 21, 56, att) + T(432, y + 29, `${Math.round(att * 100)}%`, 12, MK.s700, 600, END);
+    }).join('')}
+
+    ${card(468, 232, 352, 384)}
+    ${T(488, 262, 'EHCP outcomes', 16, MK.navy, 700)}${T(800, 262, 'Autumn term', 12, MK.s500, 500, END)}
+    ${R(468, 278, 352, 1, MK.line)}
+    ${areas.map(([a, p], i) => {
+      const y = 308 + i * 48;
+      return T(488, y, a, 12, MK.s700, 600) + T(800, y, `${Math.round(p * 100)}%`, 12, MK.navy, 700, END) + bar(488, y + 10, 312, p);
+    }).join('')}
+    ${R(488, 492, 312, 1, MK.line)}
+    ${T(488, 518, 'ANNUAL REVIEWS DUE', 10, MK.s500, 700, 'letter-spacing="1.2"')}
+    ${[['Amara O.', '21 Oct'], ['Tomasz K.', '4 Nov'], ['Jayden M.', '18 Nov']].map(([n, d], i) =>
+      T(488, 546 + i * 26, n, 13, MK.navy, 600) + T(800, 546 + i * 26, d, 12, MK.s500, 600, END)).join('')}
+
+    ${R(836, 232, 332, 384, MK.navy, 12)}
+    ${T(856, 262, 'Safeguarding', 16, MK.white, 700)}${pill(1094, 247, 'Today', MK.faint, MK.gold, 10)}
+    ${T(856, 322, '3', 52, MK.gold, 600, SERIF)}${T(890, 316, 'open concerns', 15, MK.white, 600)}
+    ${T(856, 350, 'All acknowledged by the DSL within 5 minutes', 12, MK.dim)}
+    ${concerns.map(([t, m, s, dot], i) => {
+      const y = 364 + i * 54;
+      return R(856, y, 292, 46, MK.faint, 8) + `<circle cx="873" cy="${y + 23}" r="5" fill="${dot}"/>`
+        + T(888, y + 20, t, 13, MK.white, 600) + T(888, y + 36, m, 11, 'rgba(255,255,255,0.5)')
+        + T(1136, y + 28, s, 11, MK.gold, 700, END);
+    }).join('')}
+    ${T(856, 546, 'THIS WEEK', 10, 'rgba(255,255,255,0.5)', 700, 'letter-spacing="1.2"')}
+    ${week.map((h, i) => R(856 + i * 58, 590 - Math.max(h, 4), 40, Math.max(h, 4), i === 2 ? MK.gold : h ? 'rgba(255,255,255,0.18)' : MK.faint, 4)
+      + T(876 + i * 58, 606, 'MTWTF'[i], 10, MK.dim, 600, MID)).join('')}
+  `);
+}
+
+/* /sen — safeguarding concern log, with the chain from playground to parent. */
+function mockSenConcernLog() {
+  const status = {
+    'Acknowledged': [MK.goldTint, '#92400E'], 'Actioned': ['#E0E7F1', MK.navy],
+    'With DSL': [MK.gold, MK.navy], 'Closed': [MK.s100, MK.s500],
+  };
+  const rows = [
+    ['10:42', 'Jayden M.', 'Behaviour · playground', 'DSL', 'Acknowledged'],
+    ['11:05', 'Tomasz K.', 'Medical · first aid', 'School nurse', 'Actioned'],
+    ['13:20', 'Ruby H.', 'Wellbeing · check-in', 'DSL', 'With DSL'],
+    ['Mon 14:10', 'Leo T.', 'Attendance pattern', 'Deputy DSL', 'Closed'],
+    ['Mon 09:30', 'Amara O.', 'Behaviour · classroom', 'DSL', 'Closed'],
+    ['Fri 15:45', 'Priya S.', 'Online safety', 'DSL', 'Closed'],
+  ];
+  const chain = [
+    ['10:42', 'Logged by TA on the playground'],
+    ['10:42', 'Routed to the DSL by name'],
+    ['10:47', 'Acknowledged by the DSL'],
+    ['10:51', 'Linked to EHCP outcome: Communication'],
+    ['15:10', 'Family informed via Parent Portal'],
+  ];
+  return browserFrame('DARE SEN OS — Safeguarding concern log', 'dare.skillgrow.co.uk', 560, `
+    ${appBar('DARE SEN OS', 'Oakfield School', 'DS')}
+    ${T(32, 100, 'Concern log', 28, MK.navy, 600, SERIF)}
+    ${T(32, 124, 'Safeguarding · visible to DSL and deputies only', 13, MK.s500)}
+    ${R(990, 76, 178, 38, MK.gold, 10)}${T(1079, 100, '+ Log a concern', 14, MK.navy, 700, MID)}
+
+    ${card(32, 144, 700, 392)}
+    ${[['All (14)', true], ['Open (3)'], ['With DSL (1)'], ['Closed (11)']].map(([l, on], i) =>
+      pill([52, 134, 216, 326][i], 160, l, on ? MK.navy : MK.s100, on ? MK.gold : MK.s700, 11)).join('')}
+    ${R(32, 198, 700, 32, MK.s100)}
+    ${[['TIME', 52], ['PUPIL', 140], ['CATEGORY', 262], ['ROUTED TO', 452], ['STATUS', 580]].map(([h, x]) =>
+      T(x, 219, h, 10, MK.s500, 700, 'letter-spacing="1.2"')).join('')}
+    ${rows.map(([t, p, c, to, s], i) => {
+      const y = 230 + i * 50, sel = i === 0, [bg, fg] = status[s];
+      return (sel ? R(33, y, 698, 50, '#FFFBEB') + R(33, y, 4, 50, MK.goldDeep) : '')
+        + R(32, y + 50, 700, 1, MK.line)
+        + T(52, y + 30, t, 13, MK.s500, 600) + T(140, y + 30, p, 13, MK.navy, 700)
+        + T(262, y + 30, c, 13, MK.s700) + T(452, y + 30, to, 13, MK.s700)
+        + pill(580, y + 14, s, bg, fg, 10);
+    }).join('')}
+
+    ${card(748, 144, 420, 392)}
+    ${T(772, 176, 'CONCERN · TODAY 10:42', 10, MK.goldDeep, 700, 'letter-spacing="1.2"')}
+    ${T(772, 206, 'Jayden M. · Willow, Year 2', 22, MK.navy, 600, SERIF)}
+    ${pill(772, 220, 'EHCP', MK.navy, MK.gold, 10)}${pill(830, 220, 'Uses PECS', MK.s100, MK.s700, 10)}${pill(922, 220, 'Sensory profile', MK.s100, MK.s700, 10)}
+    ${R(784, 272, 2, 196, MK.line)}
+    ${chain.map(([t, s], i) => {
+      const y = 272 + i * 48, last = i === chain.length - 1;
+      return `<circle cx="785" cy="${y}" r="7" fill="${last ? MK.gold : MK.navy}" stroke="${MK.white}" stroke-width="3"/>`
+        + T(806, y + 5, t, 12, MK.s500, 700) + T(852, y + 5, s, 13, MK.navy, 600);
+    }).join('')}
+    ${R(772, 496, 372, 1, MK.line)}
+    ${T(772, 520, 'Audit trail · 5 entries · every action timestamped', 12, MK.s500, 600)}
+  `);
+}
+
+/* /mainstream — ISP tracker on the assess, plan, do, review cycle. */
+function mockIspTracker() {
+  const steps = [
+    ['Assess', 'Needs identified · 2 Sep', 'done'],
+    ['Plan', '3 targets agreed with family', 'done'],
+    ['Do', 'In progress · week 4 of 6', 'now'],
+    ['Review', 'Due 12 November', 'next'],
+  ];
+  const targets = [
+    ['Reads a 100-word passage with 90% accuracy', 'Daily 10-minute precision teaching with TA', 0.7, 'On track', 9],
+    ['Starts tasks independently using a now/next board', 'Now/next board at desk; check-in at 9:05', 0.45, 'Some progress', 6],
+    ['Contributes to a small-group discussion twice a week', 'Structured talk group, Tuesday and Thursday', 0.8, 'On track', 8],
+  ];
+  const provision = [
+    ['Precision teaching', '30 min daily · TA', '£1,140'],
+    ['Speech &amp; language group', '2 × 20 min weekly', '£620'],
+    ['Now/next board', 'Classroom resource', '£25'],
+  ];
+  const sw = 278, sx = i => 32 + i * (sw + 8);
+  const chevron = (x, first) => `${x},150 ${x + sw - 20},150 ${x + sw},188 ${x + sw - 20},226 ${x},226 ${first ? x : x + 20},188`;
+  return browserFrame('DARE Mainstream — ISP tracker', 'mainstream.skillgrow.co.uk', 600, `
+    ${appBar('DARE Mainstream', 'Northgate Primary', 'SC')}
+    ${T(32, 100, 'Individual Support Plan', 28, MK.navy, 600, SERIF)}
+    ${T(32, 124, 'Ruby H. · Year 5 · Cedar class · Targeted support', 13, MK.s500)}
+    ${pill(946, 84, 'Cycle 2 of 4', MK.s100, MK.s700, 11)}${pill(1068, 84, 'ISP-ready', MK.navy, MK.gold, 11)}
+
+    ${steps.map(([n, s, st], i) => {
+      const x = sx(i), fill = st === 'done' ? MK.navy : st === 'now' ? MK.gold : MK.white;
+      const fg = st === 'done' ? MK.white : MK.navy, sub = st === 'done' ? MK.dim : st === 'now' ? MK.navy : MK.s500;
+      return `<polygon points="${chevron(x, i === 0)}" fill="${fill}" ${st === 'next' ? `stroke="${MK.s300}"` : ''}/>`
+        + T(x + (i === 0 ? 24 : 40), 182, (st === 'done' ? '&#10003; ' : '') + n, 17, fg, 700)
+        + T(x + (i === 0 ? 24 : 40), 204, s, 12, sub, 500);
+    }).join('')}
+
+    ${card(32, 248, 700, 328)}
+    ${T(52, 278, 'Targets', 16, MK.navy, 700)}${T(712, 278, '23 evidence entries this cycle', 12, MK.s500, 500, END)}
+    ${R(32, 294, 700, 1, MK.line)}
+    ${targets.map(([t, s, p, rag, ev], i) => {
+      const y = 306 + i * 88, ok = rag === 'On track';
+      return T(52, y + 22, t, 14, MK.navy, 600) + T(52, y + 42, s, 12, MK.s500)
+        + bar(52, y + 56, 480, p, ok ? MK.navy : MK.goldDeep)
+        + pill(552, y + 49, rag, ok ? '#E0E7F1' : MK.goldTint, ok ? MK.navy : '#92400E', 10)
+        + T(712, y + 64, `${ev} entries`, 11, MK.s500, 600, END)
+        + (i < 2 ? R(52, y + 82, 660, 1, MK.line) : '');
+    }).join('')}
+
+    ${card(748, 248, 420, 190)}
+    ${T(768, 278, 'Provision map', 16, MK.navy, 700)}${T(1148, 278, 'This term', 12, MK.s500, 500, END)}
+    ${provision.map(([n, d, c], i) => {
+      const y = 304 + i * 36;
+      return T(768, y + 12, n, 13, MK.navy, 600) + T(768, y + 28, d, 11, MK.s500) + T(1148, y + 20, c, 13, MK.navy, 700, END);
+    }).join('')}
+    ${R(768, 414, 380, 1, MK.line)}${T(768, 432, 'Total', 12, MK.s500, 700)}${T(1148, 432, '£1,785', 14, MK.navy, 700, END)}
+
+    ${R(748, 454, 420, 122, MK.navy, 12)}
+    ${T(768, 482, 'PARENT VOICE', 10, MK.gold, 700, 'letter-spacing="1.2"')}
+    ${T(768, 514, '&#8220;She&#8217;s using the now/next board', 17, MK.white, 500, SERIF)}
+    ${T(768, 536, 'at home too &#8212; mornings are calmer.&#8221;', 17, MK.white, 500, SERIF)}
+    ${T(768, 560, 'Added via Parent Portal · 30 Sep', 11, MK.dim, 600)}
+  `);
+}
+
+/* /trust — cross-school KPI dashboard. */
+function mockTrustKpis() {
+  const kpis = [
+    ['ATTENDANCE', '93.8%', '+0.6 on last term'], ['OPEN CONCERNS', '11', 'none overdue'],
+    ['EHCP REVIEWS ON TIME', '96%', 'target 100%'], ['SEND REGISTER', '17.4%', 'of 2,940 pupils'],
+  ];
+  const schools = [
+    ['Oakfield School', 'Special', '128', 0.951, '3', '100%'],
+    ['Northgate Primary', 'Primary', '412', 0.946, '2', '95%'],
+    ['St Anne&#8217;s CofE Primary', 'Primary', '386', 0.939, '1', '100%'],
+    ['Riverside Academy', 'Secondary', '1,674', 0.928, '4', '92%'],
+    ['Hillcrest Primary', 'Primary', '340', 0.942, '1', '100%'],
+  ];
+  const cats = [['Behaviour', 34], ['Wellbeing', 22], ['Attendance', 18], ['Online safety', 9], ['Medical', 7]];
+  return browserFrame('Trust Portal — Cross-school KPI dashboard', 'trust.skillgrow.co.uk', 600, `
+    ${appBar('Trust Portal', 'Northgate Learning Trust', 'CE')}
+    ${T(32, 100, 'Trust overview', 28, MK.navy, 600, SERIF)}
+    ${T(32, 124, 'Northgate Learning Trust · 5 schools · 2,940 pupils', 13, MK.s500)}
+    ${R(958, 80, 210, 34, MK.s100, 17)}${R(1062, 83, 103, 28, MK.navy, 14)}
+    ${T(1010, 102, 'This week', 12, MK.s700, 600, MID)}${T(1113, 102, 'This term', 12, MK.gold, 700, MID)}
+
+    ${kpis.map(([l, v, d], i) => {
+      const x = 32 + i * 288;
+      return card(x, 144, 272, 72) + T(x + 18, 170, l, 10, MK.s500, 700, 'letter-spacing="1.2"')
+        + T(x + 18, 200, v, 24, MK.navy, 700) + T(x + 254, 200, d, 11, MK.s500, 500, END);
+    }).join('')}
+
+    ${card(32, 232, 700, 344)}
+    ${T(52, 262, 'Schools', 16, MK.navy, 700)}${T(712, 262, 'Select a school to drill down', 12, MK.s500, 500, END)}
+    ${R(32, 278, 700, 30, MK.s100)}
+    ${[['SCHOOL', 52], ['PUPILS', 300], ['ATTENDANCE', 380], ['CONCERNS', 560], ['REVIEWS', 648]].map(([h, x]) =>
+      T(x, 298, h, 10, MK.s500, 700, 'letter-spacing="1.2"')).join('')}
+    ${schools.map(([n, ph, p, att, c, rev], i) => {
+      const y = 308 + i * 52, low = att < 0.935;
+      return R(32, y + 52, 700, 1, MK.line)
+        + T(52, y + 24, n, 14, MK.navy, 600) + T(52, y + 41, ph, 11, MK.s500)
+        + T(300, y + 31, p, 13, MK.s700, 600)
+        + bar(380, y + 24, 110, (att - 0.85) / 0.15, low ? MK.goldDeep : MK.navy)
+        + T(540, y + 31, `${(att * 100).toFixed(1)}%`, 12, MK.s700, 600, END)
+        + T(580, y + 31, c, 13, MK.navy, 700, MID)
+        + T(712, y + 31, rev, 13, rev === '100%' ? MK.navy : '#B45309', 700, END);
+    }).join('')}
+
+    ${card(748, 232, 420, 214)}
+    ${T(768, 262, 'Concerns by category', 16, MK.navy, 700)}${T(1148, 262, 'Trust-wide', 12, MK.s500, 500, END)}
+    ${cats.map(([c, n], i) => {
+      const y = 286 + i * 30;
+      return T(768, y + 13, c, 12, MK.s700, 600) + bar(880, y + 5, 220, n / 34, i === 0 ? MK.navy : MK.mid, MK.s100, 10)
+        + T(1148, y + 14, n, 12, MK.navy, 700, END);
+    }).join('')}
+
+    ${R(748, 462, 420, 114, MK.goldTint, 12, `stroke="${MK.goldDeep}"`)}
+    ${T(768, 490, 'PATTERN SPOTTED', 10, '#92400E', 700, 'letter-spacing="1.2"')}
+    ${T(768, 516, 'Riverside: attendance-pattern concerns', 15, MK.navy, 700)}
+    ${T(768, 536, 'up 40% on last term, mostly Year 9.', 15, MK.navy, 700)}
+    ${T(768, 560, 'Open the Riverside view &#8594;', 12, '#92400E', 700)}
+  `);
+}
+
+/* /parent — Parent Portal on a phone. */
+function mockParentPhone() {
+  return phoneFrame('Parent Portal — Today on mobile', 'parent', '15:42', `
+    ${R(16, 16, 368, 176, MK.navy)}
+    ${T(44, 90, 'SkillGrow', 20, MK.gold, 600, SERIF)}${avatar(346, 84, 16, 'AM', MK.gold, MK.navy)}
+    ${T(44, 138, 'Jayden&#8217;s day', 32, MK.white, 600, SERIF)}
+    ${T(44, 164, 'Willow class · Wednesday 14 October', 13, MK.dim, 500)}
+
+    ${card(32, 208, 336, 250)}
+    ${R(44, 220, 312, 118, '#DCE6F2', 10)}
+    <circle cx="300" cy="258" r="18" fill="${MK.gold}"/>
+    <path d="M44 338 L44 310 Q110 270 170 300 T300 292 Q330 286 356 300 L356 338 Z" fill="${MK.mid}" opacity="0.55"/>
+    <path d="M44 338 L44 322 Q130 296 220 318 T356 314 L356 338 Z" fill="${MK.navy}" opacity="0.8"/>
+    ${pill(56, 232, 'Milestone', MK.gold, MK.navy, 10)}
+    ${T(44, 364, 'Sensory garden · 11:20', 12, MK.s500, 600)}
+    ${T(44, 388, 'Asked for &#8220;more&#8221; with his PECS', 15, MK.navy, 700)}
+    ${T(44, 408, 'card &#8212; twice, without a prompt!', 15, MK.navy, 700)}
+    ${T(44, 438, 'From Ms Reid, class TA', 12, MK.s500)}
+
+    ${card(32, 474, 336, 130)}
+    ${T(48, 502, 'His plan this term', 15, MK.navy, 700)}${T(352, 502, 'See all', 12, MK.goldDeep, 700, END)}
+    ${[['Communication', 0.72], ['Independence', 0.58], ['Getting along with others', 0.66]].map(([a, p], i) =>
+      T(48, 528 + i * 26, a, 12, MK.s700, 600) + bar(232, 520 + i * 26, 120, p)).join('')}
+
+    ${card(32, 620, 336, 92)}
+    ${avatar(66, 666, 18, 'CT', MK.navy, MK.gold)}
+    ${T(94, 658, 'Class teacher', 14, MK.navy, 700)}${T(352, 658, '14:02', 11, MK.s500, 500, END)}
+    ${T(94, 678, 'Swimming kit tomorrow please!', 13, MK.s700)}
+    <circle cx="346" cy="678" r="5" fill="${MK.goldDeep}"/>
+
+    ${tabBar(['Today', 'Plan', 'Messages', 'Profile'], 0)}
+  `);
+}
+
+/* /staff-pwa — personal space: clock in/out, week, CPD. */
+function mockStaffPhone() {
+  const hrs = [7.5, 7.5, 7.25, 0, 0];
+  return phoneFrame('Staff PWA — Clock in and out', 'staff', '08:02', `
+    ${R(16, 16, 368, 150, MK.navy)}
+    ${T(44, 90, 'SkillGrow', 20, MK.gold, 600, SERIF)}${avatar(346, 84, 16, 'SC', MK.gold, MK.navy)}
+    ${T(44, 134, 'My space', 30, MK.white, 600, SERIF)}
+    ${T(44, 156, 'Sam C. · Teaching assistant', 13, MK.dim, 500)}
+
+    ${card(32, 182, 336, 214)}
+    ${T(200, 214, 'THURSDAY 15 OCTOBER', 10, MK.s500, 700, `${MID} letter-spacing="1.2"`)}
+    ${T(200, 276, '08:02', 60, MK.navy, 600, `${MID} ${SERIF}`)}
+    <circle cx="124" cy="304" r="5" fill="#16A34A"/>${T(136, 309, 'Clocked in at 07:58', 13, MK.s700, 600)}
+    ${R(52, 328, 296, 48, MK.gold, 12)}${T(200, 358, 'Clock out', 17, MK.navy, 700, MID)}
+
+    ${card(32, 412, 336, 150)}
+    ${T(48, 440, 'This week', 15, MK.navy, 700)}${T(352, 440, '22h 15m of 37h 30m', 12, MK.s500, 600, END)}
+    ${hrs.map((h, i) => {
+      const x = 62 + i * 60, bh = Math.max(4, h * 9), today = i === 3;
+      return R(x, 532 - bh, 36, bh, today ? MK.gold : h ? MK.navy : MK.s100, 6)
+        + T(x + 18, 550, 'MTWTF'[i], 11, today ? MK.navy : MK.s500, today ? 700 : 500, MID);
+    }).join('')}
+
+    ${card(32, 578, 336, 136)}
+    ${T(48, 606, 'Training &amp; CPD', 15, MK.navy, 700)}${T(352, 606, '6.5h this year', 12, MK.s500, 600, END)}
+    ${T(48, 634, 'Safeguarding Level 1', 13, MK.navy, 600)}${pill(252, 620, '42 days left', MK.goldTint, '#92400E', 10)}
+    ${bar(48, 644, 304, 0.88, MK.goldDeep)}
+    ${T(48, 680, 'Team Teach', 13, MK.navy, 600)}${T(352, 680, 'Valid to Mar 2027', 12, MK.s500, 600, END)}
+    ${bar(48, 690, 304, 0.4, MK.navy)}
+
+    ${tabBar(['Home', 'Time', 'Training', 'Me'], 0)}
+  `);
+}
+
+/* Section wrappers. `device` picks the layout: a full-width browser screen,
+   or a phone beside explanatory points. */
+function mockupCaption(label) {
+  return `<div class="mockup-caption"><strong>${label}</strong><span>Illustrative mockup · sample data</span></div>`;
+}
+function mockupSection({ eyebrow, titleA, titleB, lead, label, svg, device = 'browser', points = [], after = '' }) {
+  if (device === 'phone') return `
+    <section class="section showcase">
+      <div class="container showcase-split">
+        <div class="reveal">
+          <div class="section-eyebrow">${eyebrow}</div>
+          <h2 class="section-h2">${titleA} <span class="gold">${titleB}</span></h2>
+          <p class="section-lead">${lead}</p>
+          <ul class="showcase-points">${points.map(p => `<li>${p}</li>`).join('')}</ul>
+        </div>
+        <figure class="mockup-phone reveal">${svg}${mockupCaption(label)}</figure>
+      </div>
+    </section>`;
+  return `
+    <section class="section showcase">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">${eyebrow}</div>
+          <h2 class="section-h2">${titleA} <span class="gold">${titleB}</span></h2>
+          <p class="section-lead">${lead}</p>
+        </div>
+        <figure class="mockup-browser reveal"><div class="mockup-hint" aria-hidden="true">Swipe to explore &rarr;</div><div class="mockup-scroll">${svg}</div>${mockupCaption(label)}</figure>
+        ${after}
+      </div>
+    </section>`;
+}
+
 const pages = {
   home: () => `
     <section class="hero">
@@ -1387,6 +1926,42 @@ const pages = {
           ${productCard('staff-pwa', 'Every staff member', 'Staff PWA', 'A personal digital workspace for every member of school staff. Clock in and out, log CPD, check your own record and notifications — on any device you already own.')}
           ${productCard('parent', 'Families', 'Parent Portal', 'Every family in the loop. Daily diaries, EHCP visibility, real-time safeguarding alerts, and direct two-way contact.')}
           ${productCard('trust', 'Leadership', 'Trust Portal', 'Multi-school oversight for MATs and local authorities. Cross-site analytics, governance, and a single pane of glass for SEND.')}
+        </div>
+      </div>
+    </section>
+
+    ${mockupSection({
+      eyebrow: 'See it in action',
+      titleA: 'The whole school,',
+      titleB: 'on one screen.',
+      lead: 'What a headteacher sees at nine o&rsquo;clock: who is in, whose plan is due for review, and every concern of the day already with the right adult.',
+      label: 'DARE SEN OS — Headteacher dashboard',
+      svg: mockHeadDashboard(),
+      after: `<div class="showcase-cta reveal"><a href="https://hq.skillgrow.co.uk/book/tunde" target="_blank" rel="noopener">Book a demo to see your school&rsquo;s data&nbsp;&rarr;</a></div>`,
+    })}
+
+    <section class="section how">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">How it works</div>
+          <h2 class="section-h2">From sign-up to <span class="gold">every child&rsquo;s story.</span></h2>
+        </div>
+        <div class="how-grid">
+          <div class="how-step reveal">
+            <div class="how-num">1</div>
+            <div class="how-title">Your school joins in minutes</div>
+            <p class="how-body">Register your school at <a href="https://join.skillgrow.co.uk" target="_blank" rel="noopener">join.skillgrow.co.uk</a>. No procurement maze, no installation, nothing for IT to set up.</p>
+          </div>
+          <div class="how-step reveal">
+            <div class="how-num">2</div>
+            <div class="how-title">Staff, pupils and parents connect</div>
+            <p class="how-body">Staff sign in on the devices they already use, your pupils come across, and every family gets a secure invitation to the Parent Portal.</p>
+          </div>
+          <div class="how-step reveal">
+            <div class="how-num">3</div>
+            <div class="how-title">Every child&rsquo;s journey in one place</div>
+            <p class="how-body">Safeguarding, EHCP evidence, therapy, attendance and family contact build a single timeline for each child &mdash; from early years to twenty-five.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -1434,6 +2009,11 @@ const pages = {
     differentiator: {
       eyebrow: 'What no one else can offer',
       text: 'A concern logged by a TA in the playground reaches the DSL in seconds, attaches itself to that child&rsquo;s EHCP outcome, and is visible to the family the same day — <span class="gold">without anyone re-typing it into a second system.</span>',
+    },
+    mockup: {
+      eyebrow: 'On screen', titleA: 'Every concern,', titleB: 'with its whole chain.',
+      lead: 'The concern log a DSL works from: who logged it, who it went to, when it was acknowledged, which EHCP outcome it touches, and when the family was told.',
+      label: 'DARE SEN OS — Safeguarding concern log', svg: mockSenConcernLog(),
     },
     rolesHeading: {
       eyebrow: 'Who is this for?',
@@ -1487,6 +2067,11 @@ const pages = {
       ],
       source: 'Subject to legislation. Timings and detail per the <a href="https://www.gov.uk/government/publications/every-child-achieving-and-thriving" target="_blank" rel="noopener">Schools White Paper 2026, <em>Every child achieving and thriving</em> (DfE)</a> and the House of Commons Library briefing on SEND reform.',
     },
+    mockup: {
+      eyebrow: 'On screen', titleA: 'The graduated approach,', titleB: 'as it happens.',
+      lead: 'Assess, plan, do, review — each cycle tracked against its targets, costed on the provision map, with the family&rsquo;s voice captured alongside. The ISP builds itself from the record.',
+      label: 'DARE Mainstream — ISP tracker', svg: mockIspTracker(),
+    },
     rolesHeading: {
       eyebrow: 'Who is this for?',
       titleA: 'The people who will be',
@@ -1522,6 +2107,13 @@ const pages = {
     differentiator: {
       eyebrow: 'What no one else can offer',
       text: 'Every member of staff gets their own professional space — <span class="gold">not just teaching staff</span> — on any device they already own.',
+    },
+    mockup: {
+      device: 'phone',
+      eyebrow: 'On your phone', titleA: 'Your space,', titleB: 'in your pocket.',
+      lead: 'One tap to clock in when you arrive. Everything else about your working week is one screen away.',
+      points: ['Clock in and out from your own device', 'Your hours this week, as the office sees them', 'Training renewals you can see coming'],
+      label: 'Staff PWA — My space', svg: mockStaffPhone(),
     },
     rolesHeading: {
       eyebrow: 'Who is this for?',
@@ -1560,6 +2152,13 @@ const pages = {
       eyebrow: 'What no one else can offer',
       text: 'You see the same record the school sees. Not a summary of it, not a printout sent home on a Friday — <span class="gold">the same record, the same day.</span>',
     },
+    mockup: {
+      device: 'phone',
+      eyebrow: 'On your phone', titleA: 'Their day,', titleB: 'the same day.',
+      lead: 'Open the portal at pick-up and you already know how the day went.',
+      points: ['The moments that matter, written by the adult who was there', 'Their plan, and how it is going, in plain English', 'A message thread with the right person at school'],
+      label: 'Parent Portal — Today', svg: mockParentPhone(),
+    },
     rolesHeading: {
       eyebrow: 'Who is this for?',
       titleA: 'The people who love them',
@@ -1597,6 +2196,11 @@ const pages = {
     differentiator: {
       eyebrow: 'What no one else can offer',
       text: 'The same safeguarding entry a TA logged this morning is already counted in the trust&rsquo;s picture this morning — <span class="gold">not aggregated into a return three weeks after it stopped mattering.</span>',
+    },
+    mockup: {
+      eyebrow: 'On screen', titleA: 'Every school,', titleB: 'side by side.',
+      lead: 'Attendance, open concerns and review timeliness across the trust, live — and the pattern worth asking about surfaced before the board meeting, not after it.',
+      label: 'Trust Portal — Cross-school KPI dashboard', svg: mockTrustKpis(),
     },
     rolesHeading: {
       eyebrow: 'Who is this for?',
@@ -2254,6 +2858,7 @@ function productCard(slug, eyebrow, title, desc) {
 function productPage({
   eyebrow, titleA, titleB, sub,
   differentiator,          // the one sentence a competitor cannot repeat
+  mockup,                  // optional mockupSection() config — the product on screen
   urgency,                 // optional statutory-deadline band
   rolesHeading, roles,     // "Who is this for?" — 2-4 named roles, each with a pain point
   capsHeading, caps,
@@ -2285,6 +2890,8 @@ function productPage({
         </div>
       </div>
     </section>` : ''}
+
+    ${mockup ? mockupSection(mockup) : ''}
 
     ${urgency ? `
     <section class="section urgency">

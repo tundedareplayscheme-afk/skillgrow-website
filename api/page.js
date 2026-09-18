@@ -55,7 +55,7 @@ const META = {
   'staff-pwa': {
     path: '/staff-pwa',
     title: 'Staff PWA — SkillGrow',
-    description: "A SEND app for frontline staff: log observations, behaviour and care notes in seconds, work offline, and attach every entry to the child's EHCP outcomes.",
+    description: 'A personal workspace for every member of staff — clock in and out, CPD log, personal notifications, on any device.',
     ogTitle: 'Staff PWA — any device, any staff member, in real time',
     ogDescription: 'No licences to count and no laptops to find. Every adult who works with a child can log what just happened, offline, in seconds.',
   },
