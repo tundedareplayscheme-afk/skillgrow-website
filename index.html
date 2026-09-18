@@ -266,6 +266,27 @@ main { padding-top: var(--header-h); min-height: 100vh; }
 }
 .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
 
+/* "What does 0–25 mean?" — inline, native <details>, no script. */
+.zero25 { max-width: 640px; margin: -8px 0 28px; }
+.zero25 summary {
+  display: inline-flex; align-items: center; gap: 8px;
+  cursor: pointer; list-style: none;
+  font-size: 14px; font-weight: 500; color: var(--gold);
+}
+.zero25 summary::-webkit-details-marker { display: none; }
+.zero25 summary::before {
+  content: '?'; display: inline-grid; place-items: center;
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 1px solid currentColor; font-size: 11px; font-weight: 700;
+}
+.zero25 summary span { border-bottom: 1px dotted currentColor; }
+.zero25[open] summary { margin-bottom: 14px; }
+.zero25-body { padding-left: 16px; border-left: 2px solid rgba(252,211,77,0.4); }
+.zero25-body p { font-size: 15px; line-height: 1.65; color: rgba(255,255,255,0.72); margin-bottom: 12px; }
+.zero25-body p:last-child { margin-bottom: 0; }
+.footer-brand a.footer-zero25 { color: rgba(255,255,255,0.5); border-bottom: 1px dotted currentColor; }
+.footer-brand a.footer-zero25:hover { color: var(--gold); }
+
 .product-hero { padding: 130px 0 90px; }
 .product-hero .hero-h1 { font-size: clamp(38px, 5.2vw, 64px); }
 
@@ -1176,7 +1197,7 @@ fieldset.field legend { padding: 0; }
     <div class="footer-grid">
       <div class="footer-brand">
         <a href="/" class="nav-logo" data-link>SkillGrow</a>
-        <p>The world's first fully integrated 0–25 SEND platform. Built in Bedford, England, by people who have worked with SEN children.</p>
+        <p>The world's first fully integrated 0–25 SEND platform. Built in Bedford, England, by people who have worked with SEN children. <a href="/about" class="footer-zero25" data-link>What does 0–25 mean?</a></p>
       </div>
       <div class="footer-col">
         <h4>Products</h4>
@@ -1311,6 +1332,14 @@ const OVERVIEW_VIDEO_URL = '#';
 const OVERVIEW_PDF_URL = '/overview.pdf';
 
 /* tone: 'dark' on navy sections, 'light' on white cards. */
+/* One wording for "0–25", used by the home hero and /about. */
+const ZERO25_PARAS = [
+  'The 0–25 range refers to the statutory SEND framework under the Children and Families Act 2014, which places a legal duty on local authorities and schools to support children and young people with SEND from birth to age 25.',
+  'SkillGrow currently serves the school and trust years of that journey — from early identification in mainstream and specialist settings, through EHCP, transition planning, and post-16 pathways. Our platform is designed from the ground up to extend across the full 0–25 continuum as we grow, with each new product building on the connected foundation we&rsquo;ve established.',
+  'We believe every child deserves one connected journey — not a series of handoffs between disconnected systems.',
+];
+const zero25Paras = () => ZERO25_PARAS.map(t => `<p>${t}</p>`).join('');
+
 function escAttr(v) {
   return String(v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
@@ -1330,6 +1359,10 @@ const pages = {
         <div class="reveal">
           <span class="hero-eyebrow">SkillGrow Technologies</span>
           <h1 class="hero-h1">The world's first fully integrated <span class="gold">0–25 SEND</span> platform.</h1>
+          <details class="zero25">
+            <summary><span>What does 0–25 mean?</span></summary>
+            <div class="zero25-body">${zero25Paras()}</div>
+          </details>
           <p class="hero-sub">Every child at the centre. Every stakeholder connected. From early years to adulthood, one operating system for the entire SEND journey.</p>
           <div class="hero-actions">
             <a href="https://hq.skillgrow.co.uk/book/tunde" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a Demo →</a>
@@ -1618,6 +1651,20 @@ const pages = {
               <div class="about-pull">"SEND children have one system worth of needs. They deserve one system worth of joined-up care."</div>
               <p>So he built it. SkillGrow Technologies is the result — designed end-to-end, from the frontline up, for the entire 0–25 SEND journey.</p>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="zero25">
+      <div class="container">
+        <div class="about-grid">
+          <div class="reveal">
+            <div class="section-eyebrow">What 0–25 means</div>
+            <h2 class="section-h2">Our 0–25 <span class="gold">vision.</span></h2>
+          </div>
+          <div class="reveal">
+            <div class="about-block">${zero25Paras()}</div>
           </div>
         </div>
       </div>
