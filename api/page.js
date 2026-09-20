@@ -23,6 +23,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { fetchPost } = require('../lib/hq');
 
 const ORIGIN = 'https://www.skillgrow.co.uk';
 const OG_IMAGE = `${ORIGIN}/og-image.png`;
@@ -199,24 +200,56 @@ function attr(value) {
 
 function headFor(meta) {
   const url = ORIGIN + meta.path;
-  return [
+  const image = meta.image || OG_IMAGE;
+  const ownImage = image === OG_IMAGE;
+  const tags = [
     `<title>${attr(meta.title)}</title>`,
     `<meta name="description" content="${attr(meta.description)}">`,
     `<link rel="canonical" href="${url}">`,
-    '<meta property="og:type" content="website">',
+    `<meta property="og:type" content="${attr(meta.type || 'website')}">`,
     '<meta property="og:site_name" content="SkillGrow">',
     `<meta property="og:title" content="${attr(meta.ogTitle)}">`,
     `<meta property="og:description" content="${attr(meta.ogDescription)}">`,
     `<meta property="og:url" content="${url}">`,
-    `<meta property="og:image" content="${OG_IMAGE}">`,
-    '<meta property="og:image:width" content="1200">',
-    '<meta property="og:image:height" content="630">',
-    `<meta property="og:image:alt" content="${attr(IMAGE_ALT)}">`,
-    '<meta name="twitter:card" content="summary_large_image">',
-    `<meta name="twitter:title" content="${attr(meta.ogTitle)}">`,
-    `<meta name="twitter:description" content="${attr(meta.ogDescription)}">`,
-    `<meta name="twitter:image" content="${OG_IMAGE}">`,
-  ].join('\n');
+    `<meta property="og:image" content="${attr(image)}">`,
+  ];
+  /* Declaring dimensions we have not measured would make every card with a
+     Content Hub image render at the wrong aspect ratio, so they are omitted
+     unless the image is the one we ship. */
+  if (ownImage) {
+    tags.push('<meta property="og:image:width" content="1200">');
+    tags.push('<meta property="og:image:height" content="630">');
+  }
+  tags.push(`<meta property="og:image:alt" content="${attr(meta.imageAlt || IMAGE_ALT)}">`);
+  tags.push('<meta name="twitter:card" content="summary_large_image">');
+  tags.push(`<meta name="twitter:title" content="${attr(meta.ogTitle)}">`);
+  tags.push(`<meta name="twitter:description" content="${attr(meta.ogDescription)}">`);
+  tags.push(`<meta name="twitter:image" content="${attr(image)}">`);
+  return tags.join('\n');
+}
+
+/* Search snippets truncate near 160 characters and link-preview cards sooner.
+   The Content Hub's excerpt is plain text of no guaranteed length, so it is
+   trimmed on a whole character rather than shipped at whatever length it is. */
+function clamp(text, max) {
+  const s = String(text || '').replace(/\s+/g, ' ').trim();
+  return s.length > max ? `${s.slice(0, max - 1).trimEnd()}\u2026` : s;
+}
+
+/* Build the same shape as a META entry from a Content Hub post, so a post
+   written in HQ this morning gets the tags a hand-written entry would. */
+function metaForPost(post) {
+  const title = String(post.title || '').trim();
+  return {
+    path: `/blog/${post.slug}`,
+    title: `${title} \u2014 SkillGrow`,
+    description: clamp(post.excerpt, 160),
+    ogTitle: title,
+    ogDescription: clamp(post.excerpt, 200),
+    image: post.image_url || null,
+    imageAlt: title,
+    type: 'article',
+  };
 }
 
 const BLOCK = /<!-- META:START[\s\S]*?META:END -->/;
@@ -229,9 +262,42 @@ function readShell() {
   return shell;
 }
 
-module.exports = function handler(req, res) {
+/* A slug that is neither in META nor known to HQ is a real 404, not a
+   redirect to the homepage: sending a crawler to '/' for a post that does not
+   exist teaches it that every bad blog URL is the homepage. The shell is still
+   served so the visitor gets the site's own styled 404 page. */
+function notFound(res) {
+  let html;
+  try {
+    html = readShell();
+  } catch (err) {
+    res.statusCode = 404;
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    return res.end('Not found');
+  }
+  const head = [
+    '<title>Page not found \u2014 SkillGrow</title>',
+    '<meta name="robots" content="noindex">',
+  ].join('\n');
+  res.statusCode = 404;
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, s-maxage=60');
+  return res.end(html.replace(BLOCK, head));
+}
+
+module.exports = async function handler(req, res) {
   const slug = String((req.query && req.query.page) || '').replace(/^\/+|\/+$/g, '');
-  const meta = Object.hasOwn(META, slug) ? META[slug] : null;
+  let meta = Object.hasOwn(META, slug) ? META[slug] : null;
+
+  /* vercel.json now sends EVERY /blog/<slug> here, not just the three spelled
+     out in META, so that a post published in HQ needs no code change. The
+     three static entries stay: they are the site's own articles and must keep
+     working when HQ is unreachable. */
+  if (!meta && /^blog\/.+/.test(slug)) {
+    const post = await fetchPost(slug.slice('blog/'.length));
+    if (!post) return notFound(res);
+    meta = metaForPost(post);
+  }
 
   if (!meta || slug === 'home') {
     /* Only reachable if vercel.json and META disagree. Send the crawler and

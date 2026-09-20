@@ -3151,6 +3151,19 @@ const pages = {
     </section>
   `,
 
+  blogloading: () => `
+    <section class="hero product-hero">
+      <div class="container">
+        <div class="reveal">
+          <span class="hero-eyebrow">Insights</span>
+          <h1 class="hero-h1">Loading<span class="gold">…</span></h1>
+          <p class="hero-sub">Fetching this article.</p>
+          <a href="/blog" class="post-back" data-link>← Back to insights</a>
+        </div>
+      </div>
+    </section>
+  `,
+
   notfound: () => `
     <section class="hero product-hero">
       <div class="container">
@@ -3180,7 +3193,7 @@ const pages = {
    the vercel.json /blog/:slug pattern and sitemap.xml. */
 const BLOG_AUTHOR = 'Tunde Alabi, Founder &amp; CEO';
 
-const ARTICLES = [
+const FALLBACK_ARTICLES = [
   {
     slug: 'isps-what-every-senco-needs-to-know',
     title: 'ISPs are coming: what every SENCO needs to know before September 2029',
@@ -3301,6 +3314,85 @@ const ARTICLES = [
   },
 ];
 
+/* ARTICLES is what /blog lists. It starts as the three articles the site
+   ships with and is REPLACED by the Content Hub's posts once they load, so a
+   post published in HQ appears here with no code change. If HQ is unreachable,
+   returns nothing, or has not been set up, the three below stand. */
+let ARTICLES = FALLBACK_ARTICLES;
+
+/* Whether the HQ fetch has finished, either way. Until it has, a /blog/<slug>
+   we do not recognise might still be a real post on its way, so the router
+   shows a loading state instead of declaring it missing. */
+let postsSettled = false;
+
+const HQ_BLOG_API = 'https://hq.skillgrow.co.uk/api/content/blog';
+
+/* Everything from HQ except body_html is plain text from the database and is
+   interpolated into markup here, so it is escaped on the way in. body_html is
+   the one exception: the Content Hub renders it from markdown and escapes it
+   there, which is why it is the only field allowed through as markup. */
+function esc(value) {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+/* The shipped articles carry a human date string ('September 2026'); HQ sends
+   an ISO timestamp. Render the second to look like the first. */
+function postDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  return d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+}
+
+/* Map a Content Hub post onto the shape the templates already expect. title is
+   kept twice: escaped for markup, raw for document.title, which is text and
+   would otherwise show a literal &amp;. */
+function fromHQ(p) {
+  return {
+    slug: String(p.slug || ''),
+    title: esc(p.title),
+    titleText: String(p.title || ''),
+    category: esc(p.category_label || p.category || 'Insights'),
+    date: postDate(p.published_at),
+    summary: esc(p.excerpt || ''),
+    body: p.body_html || '',
+    author: p.author ? esc(p.author) : null,
+    sources: [],
+  };
+}
+
+/* Only the shipped articles carry a sources list; HQ posts cite inline. */
+function sourcesBlock(a) {
+  if (!a.sources || !a.sources.length) return '';
+  return `
+          <div class="post-sources">
+            <h2>Sources</h2>
+            <ul>${a.sources.map(([label, url]) => `<li><a href="${url}" target="_blank" rel="noopener">${label}</a></li>`).join('')}</ul>
+          </div>`;
+}
+
+async function loadPosts() {
+  try {
+    const r = await fetch(`${HQ_BLOG_API}?limit=50`, { headers: { accept: 'application/json' } });
+    /* 503 = Content Hub not set up yet. Any non-200 leaves the fallback in place. */
+    if (!r.ok) return;
+    const j = await r.json();
+    const posts = Array.isArray(j.posts) ? j.posts.map(fromHQ).filter(a => a.slug && a.titleText) : [];
+    /* An empty Content Hub is not an empty blog: keep the three articles. */
+    if (!posts.length) return;
+    registerArticleRoutes(posts);
+    ARTICLES = posts;
+  } catch (_) {
+    /* Offline, DNS, CORS, blocked request — the site still has its own articles. */
+  } finally {
+    postsSettled = true;
+    const slug = slugFromLocation();
+    if (slug === 'blog' || slug.startsWith('blog/')) render();
+  }
+}
+
 function postCard(a) {
   return `
     <a href="/blog/${a.slug}" class="post-card reveal" data-link>
@@ -3321,7 +3413,7 @@ function articlePage(a) {
           <a href="/blog" class="post-back" data-link>← Back to insights</a>
           <div class="post-meta"><span class="post-tag">${a.category}</span><span class="post-date">${a.date}</span></div>
           <h1 class="hero-h1 post-h1">${a.title}</h1>
-          <p class="post-byline">By ${BLOG_AUTHOR}</p>
+          <p class="post-byline">By ${a.author || BLOG_AUTHOR}</p>
         </div>
       </div>
     </section>
@@ -3330,10 +3422,7 @@ function articlePage(a) {
       <div class="container">
         <article class="legal post-body reveal">
           ${a.body}
-          <div class="post-sources">
-            <h2>Sources</h2>
-            <ul>${a.sources.map(([label, url]) => `<li><a href="${url}" target="_blank" rel="noopener">${label}</a></li>`).join('')}</ul>
-          </div>
+${sourcesBlock(a)}
           <div class="post-cta">
             <p>Want to see how SkillGrow handles this in practice?</p>
             <a href="https://hq.skillgrow.co.uk/book/tunde" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a demo →</a>
@@ -3570,16 +3659,24 @@ const titles = {
   integrations: 'Integrations — SkillGrow',
   implementation: 'Implementation — SkillGrow',
   blog: 'SEND Insights — SkillGrow',
+  blogloading: 'Loading… — SkillGrow',
   notfound: 'Page not found — SkillGrow',
 };
 
-/* Each article is a route of its own: /blog/<slug>. */
-ARTICLES.forEach(a => {
-  const key = 'blog/' + a.slug;
-  routes[key] = key;
-  titles[key] = a.title + ' — SkillGrow';
-  pages[key] = () => articlePage(a);
-});
+/* Each article is a route of its own: /blog/<slug>. Called once for the
+   shipped articles and again for the Content Hub's posts, so both resolve.
+   The shipped three keep their routes even after HQ posts load: those URLs
+   are indexed and may have inbound links, and dropping them the day HQ gained
+   its first post would 404 three live pages. */
+function registerArticleRoutes(list) {
+  list.forEach(a => {
+    const key = 'blog/' + a.slug;
+    routes[key] = key;
+    titles[key] = (a.titleText || a.title) + ' — SkillGrow';
+    pages[key] = () => articlePage(a);
+  });
+}
+registerArticleRoutes(FALLBACK_ARTICLES);
 
 const app = document.getElementById('app');
 let observer;
@@ -3603,7 +3700,13 @@ function render() {
   }
 
   const slug = slugFromLocation();
-  const key = Object.hasOwn(routes, slug) ? routes[slug] : 'notfound';
+  /* A /blog/<slug> we do not know yet is only missing once the HQ fetch has
+     settled; before that it may be a post still loading, and showing 404 first
+     would flash the wrong page on every direct hit to a Content Hub article. */
+  let key;
+  if (Object.hasOwn(routes, slug)) key = routes[slug];
+  else if (!postsSettled && /^blog\/.+/.test(slug)) key = 'blogloading';
+  else key = 'notfound';
   document.title = titles[key];
 
   app.innerHTML = `<div class="page">${pages[key]()}</div>`;
@@ -3658,7 +3761,11 @@ document.addEventListener('click', (e) => {
 
 window.addEventListener('popstate', render);
 window.addEventListener('hashchange', render);
-window.addEventListener('DOMContentLoaded', render);
+window.addEventListener('DOMContentLoaded', () => {
+  /* Render first so the page is never blank while HQ answers, then upgrade. */
+  render();
+  loadPosts();
+});
 
 document.getElementById('hamburger').addEventListener('click', () => {
   document.getElementById('nav-links').classList.toggle('open');
