@@ -3196,6 +3196,7 @@ const BLOG_AUTHOR = 'Tunde Alabi, Founder &amp; CEO';
 const FALLBACK_ARTICLES = [
   {
     slug: 'isps-what-every-senco-needs-to-know',
+    published_at: '2026-09-18T09:00:00Z',
     title: 'ISPs are coming: what every SENCO needs to know before September 2029',
     category: 'Policy',
     date: 'September 2026',
@@ -3231,6 +3232,7 @@ const FALLBACK_ARTICLES = [
   },
   {
     slug: 'graduated-approach-practical-guide',
+    published_at: '2026-09-18T09:00:00Z',
     title: 'The graduated approach: from first concern to EHCP — a practical guide',
     category: 'Practice',
     date: 'September 2026',
@@ -3274,6 +3276,7 @@ const FALLBACK_ARTICLES = [
   },
   {
     slug: 'senco-admin-burden',
+    published_at: '2026-09-18T09:00:00Z',
     title: 'Why your SENCO is spending most of their time on admin — and how to fix it',
     category: 'Leadership',
     date: 'September 2026',
@@ -3356,6 +3359,7 @@ function fromHQ(p) {
     titleText: String(p.title || ''),
     category: esc(p.category_label || p.category || 'Insights'),
     date: postDate(p.published_at),
+    published_at: p.published_at,
     summary: esc(p.excerpt || ''),
     body: p.body_html || '',
     author: p.author ? esc(p.author) : null,
@@ -3373,6 +3377,23 @@ function sourcesBlock(a) {
           </div>`;
 }
 
+/* The shipped articles are a PERMANENT part of the blog, not a placeholder
+   that HQ posts take over from. Merge the two lists rather than swapping one
+   for the other, so publishing the first Content Hub post cannot empty the
+   listing of everything the site already had. HQ wins a slug collision. */
+function mergeArticles(hqPosts) {
+  const bySlug = new Map();
+  FALLBACK_ARTICLES.forEach(a => bySlug.set(a.slug, a));
+  hqPosts.forEach(a => bySlug.set(a.slug, a));
+  const when = (a) => {
+    const t = Date.parse(a.published_at || '');
+    return Number.isNaN(t) ? 0 : t;
+  };
+  /* Newest first. Array.prototype.sort is stable, so articles sharing a date
+     keep the order they were declared in. */
+  return [...bySlug.values()].sort((x, y) => when(y) - when(x));
+}
+
 async function loadPosts() {
   try {
     const r = await fetch(`${HQ_BLOG_API}?limit=50`, { headers: { accept: 'application/json' } });
@@ -3383,7 +3404,7 @@ async function loadPosts() {
     /* An empty Content Hub is not an empty blog: keep the three articles. */
     if (!posts.length) return;
     registerArticleRoutes(posts);
-    ARTICLES = posts;
+    ARTICLES = mergeArticles(posts);
   } catch (_) {
     /* Offline, DNS, CORS, blocked request — the site still has its own articles. */
   } finally {

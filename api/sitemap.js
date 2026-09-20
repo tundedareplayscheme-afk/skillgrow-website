@@ -93,8 +93,9 @@ module.exports = async function handler(req, res) {
 
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/xml; charset=utf-8');
-  /* Crawlers re-read this often; an hour at the CDN keeps HQ from being hit
-     on every crawl while a new post still surfaces the same day. */
-  res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+  /* Five minutes, matching the HQ API's own CDN window. An hour here meant a
+     post published just after a crawl stayed out of the sitemap for up to an
+     hour, which looked like the fetch was broken when it was only cached. */
+  res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=86400');
   return res.end(body);
 };
