@@ -109,7 +109,7 @@ const META = {
     title: 'Security — SkillGrow',
     description: 'How SkillGrow protects SEND data: UK data residency in AWS London, encryption at rest and in transit, role-based access, row-level security and daily backups.',
     ogTitle: 'Security at SkillGrow',
-    ogDescription: 'UK data residency, encryption at rest and in transit, role-based access, row-level security, daily backups. ICO registered, KCSIE 2025 aligned.',
+    ogDescription: 'UK data residency, encryption at rest and in transit, role-based access, row-level security, daily backups. ICO registered, KCSIE 2026 aligned.',
   },  pricing: {
     path: '/pricing',
     title: 'Pricing — SkillGrow',
