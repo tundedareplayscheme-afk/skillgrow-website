@@ -65,9 +65,9 @@ const META = {
   parent: {
     path: '/parent',
     title: 'Parent Portal — SkillGrow',
-    description: 'A SEND parent portal with daily diaries, plain-English EHCP progress, attendance, letters, consent forms and two-way contact with the team around your child.',
+    description: "A SEND parent portal: your child's EHCP, attendance, letters, consent forms and two-way messages with the school. Free for every family, always.",
     ogTitle: 'Parent Portal — always free, for every family',
-    ogDescription: 'Daily diaries, EHCP visibility, attendance, letters, consent forms and direct contact with the team around your child. Free for every family, always.',
+    ogDescription: "Your child's EHCP, attendance, letters, consent forms and messages with the school, on your phone. Free for every family, always.",
   },
   trust: {
     path: '/trust',

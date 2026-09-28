@@ -2084,7 +2084,7 @@ const pages = {
           ${productCard('sen', 'Operating System', 'DARE SEN OS', 'The complete platform for special schools. 29+ integrated apps spanning safeguarding, EHCPs, therapy, medication, behaviour, and outcomes.')}
           ${productCard('mainstream', 'Mainstream', 'DARE Mainstream', 'SEND infrastructure for mainstream schools. SENCO workflows, provision mapping, parent engagement, and statutory compliance.')}
           ${productCard('staff-pwa', 'Every staff member', 'Staff PWA', 'A personal digital workspace for every member of school staff. Clock in and out, log CPD, check your own record and notifications — on any device you already own.')}
-          ${productCard('parent', 'Families', 'Parent Portal', 'Every family in the loop. Daily diaries, EHCP visibility, attendance, letters, consent forms and direct two-way messages. Safeguarding is handled by the school&rsquo;s DSL team.')}
+          ${productCard('parent', 'Families', 'Parent Portal', 'Every family in the loop. Your child&rsquo;s EHCP — outcomes, provision and review dates — with attendance, letters, consent forms and direct two-way messages. Safeguarding is handled by the school&rsquo;s DSL team.')}
           ${productCard('trust', 'Leadership', 'Trust Portal', 'Multi-school oversight for MATs and local authorities. Cross-site analytics, governance, and a single pane of glass for SEND.')}
         </div>
       </div>
@@ -2184,7 +2184,7 @@ const pages = {
     roles: [
       { role: 'Designated Safeguarding Lead',
         pain: 'You hear about the lunchtime incident at 4pm, from a folded paper slip.',
-        body: 'Concerns arrive the moment they are logged, routed to you by name, with the child&rsquo;s full context already attached — behaviour, medical, communication needs. Every action is timestamped and audit-ready, aligned to KCSIE.' },
+        body: 'Concerns arrive the moment they are logged, routed to you by name, with the child&rsquo;s full context already attached — behaviour, medical, communication needs. Every action is timestamped and audit-ready. Built for KCSIE 2026.' },
       { role: 'SENCO',
         pain: 'Annual review season means rebuilding twelve months of evidence from six systems.',
         body: 'Every note, session, and intervention already links back to the EHCP outcome it serves. The evidence for a review assembles itself as the year happens, instead of being reconstructed the week before.' },
@@ -2197,7 +2197,7 @@ const pages = {
     ],
     capsHeading: { eyebrow: 'Capabilities', titleA: 'The chain, end', titleB: 'to end.' },
     caps: [
-      { icon: 'shield', title: 'Safeguarding that moves at the speed of the incident', body: 'Instant routing to the named DSL or duty leader, escalation if unacknowledged, and a complete audit trail. KCSIE-aligned, and built for children who cannot always tell you what happened.' },
+      { icon: 'shield', title: 'Safeguarding that moves at the speed of the incident', body: 'Instant routing to the named DSL or duty leader, escalation if unacknowledged, and a complete audit trail. Built for KCSIE 2026, and for children who cannot always tell you what happened.' },
       { icon: 'target', title: 'EHCP evidence, gathered as you go', body: 'Outcomes and provision sit underneath every interaction, so the evidence for the annual review is a by-product of the work rather than a second job.' },
       { icon: 'timeline', title: 'One timeline per child', body: 'Medical, behaviour, therapy, communication, attendance, safeguarding — a single chronology, visible only to the people entitled to see each part of it.' },
     ],
@@ -2307,16 +2307,16 @@ const pages = {
     eyebrow: 'Parent Portal',
     titleA: 'Always free,',
     titleB: 'for every family.',
-    sub: 'See how your child&rsquo;s day actually went, what the school is working on, and who to talk to — without chasing anyone. Families are never charged. Not now, not later.',
+    sub: 'Your child&rsquo;s plan, attendance and letters, consent forms to reply to, and a message thread with the school — without chasing anyone. Families are never charged. Not now, not later.',
     differentiator: {
       eyebrow: 'What no one else can offer',
-      text: 'You see the same record the school sees. Not a summary of it, not a printout sent home on a Friday — <span class="gold">the same record, the same day.</span>',
+      text: 'Your own child&rsquo;s plan, attendance and letters, straight from the school&rsquo;s live record — <span class="gold">not a printout sent home on a Friday.</span>',
     },
     mockup: {
       device: 'phone',
-      eyebrow: 'On your phone', titleA: 'Their day,', titleB: 'the same day.',
-      lead: 'Open the portal at pick-up and you already know how the day went.',
-      points: ['The moments that matter, written by the adult who was there', 'Their plan, and how it is going, in plain English', 'A message thread with the right person at school'],
+      eyebrow: 'On your phone', titleA: 'Their plan,', titleB: 'in your pocket.',
+      lead: 'What the school shares with you about your child, in one place on your phone.',
+      points: ['Their EHCP: the outcomes, the provision and the next review date', 'Attendance, letters and consent forms in one place', 'A message thread with the school'],
       label: 'Parent Portal — Today', svg: mockParentPhone(),
     },
     rolesHeading: {
@@ -2328,19 +2328,19 @@ const pages = {
     roles: [
       { role: 'Parents and carers',
         pain: 'Your child cannot always tell you how their day went, so you ask the school and wait.',
-        body: 'A daily diary with photos, moments, and small wins — sent every day, not just when something goes wrong. You will know what they ate, how they slept, what made them laugh, and what they are working on next.' },
+        body: 'Their plan, their attendance and the letters the school sends, in one place — and a message thread to the school, so you are not waiting for a phone call to find out what is happening.' },
       { role: 'Foster carers',
         pain: 'Several adults care for one child, and information reaches some of them and not others.',
-        body: 'Each adult gets their own secure access with the right permissions — so carers, social workers, and the school are working from the same picture, and nobody is left guessing.' },
+        body: 'Each adult the school links to a child gets their own secure access, with their relationship and permissions recorded — so every carer sees the same plan, letters and messages, and nobody is left guessing.' },
       { role: 'Grandparents and family advocates',
         pain: 'You help with pick-ups and appointments but are told nothing, because you are not on a form.',
-        body: 'Where you have been given permission, you can see what you need to see and nothing you should not. The family decides who is included.' },
+        body: 'When the school gives you access, you see what you need to see and nothing you should not — and never anything about another child.' },
     ],
     capsHeading: { eyebrow: 'What you get', titleA: 'Simple things,', titleB: 'done properly.' },
     caps: [
-      { icon: 'diary', title: 'A diary that tells a story', body: 'Photos, audio, milestones, and the small wins that never make it onto a report. Written by the people who were there, on the day it happened.' },
-      { icon: 'target', title: 'Their plan, in plain English', body: 'What the school is working on with your child, and what progress actually looks like — explained without the jargon and the acronyms.' },
-      { icon: 'message', title: 'A real reply from a real person', body: 'Message the right adult — class teacher, safeguarding lead, therapist — and get an answer. Every message is logged, so nothing gets lost between people.' },
+      { icon: 'diary', title: 'Attendance, letters and consent', body: 'Attendance as the school records it, every letter from school in one place, and consent forms you can reply to from your phone.' },
+      { icon: 'target', title: 'Their plan and progress', body: 'Your child&rsquo;s EHCP — the outcomes, the provision and the next review date — alongside the homework and progress the school shares with you.' },
+      { icon: 'message', title: 'A real reply from a real person', body: 'Message the school from your phone. Every message is logged, so nothing gets lost between people.' },
     ],
     pricing: { headingA: 'Free.', headingB: 'Always.', price: 'Free', unit: 'always · for every family', note: 'Families are never charged, and never will be. The Parent Portal is included with your school&rsquo;s licence, for unlimited parents, carers, and family members you have given permission to. <strong>There is no upgrade, no premium tier, and nothing behind a paywall.</strong>' },
     /* Parents do not book demos. */
