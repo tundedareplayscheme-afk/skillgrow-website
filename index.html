@@ -1419,6 +1419,11 @@ fieldset.field legend { padding: 0; }
   .screen-grid { gap: 40px; margin-top: 28px; }
   .screen-phone { max-width: 280px; }
 }
+
+.coming-next { background: var(--slate-50, #F8FAFC); }
+.planned-list { list-style: none; margin: 32px 0 0; padding: 0; display: grid; gap: 12px; }
+.planned-list li { padding: 16px 18px; border-radius: 12px; background: white; border: 1px dashed rgba(15,45,82,0.25); font-size: 15px; line-height: 1.55; color: var(--slate-700); }
+.planned-pill { display: inline-block; margin-right: 10px; padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; background: rgba(252,211,77,0.3); color: #92400E; }
 </style>
 </head>
 <body>
@@ -1452,6 +1457,8 @@ fieldset.field legend { padding: 0; }
           </a>
         </div>
       </div>
+      <a href="/safeguarding" class="nav-link" data-link>Safeguarding</a>
+      <a href="/isp" class="nav-link" data-link>ISP</a>
       <a href="/pricing" class="nav-link" data-link>Pricing</a>
       <a href="/blog" class="nav-link" data-link>Blog</a>
       <a href="/about" class="nav-link" data-link>About</a>
@@ -1479,6 +1486,7 @@ fieldset.field legend { padding: 0; }
         <a href="/parent" data-link>Parent Portal</a>
         <a href="/trust" data-link>Trust Portal</a>
         <a href="/safeguarding" data-link>Safeguarding</a>
+        <a href="/isp" data-link>ISPs</a>
       </div>
       <div class="footer-col">
         <h4>Company</h4>
@@ -2136,6 +2144,15 @@ const SCREENS = {
                        caption: 'Safer recruitment across every school in the trust — each member of staff&rsquo;s checks in one place.' },
   'parent-docs':     { file: 'dare-parent-documents-and-letters', w: 780, h: 1688, phone: true,
                        caption: 'Their child&rsquo;s plan, annual review reports and letters from school — on their phone, for their own child only.' },
+  /* Recorded; held until re-recorded or fixed (see the 2026-09-28 report). */
+  'sg-share':        { file: 'dare-dsl-share-record-need-to-know', w: 1600, h: 1000, ready: false,
+                       caption: 'The DSL shares one record with one named colleague, with a reason and an end date — and can revoke it.' },
+  'sg-shared':       { file: 'dare-shared-with-me-read-only', w: 1600, h: 1000, ready: false,
+                       caption: 'What was shared arrives read-only, for a limited time.' },
+  'dbs-summary':     { file: 'dare-dbs-status-summary', w: 1600, h: 1000, ready: false,
+                       caption: 'Every DBS check on the Single Central Record: checked, needs attention or not checked — and why.' },
+  'gov-panel':       { file: 'dare-governor-safeguarding-panel', w: 1600, h: 1000, ready: false,
+                       caption: 'Governors see safeguarding compliance from live evidence — and &ldquo;—&rdquo; where DARE holds no record.' },
   /* Recorded by the next demo run; slotted in when the files land. */
   'sg-raise':        { file: 'dare-teacher-raises-safeguarding-concern', w: 1600, h: 1000, ready: false,
                        caption: 'A teacher raises a concern; KCSIE routing decides who is told.' },
@@ -3235,7 +3252,7 @@ const pages = {
         <div class="reveal">
           <span class="hero-eyebrow">Safeguarding</span>
           <h1 class="hero-h1">Keeping children safe, <span class="gold">built for KCSIE 2026.</span></h1>
-          <p class="hero-sub">What happens in DARE from the moment a concern is raised — who is told, who is not, what happens if nobody responds — and how a school sees where it stands on KCSIE before an inspector asks.</p>
+          <p class="hero-sub">For headteachers, DSLs and governors: what DARE does from the moment a concern is raised — who is told, who is not, what happens if nobody responds — and the evidence it keeps for inspection.</p>
           <div class="hero-actions">
             ${ctaLink(DEMO_CTA, 'btn btn-gold btn-lg')}
           </div>
@@ -3245,47 +3262,150 @@ const pages = {
     </section>
 
     ${screenGallery({
-      eyebrow: '1 · From concern to the DSL team',
-      titleA: 'The right people are told,',
-      titleB: 'by KCSIE role.',
-      lead: 'The member of staff raising a concern never has to decide who to tell. DARE routes it by who the concern is about, and the person it is about is never told.',
-      shots: ['sg-raise', 'sg-inbox'],
+      eyebrow: '1 · Raising a concern',
+      titleA: 'Anyone who works with children',
+      titleB: 'can raise it, in seconds.',
+      lead: 'Any member of staff, and any governor, can raise a safeguarding concern from the app they already use; parents and pupils tell the DSL. The form asks who the concern is about, what was seen or heard, and the pupil&rsquo;s own words, recorded exactly as they were said. The online harms named in KCSIE 2026 are categories of their own: sharing nudes and semi-nudes (including AI-generated images), sextortion, nudification apps, AI-generated or deepfake abuse, and other online harm.',
+      shots: ['sg-raise'],
       after: `<ul class="sg-route reveal">
-        <li><strong>About a pupil:</strong> the DSL and the deputy DSL (the Headteacher, if the school has no DSL).</li>
-        <li><strong>About a member of staff, a volunteer or a contractor:</strong> the Headteacher as case manager, with the DSL copied.</li>
+        <li><strong>A concern about a pupil</strong> goes to the DSL and the deputy DSL (the Headteacher, if the school has no DSL).</li>
+        <li><strong>About a member of staff, a volunteer or a contractor:</strong> the Headteacher, as case manager, with the DSL copied.</li>
         <li><strong>About the DSL:</strong> the Headteacher.</li>
         <li><strong>About the Headteacher:</strong> the Chair of Governors — and the trust safeguarding lead, in a trust — with the LADO. Never the Headteacher.</li>
-        <li><strong>If nobody acknowledges a concern about a pupil:</strong> a reminder at 30 minutes, then the Headteacher at 60 (school minutes; out of hours it goes to the school&rsquo;s on-call rota). Everyone on the DSL team works from one inbox, and reviewing a concern acknowledges it for the whole team.</li>
       </ul>`,
     })}
 
     ${screenGallery({
-      eyebrow: '2 · Nothing on a lock screen',
-      titleA: 'The alert says',
-      titleB: 'nothing about the child.',
-      lead: 'A safeguarding alert on a phone reads only <span class="sg-push-text">&ldquo;🔒 New safeguarding alert — please log in to DARE&rdquo;</span>. No name, no pupil, no detail. The link opens the record only after the DSL signs in, and an email to a school&rsquo;s shared DSL mailbox is just as bare.',
-      shots: ['sg-push'],
+      eyebrow: '2 · Nothing gets missed',
+      titleA: 'Seen by the whole DSL team,',
+      titleB: 'and chased if nobody acts.',
+      lead: 'Alerts land in one inbox the whole DSL team works from, and reviewing a concern acknowledges it for everyone. On a phone the alert reads only <span class="sg-push-text">&ldquo;🔒 New safeguarding alert — please log in to DARE&rdquo;</span> — nothing about the child on the lock screen — and the record opens only after sign-in.',
+      shots: ['sg-inbox', 'sg-push'],
       tint: true,
+      after: `<ul class="sg-route reveal">
+        <li><strong>If nobody acknowledges a concern about a pupil:</strong> a reminder at 30 minutes, then the Headteacher at 60 (school minutes).</li>
+        <li><strong>If the DSL or deputy is marked absent,</strong> alerts skip them and go to whoever is in; if the whole DSL team is off, they go to the Headteacher.</li>
+        <li><strong>Out of hours,</strong> alerts go to the school&rsquo;s on-call rota, or wait for the start of the next school day. The school sets its hours and rota in DARE.</li>
+      </ul>`,
     })}
 
     ${screenGallery({
-      eyebrow: '3 · An allegation about the Head',
-      titleA: 'It goes to the Chair,',
-      titleB: 'never to the Head.',
-      lead: 'An allegation about the Headteacher is readable only by the Chair of Governors, the trust safeguarding lead and the person who raised it — not the Head, the DSL or the deputies. The Chair records the LADO referral with the officer&rsquo;s name, their reference and when they were contacted.',
+      eyebrow: '3 · Need to know',
+      titleA: 'The most sensitive records,',
+      titleB: 'for the fewest people.',
+      lead: 'Section 47 enquiries, child protection plans and Prevent referrals can only be opened by the DSL, the deputy DSL and the Headteacher. When someone else needs to see one, the DSL shares that one record with one named person: read-only, with a written reason, for up to 90 days. The person is told, the DSL can revoke it at any time, and every share and revocation is logged.',
+      shots: ['sg-share', 'sg-shared'],
+    })}
+
+    ${screenGallery({
+      eyebrow: '4 · Allegations about staff',
+      titleA: 'The right case manager,',
+      titleB: 'and never the person accused.',
+      lead: 'Following KCSIE 2026 Part four, the Headteacher is case manager for an allegation about a member of staff. An allegation about the Headteacher goes to the Chair of Governors instead, and can be read only by the Chair, the trust safeguarding lead and the person who raised it.',
       shots: ['sg-chair'],
+      tint: true,
+      after: `<ul class="sg-route reveal">
+        <li><strong>The LADO referral is recorded:</strong> who was spoken to and when — and, for an allegation about the Headteacher, the LADO&rsquo;s reference and the exact time of contact, without which the Chair cannot save it.</li>
+        <li><strong>Nobody sees an allegation about themselves,</strong> whatever their role.</li>
+        <li><strong>Escalation never notifies the person a concern is about.</strong> A concern about an adult gets one reminder to the people it went to, and goes no wider.</li>
+      </ul>`,
     })}
 
     ${screenGallery({
-      eyebrow: '4 · KCSIE compliance, live',
+      eyebrow: '5 · Safer recruitment',
+      titleA: 'Every check,',
+      titleB: 'before anyone starts.',
+      lead: 'The Single Central Record counts a DBS check only when it is current, verified by a named member of staff and the barred list is confirmed. Volunteers are on it too, with whether their role is regulated activity and why. Section 128 checks are recorded for governors and senior leaders.',
+      shots: ['dbs-summary', 'trust-scr'],
+      after: `<ul class="sg-route reveal">
+        <li><strong>A school cannot go live in DARE</strong> until it has an active DSL and deputy DSL, a Chair of Governors who has signed in, and a LADO contact.</li>
+      </ul>`,
+    })}
+
+    ${screenGallery({
+      eyebrow: '6 · Evidence for inspection',
       titleA: 'It tells you',
       titleB: 'before Ofsted does.',
-      lead: 'Leaders see every KCSIE requirement with the evidence behind it: DBS checks with the barred list confirmed, DSL and staff training, the annual policy review, the child-on-child abuse policy, the children-missing-education procedure, the filtering and monitoring review, and who has confirmed reading Part one — each drawn from the school&rsquo;s own records.',
-      shots: ['kcsie-live', 'filtering', 'part-one'],
+      lead: 'Leaders see every KCSIE requirement with the evidence behind it, drawn from the school&rsquo;s own records. Staff are prompted in every app until they confirm they have read KCSIE Part one, and HR can record paper or meeting evidence for anyone else. The filtering and monitoring review is signed off by the DSL and IT, with the next review due within the year. Governors see the same picture from live evidence — and where DARE holds no record, it says so rather than showing a tick.',
+      shots: ['kcsie-live', 'filtering', 'part-one', 'gov-panel'],
       tint: true,
+    })}
+
+    ${screenGallery({
+      eyebrow: 'Across the school',
+      titleA: 'Safeguarding',
+      titleB: 'in the everyday.',
+      lead: 'A controlled drug cannot be recorded without a second member of staff from the same school as witness, in a ledger that is never edited — corrections are new entries. Supply staff who sign in at the reception kiosk go on the fire roll, even if they were not booked, and the office is told. And parents can only see children they are verified as linked to.',
+      shots: ['cd-witness', 'kiosk-supply', 'parent-child'],
     })}
 
     ${ctaBand('See it with', 'your own safeguarding chain.', 'Thirty minutes, your real workflows, your escalation routes. No slides.')}
+  `,
+  isp: () => `
+    <section class="hero product-hero">
+      <div class="container">
+        <div class="reveal">
+          <span class="hero-eyebrow">Individual Support Plans</span>
+          <h1 class="hero-h1">SEN Support, <span class="gold">planned and evidenced.</span></h1>
+          <p class="hero-sub">In DARE Mainstream, the SENCO builds each pupil&rsquo;s Individual Support Plan, runs the graduated approach and sees the provision and what it costs — with the evidence recorded by the staff who work with the child every day.</p>
+          <div class="hero-actions">
+            ${ctaLink(DEMO_CTA, 'btn btn-gold btn-lg')}
+          </div>
+          ${ctaAlt()}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">Why now</div>
+          <h2 class="section-h2">ISPs are coming. <span class="gold">The evidence starts now.</span></h2>
+          <p class="section-lead">The Schools White Paper 2026 proposes an Individual Support Plan for every pupil on Targeted or Specialist SEND support, statutory from September 2029, subject to legislation. The plan is only as good as the record behind it, and DARE Mainstream builds that record in the flow of teaching.</p>
+        </div>
+      </div>
+    </section>
+
+    ${mockupSection({
+      eyebrow: 'The plan', titleA: 'One plan per pupil,', titleB: 'every version kept.',
+      lead: 'The SENCO records the pupil&rsquo;s strengths and needs, the outcomes, the provision, the pupil&rsquo;s own voice, the parent&rsquo;s views, a transition plan and the review date. Every save is kept as a version, and a plan is marked White Paper ready once the parent&rsquo;s views and the transition plan are in.',
+      label: 'DARE Mainstream — ISP tracker', svg: mockIspTracker(),
+    })}
+
+    <section class="section capabilities">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">What it does today</div>
+          <h2 class="section-h2">The graduated approach, <span class="gold">end to end.</span></h2>
+        </div>
+        <div class="capability-grid">
+          <div class="capability reveal"><div class="capability-num">${icon('timeline') || 'i'}</div><div class="capability-title">Assess, plan, do, review</div><div class="capability-body">Each pupil on SEN Support moves through the cycle, with the next review set twelve weeks ahead, and the SENCO sees every pupil grouped by stage. A teacher&rsquo;s concern leads to monitoring, an ISP or an EHC needs assessment.</div></div>
+          <div class="capability reveal"><div class="capability-num">${icon('target') || 'ii'}</div><div class="capability-title">Evidence against the targets</div><div class="capability-body">Teachers log progress against a pupil&rsquo;s outcomes, and teaching assistants log each provision session — what was done and how the pupil responded — so the SENCO sees progress move.</div></div>
+          <div class="capability reveal"><div class="capability-num">${icon('badge') || 'iii'}</div><div class="capability-title">Provision, costed</div><div class="capability-body">Provision is costed per pupil, by funder and by area of need, for the SENCO and senior leaders.</div></div>
+          <div class="capability reveal"><div class="capability-num">${icon('shield') || 'iv'}</div><div class="capability-title">Towards an EHC needs assessment</div><div class="capability-body">When SEN Support is not enough, the SENCO raises the EHC needs assessment request in DARE and tracks it against the 20-week statutory clock, with the Headteacher seeing its progress.</div></div>
+          <div class="capability reveal"><div class="capability-num">${icon('devices') || 'v'}</div><div class="capability-title">Across a trust</div><div class="capability-body">The Trust Portal shows each school&rsquo;s active SEN Support plans alongside its SEN Support and EHCP numbers.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section coming-next">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">Coming next</div>
+          <h2 class="section-h2">Planned, <span class="gold">not yet available.</span></h2>
+          <p class="section-lead">These are on our plan. None of them is in the product today, and we have not set dates.</p>
+        </div>
+        <ul class="planned-list reveal">
+          <li><span class="planned-pill">Planned</span> Direct sync with your MIS (for example through Wonde). Today, pupils are imported by CSV.</li>
+          <li><span class="planned-pill">Planned</span> Parents adding their own views to their child&rsquo;s ISP through the Parent Portal. Today, the SENCO records them.</li>
+          <li><span class="planned-pill">Planned</span> Parents seeing their child&rsquo;s ISP and its targets in the Parent Portal.</li>
+          <li><span class="planned-pill">Planned</span> The ISP&rsquo;s evidence carried into an EHC needs assessment request automatically.</li>
+          <li><span class="planned-pill">Planned</span> ISP coverage and quality across a trust, school by school.</li>
+        </ul>
+      </div>
+    </section>
+
+    ${ctaBand('Get ISP-ready', 'before you have to be.', 'Thirty minutes with your SENCO and your real SEN Support register. No slides.')}
   `,
 
   implementation: () => `
@@ -3907,6 +4027,7 @@ const routes = {
   'integrations': 'integrations',
   'implementation': 'implementation',
   'safeguarding': 'safeguarding',
+  'isp': 'isp',
   'blog': 'blog',
 };
 
@@ -3930,6 +4051,7 @@ const titles = {
   integrations: 'Integrations — SkillGrow',
   implementation: 'Implementation — SkillGrow',
   safeguarding: 'Safeguarding and KCSIE — SkillGrow',
+  isp: 'Individual Support Plans — SkillGrow',
   blog: 'SEND Insights — SkillGrow',
   blogloading: 'Loading… — SkillGrow',
   notfound: 'Page not found — SkillGrow',

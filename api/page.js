@@ -5,7 +5,7 @@
  * this, every shared link would preview as the homepage, whichever page was
  * shared, and every page would carry the same meta description.
  *
- * vercel.json rewrites the nineteen non-home routes here, plus every
+ * vercel.json rewrites the twenty non-home routes here, plus every
  * /blog/<slug> article (a second pattern, since a :page segment cannot
  * contain a slash). '/' is NOT routed here:
  * static files win over rewrites on Vercel, so the root is served straight
@@ -155,9 +155,16 @@ const META = {
   safeguarding: {
     path: '/safeguarding',
     title: 'Safeguarding and KCSIE — SkillGrow',
-    description: "How DARE handles a safeguarding concern: routed by KCSIE role, nothing on a lock screen, escalated if nobody acknowledges it, and KCSIE compliance shown live. Built for KCSIE 2026.",
+    description: "How DARE keeps children safe: concerns routed by KCSIE role, nothing on a lock screen, escalation if nobody acts, need-to-know records, allegations handled correctly, safer recruitment and live evidence for inspection. Built for KCSIE 2026.",
     ogTitle: 'Keeping children safe, built for KCSIE 2026',
     ogDescription: 'Who is told, who is not, what happens if nobody responds, and a live view of KCSIE compliance. Real DARE screens, demonstration data.',
+  },
+  isp: {
+    path: '/isp',
+    title: 'Individual Support Plans — SkillGrow',
+    description: "Individual Support Plans in DARE Mainstream: the SENCO builds each ISP, runs assess-plan-do-review, costs the provision and raises EHC needs assessment requests, with evidence from the staff who work with the child.",
+    ogTitle: 'SEN Support, planned and evidenced',
+    ogDescription: 'ISPs, the graduated approach and costed provision in DARE Mainstream — ready for the White Paper 2026 before it is statutory.',
   },
   implementation: {
     path: '/implementation',
