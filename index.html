@@ -1468,7 +1468,7 @@ fieldset.field legend { padding: 0; }
     </div>
     <div class="footer-bottom">
       <span>© 2026 SkillGrow Technologies Ltd · Company No: 13535893</span>
-      <span>ICO registered (ZC142603) · GDPR compliant · KCSIE 2026 aligned</span>
+      <span>ICO registered (ZC142603) · GDPR compliant · Built for KCSIE 2026</span>
     </div>
     <div class="footer-cookies">This site uses no cookies. Analytics by Plausible — privacy-friendly, no personal data collected.</div>
   </div>
@@ -1521,7 +1521,7 @@ const FAQ = [
     ['What happens to our data if we leave?',
       '<p>It is yours. As your data processor we act only on your instructions, and what happens to your data at the end of the contract is set out in the data processing agreement you sign with us — including returning it to you and deleting it from our systems.</p>'],
     ['Are you GDPR compliant?',
-      '<p>Yes. We process personal data under UK GDPR and the Data Protection Act 2018, and the platform is aligned with KCSIE 2026. Our <a href="/privacy" data-link>privacy policy</a> explains how we handle data.</p>'],
+      '<p>Yes. We process personal data under UK GDPR and the Data Protection Act 2018, and the platform is built for KCSIE 2026. Our <a href="/privacy" data-link>privacy policy</a> explains how we handle data.</p>'],
     ['Are you ICO registered?',
       '<p>Yes. SkillGrow Technologies Ltd is registered with the Information Commissioner&rsquo;s Office, registration number <a href="https://ico.org.uk/ESDWebPages/Entry/ZC142603" target="_blank" rel="noopener">ZC142603</a>.</p>'],
     ['Do you use AI with our data?',
@@ -1791,8 +1791,8 @@ function mockSenConcernLog() {
     ['10:42', 'Logged by TA on the playground'],
     ['10:42', 'Routed to the DSL by name'],
     ['10:47', 'Acknowledged by the DSL'],
-    ['10:51', 'Linked to EHCP outcome: Communication'],
-    ['15:10', 'Family informed via Parent Portal'],
+    ['10:51', 'Added to the child&rsquo;s safeguarding chronology'],
+    ['11:30', 'Reviewed by the DSL; next action recorded'],
   ];
   return browserFrame('DARE SEN OS — Safeguarding concern log', 'dare.skillgrow.co.uk', 560, `
     ${appBar('DARE SEN OS', 'Oakfield School', 'DS')}
@@ -2084,7 +2084,7 @@ const pages = {
           ${productCard('sen', 'Operating System', 'DARE SEN OS', 'The complete platform for special schools. 29+ integrated apps spanning safeguarding, EHCPs, therapy, medication, behaviour, and outcomes.')}
           ${productCard('mainstream', 'Mainstream', 'DARE Mainstream', 'SEND infrastructure for mainstream schools. SENCO workflows, provision mapping, parent engagement, and statutory compliance.')}
           ${productCard('staff-pwa', 'Every staff member', 'Staff PWA', 'A personal digital workspace for every member of school staff. Clock in and out, log CPD, check your own record and notifications — on any device you already own.')}
-          ${productCard('parent', 'Families', 'Parent Portal', 'Every family in the loop. Daily diaries, EHCP visibility, real-time safeguarding alerts, and direct two-way contact.')}
+          ${productCard('parent', 'Families', 'Parent Portal', 'Every family in the loop. Daily diaries, EHCP visibility, attendance, letters, consent forms and direct two-way messages. Safeguarding is handled by the school&rsquo;s DSL team.')}
           ${productCard('trust', 'Leadership', 'Trust Portal', 'Multi-school oversight for MATs and local authorities. Cross-site analytics, governance, and a single pane of glass for SEND.')}
         </div>
       </div>
@@ -2168,11 +2168,11 @@ const pages = {
     sub: 'The safeguarding chain and the EHCP evidence trail, in one system — built for special schools, where the two are never separate.',
     differentiator: {
       eyebrow: 'What no one else can offer',
-      text: 'A concern logged by a TA in the playground reaches the DSL in seconds, attaches itself to that child&rsquo;s EHCP outcome, and is visible to the family the same day — <span class="gold">without anyone re-typing it into a second system.</span>',
+      text: 'A concern logged by a TA in the playground reaches the DSL in seconds, sits on that child&rsquo;s record, and escalates if it isn&rsquo;t acknowledged — <span class="gold">without anyone re-typing it into a second system.</span>',
     },
     mockup: {
       eyebrow: 'On screen', titleA: 'Every concern,', titleB: 'with its whole chain.',
-      lead: 'The concern log a DSL works from: who logged it, who it went to, when it was acknowledged, which EHCP outcome it touches, and when the family was told.',
+      lead: 'The concern log a DSL works from: who logged it, who it went to, and when it was acknowledged.',
       label: 'DARE SEN OS — Safeguarding concern log', svg: mockSenConcernLog(),
     },
     rolesHeading: {
@@ -2464,7 +2464,7 @@ const pages = {
           <div class="audience-card reveal">
             <div class="audience-card-num">ii.</div>
             <div class="audience-card-title">Company No: 13535893</div>
-            <div class="audience-card-body">ICO registered. GDPR compliant. KCSIE 2026 aligned. Trademark protected.</div>
+            <div class="audience-card-body">ICO registered. GDPR compliant. Built for KCSIE 2026. Trademark protected.</div>
           </div>
           <div class="audience-card reveal">
             <div class="audience-card-num">iii.</div>
@@ -2687,7 +2687,7 @@ const pages = {
           <h2>Compliance</h2>
           <ul>
             <li>ICO registered (<a href="https://ico.org.uk/ESDWebPages/Entry/ZC142603" target="_blank" rel="noopener">ZC142603</a>) — GDPR compliant</li>
-            <li>KCSIE 2026 aligned</li>
+            <li>Built for KCSIE 2026</li>
             <li>Ofsted and CQC ready</li>
           </ul>
 
