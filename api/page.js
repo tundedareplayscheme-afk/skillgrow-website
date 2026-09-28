@@ -5,7 +5,7 @@
  * this, every shared link would preview as the homepage, whichever page was
  * shared, and every page would carry the same meta description.
  *
- * vercel.json rewrites the eighteen non-home routes here, plus every
+ * vercel.json rewrites the nineteen non-home routes here, plus every
  * /blog/<slug> article (a second pattern, since a :page segment cannot
  * contain a slash). '/' is NOT routed here:
  * static files win over rewrites on Vercel, so the root is served straight
@@ -151,6 +151,13 @@ const META = {
     description: 'How SkillGrow connects to your school: SIMS, Arbor, Bromcom and iSAMS via Wonde, Microsoft 365 sign-in, safeguarding data migration, and UK hosting on AWS.',
     ogTitle: 'SkillGrow integrations — works with what your school uses',
     ogDescription: 'MIS import via Wonde, Microsoft 365 sign-in, CPOMS and My Concern records migrated by our team, UK hosting. Don’t see yours? We build on request.',
+  },
+  safeguarding: {
+    path: '/safeguarding',
+    title: 'Safeguarding and KCSIE — SkillGrow',
+    description: "How DARE handles a safeguarding concern: routed by KCSIE role, nothing on a lock screen, escalated if nobody acknowledges it, and KCSIE compliance shown live. Built for KCSIE 2026.",
+    ogTitle: 'Keeping children safe, built for KCSIE 2026',
+    ogDescription: 'Who is told, who is not, what happens if nobody responds, and a live view of KCSIE compliance. Real DARE screens, demonstration data.',
   },
   implementation: {
     path: '/implementation',

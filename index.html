@@ -1376,6 +1376,49 @@ fieldset.field legend { padding: 0; }
   .footer-grid { grid-template-columns: 1fr; gap: 32px; }
   .vision::before { font-size: 480px; top: -120px; right: -60px; }
 }
+
+/* ── SCREENS (real DARE screens, demonstration data) ─
+   Galleries of real product screens. WebP with a PNG fallback, width/height
+   set so nothing shifts as they load, lazy-loaded so mobile pages stay light. */
+.screens { background: white; }
+.screens.tint { background: var(--slate-50, #F8FAFC); }
+.screen { margin: 0; }
+.screen picture, .screen img { display: block; width: 100%; height: auto; }
+.screen img {
+  border-radius: 14px; background: #F1F5F9;
+  box-shadow: 0 32px 80px rgba(15,45,82,0.16), 0 0 0 1px rgba(15,45,82,0.08);
+}
+.screen-phone { max-width: 340px; margin: 0 auto; }
+.screen-phone img { border-radius: 28px; box-shadow: 0 28px 48px rgba(15,45,82,0.22), 0 0 0 1px rgba(15,45,82,0.10); }
+.screen figcaption { margin-top: 18px; font-size: 14px; line-height: 1.55; color: var(--slate-700); }
+.screen figcaption strong { display: block; color: var(--navy); font-weight: 700; margin-bottom: 4px; }
+.screen-label { display: block; color: var(--slate-500); font-size: 12px; letter-spacing: 0.3px; }
+.screen-grid {
+  display: grid; gap: 56px 40px; margin-top: 40px; align-items: start;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
+}
+.screen-grid.one { grid-template-columns: 1fr; }
+.screen-grid.phones { grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+.section-lead a { color: var(--navy); font-weight: 600; text-decoration: underline; }
+.sg-strip { display: grid; gap: 24px; margin-top: 36px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+.sg-tile {
+  display: block; padding: 24px; border-radius: 16px; color: inherit; text-decoration: none;
+  background: rgba(15,45,82,0.04); border: 1px solid rgba(15,45,82,0.08); transition: border-color .2s;
+}
+.sg-tile:hover { border-color: var(--gold); }
+.sg-tile .screen { margin-bottom: 18px; }
+.sg-tile .screen figcaption { display: none; }
+.sg-tile h3 { font-family: var(--serif); font-size: 22px; font-weight: 600; color: var(--navy); margin: 0 0 8px; line-height: 1.25; }
+.sg-tile p { font-size: 15px; line-height: 1.6; color: var(--slate-700); margin: 0; }
+.sg-tile .sg-more { display: inline-block; margin-top: 12px; font-size: 14px; font-weight: 700; color: var(--navy); }
+.sg-route { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 12px; }
+.sg-route li { padding: 14px 18px; border-radius: 12px; background: rgba(15,45,82,0.04); font-size: 15px; line-height: 1.55; color: var(--slate-700); }
+.sg-route li strong { color: var(--navy); }
+.sg-push-text { font-family: var(--sans); font-weight: 700; color: var(--navy); }
+@media (max-width: 640px) {
+  .screen-grid { gap: 40px; margin-top: 28px; }
+  .screen-phone { max-width: 280px; }
+}
 </style>
 </head>
 <body>
@@ -1435,6 +1478,7 @@ fieldset.field legend { padding: 0; }
         <a href="/staff-pwa" data-link>Staff PWA</a>
         <a href="/parent" data-link>Parent Portal</a>
         <a href="/trust" data-link>Trust Portal</a>
+        <a href="/safeguarding" data-link>Safeguarding</a>
       </div>
       <div class="footer-col">
         <h4>Company</h4>
@@ -1851,7 +1895,7 @@ function mockIspTracker() {
   const sw = 278, sx = i => 32 + i * (sw + 8);
   const chevron = (x, first) => `${x},150 ${x + sw - 20},150 ${x + sw},188 ${x + sw - 20},226 ${x},226 ${first ? x : x + 20},188`;
   return browserFrame('DARE Mainstream — ISP tracker', 'mainstream.skillgrow.co.uk', 600, `
-    ${appBar('DARE Mainstream', 'Northgate Primary', 'SC')}
+    ${appBar('DARE Mainstream', 'DARE Learning Trust Primary', 'SC')}
     ${T(32, 100, 'Individual Support Plan', 28, MK.navy, 600, SERIF)}
     ${T(32, 124, 'Ruby H. · Year 5 · Cedar class · Targeted support', 13, MK.s500)}
     ${pill(946, 84, 'Cycle 2 of 4', MK.s100, MK.s700, 11)}${pill(1068, 84, 'ISP-ready', MK.navy, MK.gold, 11)}
@@ -2051,6 +2095,92 @@ function mockupSection({ eyebrow, titleA, titleB, lead, label, svg, device = 'br
     </section>`;
 }
 
+/* ── Real DARE screens ────────────────────────────────────────────────────────
+   Screenshots of the real product, recorded by the demo recorder on DARE
+   Learning Trust demonstration data (Terminal 6's set, ~/projects/shared/demo/
+   website/). Every one carries SCREEN_LABEL. An entry with ready:false is a
+   screen that has not been recorded yet: it renders nothing until its files are
+   in /img/product/ and the flag is removed. */
+const SCREEN_LABEL = 'DARE — demonstration data. All pupils, staff and schools are fictional.';
+const SCREENS = {
+  'head-morning':    { file: 'dare-headteacher-morning-priorities-banner', w: 2400, h: 960,
+                       caption: 'The Headteacher&rsquo;s morning in DARE: what needs attention today, from live school data.' },
+  'kcsie-live':      { file: 'dare-kcsie-compliance-live', w: 1600, h: 1000,
+                       caption: 'KCSIE compliance, live: every requirement with the evidence behind it, before an inspector asks.' },
+  'trust-overview':  { file: 'dare-trust-overview-all-schools', w: 1600, h: 1000,
+                       caption: 'One live view across every school in the trust: pupils, attendance, safeguarding and DBS.' },
+  'assessment':      { file: 'dare-record-assessment-sen', w: 1600, h: 1000,
+                       caption: 'Progress recorded against each child&rsquo;s own framework, with evidence and next steps, and linked to EHCP outcomes where the child has them.' },
+  'cd-witness':      { file: 'dare-controlled-drug-witness-required', w: 1600, h: 1000,
+                       caption: 'A controlled drug cannot be recorded without a second, same-school witness.' },
+  'cd-ledger':       { file: 'dare-controlled-drug-stock-ledger', w: 1600, h: 1000,
+                       caption: 'An append-only controlled-drug ledger: every delivery, dose and count, witnessed.' },
+  'rpi':             { file: 'dare-restrictive-physical-intervention', w: 1600, h: 1000,
+                       caption: 'Physical intervention recorded in full — framework, techniques, minimum-necessary, debriefs — and the Headteacher alerted.' },
+  'staff-emergency': { file: 'dare-staff-app-emergency-contacts', w: 780, h: 1330, phone: true,
+                       caption: 'Every member of staff, one tap from 999, the DSL, the deputy and the Headteacher.' },
+  'parent-child':    { file: 'dare-parent-portal-my-child', w: 780, h: 1688, phone: true,
+                       caption: 'Parents see their own child — and only their own child — on their phone.' },
+  /* Recorded by the next demo run; slotted in when the files land. */
+  'sg-raise':        { file: 'dare-teacher-raises-safeguarding-concern', w: 1600, h: 1000, ready: false,
+                       caption: 'A teacher raises a concern; KCSIE routing decides who is told.' },
+  'sg-push':         { file: 'dare-content-free-safeguarding-alert', w: 780, h: 1688, phone: true, ready: false,
+                       caption: 'The alert on a DSL&rsquo;s phone says nothing about the child.' },
+  'sg-inbox':        { file: 'dare-dsl-team-inbox', w: 1600, h: 1000, ready: false,
+                       caption: 'One inbox for the whole DSL team; acknowledging clears it for everyone.' },
+  'sg-chair':        { file: 'dare-allegation-about-the-head-chair-view', w: 1600, h: 1000, ready: false,
+                       caption: 'An allegation about the Headteacher, seen by the Chair of Governors, with the LADO referral.' },
+  'go-live':         { file: 'dare-go-live-checklist', w: 1600, h: 1000, ready: false,
+                       caption: 'The go-live checklist: what is in place and what is still needed before staff start.' },
+};
+function screenReady(key) { return !!SCREENS[key] && SCREENS[key].ready !== false; }
+function screenFigure(key) {
+  if (!screenReady(key)) return '';
+  const s = SCREENS[key], src = `/img/product/${s.file}`;
+  return `
+    <figure class="screen${s.phone ? ' screen-phone' : ''} reveal">
+      <picture>
+        <source type="image/webp" srcset="${src}.webp">
+        <img src="${src}.png" width="${s.w}" height="${s.h}" alt="${s.caption.replace(/<[^>]+>/g, '')}" loading="lazy" decoding="async">
+      </picture>
+      <figcaption><strong>${s.caption}</strong><span class="screen-label">${SCREEN_LABEL}</span></figcaption>
+    </figure>`;
+}
+function screenHeading({ eyebrow, titleA, titleB, lead }) {
+  return `
+        <div class="reveal">
+          <div class="section-eyebrow">${eyebrow}</div>
+          <h2 class="section-h2">${titleA} <span class="gold">${titleB}</span></h2>
+          ${lead ? `<p class="section-lead">${lead}</p>` : ''}
+        </div>`;
+}
+/* A gallery section: heading, then every recorded screen in `shots`. */
+function screenGallery({ eyebrow, titleA, titleB, lead, shots = [], after = '', tint = false, points }) {
+  const ready = shots.filter(screenReady);
+  const phones = ready.length > 0 && ready.every(k => SCREENS[k].phone);
+  if (phones && ready.length === 1) return `
+    <section class="section screens${tint ? ' tint' : ''}">
+      <div class="container showcase-split">
+        <div>
+          ${screenHeading({ eyebrow, titleA, titleB, lead })}
+          ${points ? `<ul class="showcase-points reveal">${points.map(p => `<li>${p}</li>`).join('')}</ul>` : ''}
+        </div>
+        ${screenFigure(ready[0])}
+      </div>
+      ${after ? `<div class="container">${after}</div>` : ''}
+    </section>`;
+  const cls = phones ? ' phones' : (ready.length === 1 ? ' one' : '');
+  return `
+    <section class="section screens${tint ? ' tint' : ''}">
+      <div class="container">
+        ${screenHeading({ eyebrow, titleA, titleB, lead })}
+        ${points ? `<ul class="showcase-points reveal">${points.map(p => `<li>${p}</li>`).join('')}</ul>` : ''}
+        ${ready.length ? `<div class="screen-grid${cls}">${ready.map(screenFigure).join('')}</div>` : ''}
+        ${after}
+      </div>
+    </section>`;
+}
+
 const pages = {
   home: () => `
     <section class="hero">
@@ -2090,15 +2220,29 @@ const pages = {
       </div>
     </section>
 
-    ${mockupSection({
+    ${screenGallery({
       eyebrow: 'See it in action',
       titleA: 'The whole school,',
       titleB: 'on one screen.',
-      lead: 'What a headteacher sees at nine o&rsquo;clock: who is in, whose plan is due for review, and every concern of the day already with the right adult.',
-      label: 'DARE SEN OS — Headteacher dashboard',
-      svg: mockHeadDashboard(),
+      lead: 'What a headteacher sees first thing: what needs attention today — risk assessments waiting for approval, safeguarding cases in progress, EHCP reviews coming due — drawn from the school&rsquo;s live data.',
+      shots: ['head-morning'],
       after: `<div class="showcase-cta reveal"><a href="https://hq.skillgrow.co.uk/book/tunde" target="_blank" rel="noopener">Book a demo to see your school&rsquo;s data&nbsp;&rarr;</a></div>`,
     })}
+
+    <section class="section">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">Safeguarding first</div>
+          <h2 class="section-h2">Every concern, <span class="gold">to the right people.</span></h2>
+          <p class="section-lead">Built for KCSIE 2026: routed by role, silent on a lock screen, escalated if nobody acts. <a href="/safeguarding" data-link>How safeguarding works in DARE</a>.</p>
+        </div>
+        <div class="sg-strip">
+          <a class="sg-tile reveal" href="/safeguarding" data-link>${screenFigure('sg-raise')}<h3>Raised in seconds</h3><p>A member of staff raises a concern; DARE sends it to the DSL team by KCSIE role, never to the person it is about.</p><span class="sg-more">How routing works &rarr;</span></a>
+          <a class="sg-tile reveal" href="/safeguarding" data-link>${screenFigure('sg-push')}<h3>Nothing on a lock screen</h3><p>The phone alert says only that a safeguarding alert is waiting. No name, no pupil, no detail.</p><span class="sg-more">What the alert says &rarr;</span></a>
+          <a class="sg-tile reveal" href="/safeguarding" data-link>${screenFigure('sg-inbox')}<h3>Nobody misses it</h3><p>One inbox for the whole DSL team, and a reminder at 30 minutes, then the Headteacher at 60, if nobody acknowledges it.</p><span class="sg-more">The escalation chain &rarr;</span></a>
+        </div>
+      </div>
+    </section>
 
     <section class="section how">
       <div class="container">
@@ -2170,11 +2314,17 @@ const pages = {
       eyebrow: 'What no one else can offer',
       text: 'A concern logged by a TA in the playground reaches the DSL in seconds, sits on that child&rsquo;s record, and escalates if it isn&rsquo;t acknowledged — <span class="gold">without anyone re-typing it into a second system.</span>',
     },
-    mockup: {
-      eyebrow: 'On screen', titleA: 'Every concern,', titleB: 'with its whole chain.',
-      lead: 'The concern log a DSL works from: who logged it, who it went to, and when it was acknowledged.',
-      label: 'DARE SEN OS — Safeguarding concern log', svg: mockSenConcernLog(),
-    },
+    galleries: [
+      { eyebrow: 'Safeguarding', titleA: 'Every concern,', titleB: 'to the right team.',
+        lead: 'A concern goes to the DSL and the deputy by KCSIE role, lands in one team inbox, and escalates if nobody acknowledges it. <a href="/safeguarding" data-link>How safeguarding works in DARE</a>.',
+        shots: ['sg-inbox'] },
+      { eyebrow: 'EHCP evidence', titleA: 'Evidence,', titleB: 'gathered as you go.',
+        lead: 'Every assessment is recorded against the child&rsquo;s own framework, with the evidence and the next step, and linked to their EHCP outcomes — so the annual review is a by-product of the work.',
+        shots: ['assessment'], tint: true },
+      { eyebrow: 'Medication', titleA: 'Medication,', titleB: 'witnessed.',
+        lead: 'A controlled drug cannot be recorded without a second member of staff from the same school as witness, and every delivery, dose and count goes into an append-only ledger.',
+        shots: ['cd-witness', 'cd-ledger'] },
+    ],
     rolesHeading: {
       eyebrow: 'Who is this for?',
       titleA: 'Built around the people',
@@ -2232,6 +2382,11 @@ const pages = {
       lead: 'Assess, plan, do, review — each cycle tracked against its targets, costed on the provision map, with the family&rsquo;s voice captured alongside. The ISP builds itself from the record.',
       label: 'DARE Mainstream — ISP tracker', svg: mockIspTracker(),
     },
+    galleries: [
+      { eyebrow: 'Behaviour', titleA: 'Behaviour and physical intervention,', titleB: 'recorded in full.',
+        lead: 'When restrictive physical intervention is used, the record asks for the framework, the techniques, the duration, confirmation that it was the minimum necessary and the debriefs — and the Headteacher is alerted when it is saved.',
+        shots: ['rpi'], tint: true },
+    ],
     rolesHeading: {
       eyebrow: 'Who is this for?',
       titleA: 'The people who will be',
@@ -2268,13 +2423,12 @@ const pages = {
       eyebrow: 'What no one else can offer',
       text: 'Every member of staff gets their own professional space — <span class="gold">not just teaching staff</span> — on any device they already own.',
     },
-    mockup: {
-      device: 'phone',
-      eyebrow: 'On your phone', titleA: 'Your space,', titleB: 'in your pocket.',
-      lead: 'One tap to clock in when you arrive. Everything else about your working week is one screen away.',
-      points: ['Clock in and out from your own device', 'Your hours this week, as the office sees them', 'Training renewals you can see coming'],
-      label: 'Staff PWA — My space', svg: mockStaffPhone(),
-    },
+    galleries: [
+      { eyebrow: 'In an emergency', titleA: 'One tap from the DSL,', titleB: 'on any phone.',
+        lead: 'The Emergency sheet puts 999, the DSL, the deputy and the Headteacher one tap away, from any member of staff&rsquo;s own phone.',
+        points: ['Call 999 first — the sheet says so', 'The school&rsquo;s DSL, deputy and Headteacher, with their numbers', 'On the phone already in your pocket, with no app store'],
+        shots: ['staff-emergency'] },
+    ],
     rolesHeading: {
       eyebrow: 'Who is this for?',
       titleA: 'Everyone on the payroll,',
@@ -2312,13 +2466,12 @@ const pages = {
       eyebrow: 'What no one else can offer',
       text: 'Your own child&rsquo;s plan, attendance and letters, straight from the school&rsquo;s live record — <span class="gold">not a printout sent home on a Friday.</span>',
     },
-    mockup: {
-      device: 'phone',
-      eyebrow: 'On your phone', titleA: 'Their plan,', titleB: 'in your pocket.',
+    galleries: [
+      { eyebrow: 'On your phone', titleA: 'Their plan,', titleB: 'in your pocket.',
       lead: 'What the school shares with you about your child, in one place on your phone.',
       points: ['Their EHCP: the outcomes, the provision and the next review date', 'Attendance, letters and consent forms in one place', 'A message thread with the school'],
-      label: 'Parent Portal — Today', svg: mockParentPhone(),
-    },
+        shots: ['parent-child'] },
+    ],
     rolesHeading: {
       eyebrow: 'Who is this for?',
       titleA: 'The people who love them',
@@ -2357,11 +2510,11 @@ const pages = {
       eyebrow: 'What no one else can offer',
       text: 'The same safeguarding entry a TA logged this morning is already counted in the trust&rsquo;s picture this morning — <span class="gold">not aggregated into a return three weeks after it stopped mattering.</span>',
     },
-    mockup: {
-      eyebrow: 'On screen', titleA: 'Every school,', titleB: 'side by side.',
-      lead: 'Attendance, open concerns and review timeliness across the trust, live — and the pattern worth asking about surfaced before the board meeting, not after it.',
-      label: 'Trust Portal — Cross-school KPI dashboard', svg: mockTrustKpis(),
-    },
+    galleries: [
+      { eyebrow: 'On screen', titleA: 'Every school,', titleB: 'side by side.',
+        lead: 'Pupils, attendance, open safeguarding and DBS across every school in the trust, live — and each school one click away.',
+        shots: ['trust-overview'] },
+    ],
     rolesHeading: {
       eyebrow: 'Who is this for?',
       titleA: 'The people accountable',
@@ -2687,7 +2840,7 @@ const pages = {
           <h2>Compliance</h2>
           <ul>
             <li>ICO registered (<a href="https://ico.org.uk/ESDWebPages/Entry/ZC142603" target="_blank" rel="noopener">ZC142603</a>) — GDPR compliant</li>
-            <li>Built for KCSIE 2026</li>
+            <li>Built for KCSIE 2026 — see <a href="/safeguarding" data-link>how safeguarding and KCSIE compliance work in DARE</a></li>
             <li>Ofsted and CQC ready</li>
           </ul>
 
@@ -3051,6 +3204,66 @@ const pages = {
      from the school's own export — there is no automated connector for them.
      Update the SLA table the moment a figure changes, and link the status
      page once it exists. */
+
+  safeguarding: () => `
+    <section class="hero product-hero">
+      <div class="container">
+        <div class="reveal">
+          <span class="hero-eyebrow">Safeguarding</span>
+          <h1 class="hero-h1">Keeping children safe, <span class="gold">built for KCSIE 2026.</span></h1>
+          <p class="hero-sub">What happens in DARE from the moment a concern is raised — who is told, who is not, what happens if nobody responds — and how a school sees where it stands on KCSIE before an inspector asks.</p>
+          <div class="hero-actions">
+            ${ctaLink(DEMO_CTA, 'btn btn-gold btn-lg')}
+          </div>
+          ${ctaAlt()}
+        </div>
+      </div>
+    </section>
+
+    ${screenGallery({
+      eyebrow: '1 · From concern to the DSL team',
+      titleA: 'The right people are told,',
+      titleB: 'by KCSIE role.',
+      lead: 'The member of staff raising a concern never has to decide who to tell. DARE routes it by who the concern is about, and the person it is about is never told.',
+      shots: ['sg-raise', 'sg-inbox'],
+      after: `<ul class="sg-route reveal">
+        <li><strong>About a pupil:</strong> the DSL and the deputy DSL (the Headteacher, if the school has no DSL).</li>
+        <li><strong>About a member of staff, a volunteer or a contractor:</strong> the Headteacher as case manager, with the DSL copied.</li>
+        <li><strong>About the DSL:</strong> the Headteacher.</li>
+        <li><strong>About the Headteacher:</strong> the Chair of Governors — and the trust safeguarding lead, in a trust — with the LADO. Never the Headteacher.</li>
+        <li><strong>If nobody acknowledges a concern about a pupil:</strong> a reminder at 30 minutes, then the Headteacher at 60 (school minutes; out of hours it goes to the school&rsquo;s on-call rota). Everyone on the DSL team works from one inbox, and reviewing a concern acknowledges it for the whole team.</li>
+      </ul>`,
+    })}
+
+    ${screenGallery({
+      eyebrow: '2 · Nothing on a lock screen',
+      titleA: 'The alert says',
+      titleB: 'nothing about the child.',
+      lead: 'A safeguarding alert on a phone reads only <span class="sg-push-text">&ldquo;🔒 New safeguarding alert — please log in to DARE&rdquo;</span>. No name, no pupil, no detail. The link opens the record only after the DSL signs in, and an email to a school&rsquo;s shared DSL mailbox is just as bare.',
+      shots: ['sg-push'],
+      tint: true,
+    })}
+
+    ${screenGallery({
+      eyebrow: '3 · An allegation about the Head',
+      titleA: 'It goes to the Chair,',
+      titleB: 'never to the Head.',
+      lead: 'An allegation about the Headteacher is readable only by the Chair of Governors, the trust safeguarding lead and the person who raised it — not the Head, the DSL or the deputies. The Chair records the LADO referral with the officer&rsquo;s name, their reference and when they were contacted.',
+      shots: ['sg-chair'],
+    })}
+
+    ${screenGallery({
+      eyebrow: '4 · KCSIE compliance, live',
+      titleA: 'It tells you',
+      titleB: 'before Ofsted does.',
+      lead: 'Leaders see every KCSIE requirement with the evidence behind it: DBS checks with the barred list confirmed, DSL and staff training, the annual policy review, the child-on-child abuse policy, the children-missing-education procedure, and the filtering and monitoring review — each drawn from the school&rsquo;s own records.',
+      shots: ['kcsie-live'],
+      tint: true,
+    })}
+
+    ${ctaBand('See it with', 'your own safeguarding chain.', 'Thirty minutes, your real workflows, your escalation routes. No slides.')}
+  `,
+
   implementation: () => `
     <section class="hero product-hero">
       <div class="container">
@@ -3077,6 +3290,16 @@ const pages = {
         </ol>
       </div>
     </section>
+
+    ${screenGallery({
+      eyebrow: 'Getting started',
+      titleA: 'From enrolment',
+      titleB: 'to go-live.',
+      lead: 'SkillGrow sets your school up in DARE from our HQ: the school, your staff and their roles, and the safeguarding contacts every alert depends on — your DSL and deputy, your Chair of Governors and your local authority&rsquo;s LADO. Before your staff start, a go-live checklist shows what is in place and what is still needed.',
+      shots: ['go-live'],
+      tint: true,
+    })}
+
 
     <section class="section" style="background:white">
       <div class="container">
@@ -3504,7 +3727,8 @@ function productCard(slug, eyebrow, title, desc) {
 function productPage({
   eyebrow, titleA, titleB, sub,
   differentiator,          // the one sentence a competitor cannot repeat
-  mockup,                  // optional mockupSection() config — the product on screen
+  mockup,                  // optional mockupSection() config — an illustrative mock-up
+  galleries = [],          // optional screenGallery() configs — real DARE screens
   urgency,                 // optional statutory-deadline band
   rolesHeading, roles,     // "Who is this for?" — 2-4 named roles, each with a pain point
   capsHeading, caps,
@@ -3538,6 +3762,7 @@ function productPage({
     </section>` : ''}
 
     ${mockup ? mockupSection(mockup) : ''}
+    ${galleries.map(screenGallery).join('')}
 
     ${urgency ? `
     <section class="section urgency">
@@ -3657,6 +3882,7 @@ const routes = {
   'accessibility': 'accessibility',
   'integrations': 'integrations',
   'implementation': 'implementation',
+  'safeguarding': 'safeguarding',
   'blog': 'blog',
 };
 
@@ -3679,6 +3905,7 @@ const titles = {
   accessibility: 'Accessibility Statement — SkillGrow',
   integrations: 'Integrations — SkillGrow',
   implementation: 'Implementation — SkillGrow',
+  safeguarding: 'Safeguarding and KCSIE — SkillGrow',
   blog: 'SEND Insights — SkillGrow',
   blogloading: 'Loading… — SkillGrow',
   notfound: 'Page not found — SkillGrow',

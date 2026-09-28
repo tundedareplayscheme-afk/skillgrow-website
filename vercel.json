@@ -5,8 +5,8 @@
     }
   },
   "rewrites": [
-    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation|blog)", "destination": "/api/page?page=:page" },
-    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation|blog)/", "destination": "/api/page?page=:page" },
+    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation|safeguarding|blog)", "destination": "/api/page?page=:page" },
+    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation|safeguarding|blog)/", "destination": "/api/page?page=:page" },
     { "source": "/blog/:slug*", "destination": "/api/page?page=blog/:slug" },
     { "source": "/sitemap.xml", "destination": "/api/sitemap" }
   ]
