@@ -110,6 +110,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .notfound-links a { color: rgba(255,255,255,0.85); border-bottom: 1px solid rgba(255,255,255,0.25); padding-bottom: 2px; }
 .notfound-links a:hover { color: var(--gold); border-color: var(--gold); }
 .nav-login { font-size: 13px; color: rgba(255,255,255,0.55); }
+.footer-existing { margin-top: 14px; font-size: 13px; color: rgba(255,255,255,0.6); }
+.footer-existing a { color: var(--gold); text-decoration: underline; }
 
 .nav-dropdown { position: relative; }
 .nav-dropdown-trigger {
@@ -1463,8 +1465,7 @@ fieldset.field legend { padding: 0; }
       <a href="/blog" class="nav-link" data-link>Blog</a>
       <a href="/about" class="nav-link" data-link>About</a>
       <a href="/contact" class="nav-link" data-link>Contact</a>
-      <a href="https://hq.skillgrow.co.uk" class="nav-link nav-login">Log in</a>
-      <a href="https://hq.skillgrow.co.uk/book/tunde" class="btn btn-gold" target="_blank" rel="noopener">Book a Demo</a>
+      <a href="/book" class="btn btn-gold" target="_blank" rel="noopener">Book a Demo</a>
     </div>
   </div>
 </nav>
@@ -1498,7 +1499,7 @@ fieldset.field legend { padding: 0; }
         <a href="/implementation" data-link>Implementation</a>
         <a href="/integrations" data-link>Integrations</a>
         <a href="/contact" data-link>Contact</a>
-        <a href="https://hq.skillgrow.co.uk/book/tunde" target="_blank" rel="noopener">Book a Demo</a>
+        <a href="/book" target="_blank" rel="noopener">Book a Demo</a>
       </div>
       <div class="footer-col">
         <h4>Get in touch</h4>
@@ -1522,6 +1523,7 @@ fieldset.field legend { padding: 0; }
       <span>© 2026 SkillGrow Technologies Ltd · Company No: 13535893</span>
       <span>ICO registered (ZC142603) · GDPR compliant · Built for KCSIE 2026</span>
     </div>
+    <div class="footer-existing">Already a DARE school? Use the link in your welcome email, or <a href="/contact" data-link>contact us</a>.</div>
     <div class="footer-cookies">This site uses no cookies. Analytics by Plausible — privacy-friendly, no personal data collected.</div>
   </div>
 </footer>
@@ -1774,7 +1776,7 @@ function mockHeadDashboard() {
     ['Wellbeing · check-in', 'Logged 13:20 · Cedar', 'With DSL', MK.goldDeep],
   ];
   const week = [18, 30, 12, 0, 0];
-  return browserFrame('DARE SEN OS — Headteacher dashboard', 'dare.skillgrow.co.uk', 640, `
+  return browserFrame('DARE SEN OS — Headteacher dashboard', 'DARE SEN OS', 640, `
     ${appBar('DARE SEN OS', 'Oakfield School', 'HT')}
     ${T(32, 100, 'Headteacher dashboard', 28, MK.navy, 600, SERIF)}
     ${T(32, 124, 'Wednesday 14 October · Oakfield School', 13, MK.s500)}
@@ -1846,7 +1848,7 @@ function mockSenConcernLog() {
     ['10:51', 'Added to the child&rsquo;s safeguarding chronology'],
     ['11:30', 'Reviewed by the DSL; next action recorded'],
   ];
-  return browserFrame('DARE SEN OS — Safeguarding concern log', 'dare.skillgrow.co.uk', 560, `
+  return browserFrame('DARE SEN OS — Safeguarding concern log', 'DARE SEN OS', 560, `
     ${appBar('DARE SEN OS', 'Oakfield School', 'DS')}
     ${T(32, 100, 'Concern log', 28, MK.navy, 600, SERIF)}
     ${T(32, 124, 'Safeguarding · visible to DSL and deputies only', 13, MK.s500)}
@@ -1902,7 +1904,7 @@ function mockIspTracker() {
   ];
   const sw = 278, sx = i => 32 + i * (sw + 8);
   const chevron = (x, first) => `${x},150 ${x + sw - 20},150 ${x + sw},188 ${x + sw - 20},226 ${x},226 ${first ? x : x + 20},188`;
-  return browserFrame('DARE Mainstream — ISP tracker', 'mainstream.skillgrow.co.uk', 600, `
+  return browserFrame('DARE Mainstream — ISP tracker', 'DARE Mainstream', 600, `
     ${appBar('DARE Mainstream', 'DARE Learning Trust Primary', 'SC')}
     ${T(32, 100, 'Individual Support Plan', 28, MK.navy, 600, SERIF)}
     ${T(32, 124, 'Ruby H. · Year 5 · Cedar class · Targeted support', 13, MK.s500)}
@@ -1957,7 +1959,7 @@ function mockTrustKpis() {
     ['Hillcrest Primary', 'Primary', '340', 0.942, '1', '100%'],
   ];
   const cats = [['Behaviour', 34], ['Wellbeing', 22], ['Attendance', 18], ['Online safety', 9], ['Medical', 7]];
-  return browserFrame('Trust Portal — Cross-school KPI dashboard', 'trust.skillgrow.co.uk', 600, `
+  return browserFrame('Trust Portal — Cross-school KPI dashboard', 'DARE Trust Portal', 600, `
     ${appBar('Trust Portal', 'Northgate Learning Trust', 'CE')}
     ${T(32, 100, 'Trust overview', 28, MK.navy, 600, SERIF)}
     ${T(32, 124, 'Northgate Learning Trust · 5 schools · 2,940 pupils', 13, MK.s500)}
@@ -2226,7 +2228,7 @@ const pages = {
           </details>
           <p class="hero-sub">Every child at the centre. Every stakeholder connected. Supporting every child&rsquo;s SEND journey, from first concern to adulthood.</p>
           <div class="hero-actions">
-            <a href="https://hq.skillgrow.co.uk/book/tunde" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a Demo →</a>
+            <a href="/book" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a Demo →</a>
             <a href="/sen" class="btn btn-ghost btn-lg" data-link>Explore the Platform</a>
           </div>
           ${ctaAlt()}
@@ -2258,7 +2260,7 @@ const pages = {
       titleB: 'on one screen.',
       lead: 'What a headteacher sees first thing: what needs attention today — risk assessments waiting for approval, safeguarding cases in progress, EHCP reviews coming due — drawn from the school&rsquo;s live data.',
       shots: ['head-morning'],
-      after: `<div class="showcase-cta reveal"><a href="https://hq.skillgrow.co.uk/book/tunde" target="_blank" rel="noopener">Book a demo to see your school&rsquo;s data&nbsp;&rarr;</a></div>`,
+      after: `<div class="showcase-cta reveal"><a href="/book" target="_blank" rel="noopener">Book a demo to see your school&rsquo;s data&nbsp;&rarr;</a></div>`,
     })}
 
     <section class="section">
@@ -2285,8 +2287,8 @@ const pages = {
         <div class="how-grid">
           <div class="how-step reveal">
             <div class="how-num">1</div>
-            <div class="how-title">Your school joins in minutes</div>
-            <p class="how-body">Register your school at <a href="https://join.skillgrow.co.uk" target="_blank" rel="noopener">join.skillgrow.co.uk</a>. No procurement maze, no installation, nothing for IT to set up.</p>
+            <div class="how-title">Your school is set up for you</div>
+            <p class="how-body"><a href="/contact" data-link>Get in touch</a> and SkillGrow sets your school up in DARE. No procurement maze, no installation, nothing for IT to set up.</p>
           </div>
           <div class="how-step reveal">
             <div class="how-num">2</div>
@@ -2953,7 +2955,7 @@ const pages = {
           <div class="early-badge"><strong>Early adopter: 25% off for 3 years</strong> — available to schools joining before April 2027</div>
           <p>All prices exclude VAT.</p>
           <p>No setup fees. No per-user charges. Cancel with 30 days notice.</p>
-          <a href="https://hq.skillgrow.co.uk/book/tunde" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a Demo →</a>
+          <a href="/book" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a Demo →</a>
           ${ctaAlt('light')}
           <p class="plans-faq">Questions? Read the <a href="/faq" data-link>FAQ</a>.</p>
         </div>
@@ -3422,7 +3424,7 @@ const pages = {
           <h2 class="section-h2">From sign-up to live <span class="gold">in two weeks.</span></h2>
         </div>
         <ol class="onboard reveal">
-          <li><div class="onboard-when">Day 1</div><div class="onboard-what">Your school signs up at <a href="https://join.skillgrow.co.uk" target="_blank" rel="noopener">join.skillgrow.co.uk</a></div></li>
+          <li><div class="onboard-when">Day 1</div><div class="onboard-what">Your school agrees to start with SkillGrow — <a href="/contact" data-link>get in touch</a></div></li>
           <li><div class="onboard-when">Days 1–3</div><div class="onboard-what">SkillGrow configures your school environment</div></li>
           <li><div class="onboard-when">Days 3–5</div><div class="onboard-what">Staff accounts created and roles assigned</div></li>
           <li><div class="onboard-when">Week 1</div><div class="onboard-what">Live training session with your team</div></li>
@@ -3489,7 +3491,7 @@ const pages = {
           </tbody>
         </table>
         <div class="plans-terms reveal">
-          <a href="https://hq.skillgrow.co.uk/book/tunde" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a Demo →</a>
+          <a href="/book" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a Demo →</a>
           <p>Questions about getting started? See <a href="/integrations" data-link>integrations</a>, the <a href="/faq" data-link>FAQ</a>, or <a href="/contact" data-link>contact us</a>.</p>
         </div>
       </div>
@@ -3809,7 +3811,7 @@ function articlePage(a) {
 ${sourcesBlock(a)}
           <div class="post-cta">
             <p>Want to see how SkillGrow handles this in practice?</p>
-            <a href="https://hq.skillgrow.co.uk/book/tunde" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a demo →</a>
+            <a href="/book" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a demo →</a>
           </div>
           <a href="/blog" class="post-back post-back-foot" data-link>← Back to insights</a>
         </article>
@@ -3980,7 +3982,7 @@ function productPage({
   `;
 }
 
-const DEMO_CTA = { href: 'https://hq.skillgrow.co.uk/book/tunde', label: 'Book a Demo', external: true };
+const DEMO_CTA = { href: '/book', label: 'Book a Demo', external: true };
 
 function ctaLink({ href, label, external }, cls) {
   const target = external ? ' target="_blank" rel="noopener"' : ' data-link';

@@ -5,9 +5,28 @@
     }
   },
   "rewrites": [
-    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation|safeguarding|isp|blog)", "destination": "/api/page?page=:page" },
-    { "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation|safeguarding|isp|blog)/", "destination": "/api/page?page=:page" },
-    { "source": "/blog/:slug*", "destination": "/api/page?page=blog/:slug" },
-    { "source": "/sitemap.xml", "destination": "/api/sitemap" }
+    {
+      "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation|safeguarding|isp|blog)",
+      "destination": "/api/page?page=:page"
+    },
+    {
+      "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation|safeguarding|isp|blog)/",
+      "destination": "/api/page?page=:page"
+    },
+    {
+      "source": "/blog/:slug*",
+      "destination": "/api/page?page=blog/:slug"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/book",
+      "destination": "https://hq.skillgrow.co.uk/book/tunde",
+      "permanent": false
+    }
   ]
 }
