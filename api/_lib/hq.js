@@ -60,7 +60,8 @@ async function fetchPost(slug) {
    HQ's booking API from here. BOOKING_PROXY_SECRET, when set in this project's
    env, is sent so HQ can refuse anyone but the website. */
 const HQ_BOOK_API = 'https://hq.skillgrow.co.uk/api/book';
-const BOOK_USERNAME = 'tunde';
+/* Each HQ host with a booking page; '' (plain /book) is Tunde. */
+const BOOK_HOSTS = ['tunde', 'rubab', 'kajal'];
 const BOOK_TIMEOUT_MS = 25000;   // a booking creates a calendar event and sends two emails
 
 async function hqBook(method, { query = '', body, bookerIp } = {}) {
@@ -85,7 +86,7 @@ async function hqBook(method, { query = '', body, bookerIp } = {}) {
     clearTimeout(timer);
   }
 }
-const fetchAvailability = () => hqBook('GET', { query: `?username=${BOOK_USERNAME}` });
-const createBooking = (booking, bookerIp) => hqBook('POST', { body: { ...booking, username: BOOK_USERNAME }, bookerIp });
+const fetchAvailability = (host) => hqBook('GET', { query: `?username=${encodeURIComponent(host)}` });
+const createBooking = (booking, bookerIp, host) => hqBook('POST', { body: { ...booking, username: host }, bookerIp });
 
-module.exports = { fetchPosts, fetchPost, HQ_BLOG_API, fetchAvailability, createBooking };
+module.exports = { fetchPosts, fetchPost, HQ_BLOG_API, fetchAvailability, createBooking, BOOK_HOSTS };

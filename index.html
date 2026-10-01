@@ -4074,6 +4074,8 @@ const routes = {
   'integrations': 'integrations',
   'implementation': 'implementation',
   'book': 'book',
+  'book/rubab': 'book',
+  'book/kajal': 'book',
   'safeguarding': 'safeguarding',
   'isp': 'isp',
   'blog': 'blog',
@@ -4292,17 +4294,20 @@ document.addEventListener('change', (e) => {
    Availability and booking go to the website's own /api/book, which talks to HQ
    server-to-server: the visitor's browser never shows or calls an HQ address. */
 let BOOK = null, bookDay = null, bookSlot = null;
+/* /book is Tunde; /book/rubab and /book/kajal book with that colleague. */
+function bookHost() { const m = window.location.pathname.match(/^\/book\/(rubab|kajal)\/?$/); return m ? m[1] : 'tunde'; }
 const BOOK_ERROR = 'Something went wrong — please email <a href="mailto:hello@skillgrow.co.uk">hello@skillgrow.co.uk</a> and we will arrange a time.';
 function bookStatus(html) { const el = document.getElementById('book-status'); if (el) { el.innerHTML = html; el.hidden = !html; } }
 async function loadBooking() {
   BOOK = null; bookDay = null; bookSlot = null;
   bookStatus('Loading available times…');
   try {
-    const r = await fetch('/api/book', { headers: { accept: 'application/json' } });
+    const r = await fetch('/api/book?host=' + bookHost(), { headers: { accept: 'application/json' } });
     const j = await r.json().catch(() => ({}));
     if (!r.ok || !Array.isArray(j.days)) { bookStatus(esc(j.error || '') || BOOK_ERROR); return; }
     BOOK = j;
     const host = document.getElementById('book-host');
+    if (j.host && j.host.name && bookHost() !== 'tunde') document.title = `Book a Demo with ${j.host.name} — SkillGrow`;
     if (host && j.host && j.host.name) host.innerHTML = `
       <h2>${esc(j.host.name)}</h2>
       <p class="book-host-title">${esc(j.host.title)}</p>
@@ -4361,7 +4366,7 @@ document.addEventListener('submit', async (e) => {
     phone: data.get('phone'), message: data.get('message'), website: data.get('website'), date: bookDay, time: bookSlot };
   err.hidden = true; btn.setAttribute('aria-busy', 'true'); const label = btn.textContent; btn.textContent = 'Booking…';
   try {
-    const r = await fetch('/api/book', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    const r = await fetch('/api/book?host=' + bookHost(), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     const j = await r.json().catch(() => ({}));
     if (r.ok && j.success) {
       const day = BOOK.days.find(d => d.date === bookDay) || {};

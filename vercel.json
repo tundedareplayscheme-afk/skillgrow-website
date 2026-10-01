@@ -17,6 +17,14 @@
       "destination": "/api/page?page=:page"
     },
     {
+      "source": "/book/:host(rubab|kajal)",
+      "destination": "/api/page?page=book/:host"
+    },
+    {
+      "source": "/book/:host(rubab|kajal)/",
+      "destination": "/api/page?page=book/:host"
+    },
+    {
       "source": "/blog/:slug*",
       "destination": "/api/page?page=blog/:slug"
     },

@@ -173,6 +173,20 @@ const META = {
     ogTitle: 'Book a demo of DARE',
     ogDescription: 'Thirty minutes on a video call — choose a time and we will send the meeting link.',
   },
+  'book/rubab': {
+    path: '/book/rubab',
+    title: 'Book a Demo with Rubab Sherali — SkillGrow',
+    description: 'Book a 30-minute live demonstration of DARE with Rubab Sherali, Business Development Manager at SkillGrow.',
+    ogTitle: 'Book a demo of DARE with Rubab Sherali',
+    ogDescription: 'Thirty minutes on a video call — choose a time and we will send the meeting link.',
+  },
+  'book/kajal': {
+    path: '/book/kajal',
+    title: 'Book a Demo with Kajal Patel — SkillGrow',
+    description: 'Book a 30-minute live demonstration of DARE with Kajal Patel, Business Development Manager at SkillGrow.',
+    ogTitle: 'Book a demo of DARE with Kajal Patel',
+    ogDescription: 'Thirty minutes on a video call — choose a time and we will send the meeting link.',
+  },
   implementation: {
     path: '/implementation',
     title: 'Implementation — SkillGrow',

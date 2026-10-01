@@ -4,13 +4,15 @@
  * browser ever shows or calls an HQ address. This function calls HQ's booking API
  * server-to-server (api/_lib/hq.js) and returns only what the page needs.
  *
+ * ?host=tunde|rubab|kajal (default tunde) picks whose calendar; any other host is a 404.
+ *
  *   GET  → { host: { name, title, bio }, config: { durationMins, timezone, title, description },
  *            days: [{ date, weekday, label, slots: [{ time, label }] }] }
  *   POST { name, email, organisation, role?, phone?, message?, date, time, website (honeypot) }
  *        → 200 { success, date, time, meetLink? } · 400 { error, fields } · 409 { error, taken }
  *          · 503 { error }
  */
-const { fetchAvailability, createBooking } = require('./_lib/hq');
+const { fetchAvailability, createBooking, BOOK_HOSTS } = require('./_lib/hq');
 
 const oneLine = (v, max) => String(v == null ? '' : v).replace(/\s+/g, ' ').trim().slice(0, max);
 const send = (res, status, obj) => { res.statusCode = status; return res.end(JSON.stringify(obj)); };
@@ -20,8 +22,11 @@ module.exports = async function handler(req, res) {
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.setHeader('Cache-Control', 'no-store');
 
+  const who = String((req.query && req.query.host) || 'tunde').toLowerCase();
+  if (!BOOK_HOSTS.includes(who)) return send(res, 404, { error: 'Booking page not found' });
+
   if (req.method === 'GET') {
-    const r = await fetchAvailability();
+    const r = await fetchAvailability(who);
     if (!r || r.status !== 200 || !r.json || !Array.isArray(r.json.days)) return send(res, 503, { error: UNAVAILABLE });
     const { host = {}, config = {}, days } = r.json;
     return send(res, 200, {
@@ -54,13 +59,13 @@ module.exports = async function handler(req, res) {
 
     /* Only a time HQ is offering right now can be booked: HQ's POST checks the time is in the
        future but not that it is one of the host's slots (a 03:00 request was accepted). */
-    const avail = await fetchAvailability();
+    const avail = await fetchAvailability(who);
     if (!avail || avail.status !== 200 || !avail.json || !Array.isArray(avail.json.days)) return send(res, 503, { error: UNAVAILABLE });
     const offered = avail.json.days.some(d => d.date === p.date && Array.isArray(d.slots) && d.slots.some(t => t.time === p.time));
     if (!offered) return send(res, 409, { error: 'That time has just been taken. Please choose another.', taken: true });
 
     const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
-    const r = await createBooking(p, ip);
+    const r = await createBooking(p, ip, who);
     if (!r) return send(res, 503, { error: UNAVAILABLE });
     if (r.status === 200 && r.json && r.json.success) {
       return send(res, 200, { success: true, date: p.date, time: p.time, meetLink: r.json.meetLink || null });
