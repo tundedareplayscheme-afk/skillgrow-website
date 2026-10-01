@@ -55,4 +55,37 @@ async function fetchPost(slug) {
   return json.post;
 }
 
-module.exports = { fetchPosts, fetchPost, HQ_BLOG_API };
+/* ── Demo booking (server-to-server; CEO ruling 2026-10-01) ────────────────────
+   The website's /book page talks only to the website's /api/book, which calls
+   HQ's booking API from here. BOOKING_PROXY_SECRET, when set in this project's
+   env, is sent so HQ can refuse anyone but the website. */
+const HQ_BOOK_API = 'https://hq.skillgrow.co.uk/api/book';
+const BOOK_USERNAME = 'tunde';
+const BOOK_TIMEOUT_MS = 25000;   // a booking creates a calendar event and sends two emails
+
+async function hqBook(method, { query = '', body, bookerIp } = {}) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), method === 'GET' ? TIMEOUT_MS * 3 : BOOK_TIMEOUT_MS);
+  const headers = { accept: 'application/json' };
+  if (body) headers['content-type'] = 'application/json';
+  const secret = (process.env.BOOKING_PROXY_SECRET || '').trim();
+  if (secret) headers['x-booking-proxy-secret'] = secret;
+  if (bookerIp) headers['x-booker-ip'] = bookerIp;
+  try {
+    const res = await fetch(HQ_BOOK_API + query, {
+      method, headers, signal: controller.signal, body: body ? JSON.stringify(body) : undefined,
+    });
+    let json = null;
+    try { json = await res.json(); } catch (_) { /* non-JSON error body */ }
+    return { status: res.status, json };
+  } catch (err) {
+    console.error('hq: booking call failed —', err && err.message);
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+const fetchAvailability = () => hqBook('GET', { query: `?username=${BOOK_USERNAME}` });
+const createBooking = (booking, bookerIp) => hqBook('POST', { body: { ...booking, username: BOOK_USERNAME }, bookerIp });
+
+module.exports = { fetchPosts, fetchPost, HQ_BLOG_API, fetchAvailability, createBooking };

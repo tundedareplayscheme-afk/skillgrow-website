@@ -1426,6 +1426,29 @@ fieldset.field legend { padding: 0; }
 .planned-list { list-style: none; margin: 32px 0 0; padding: 0; display: grid; gap: 12px; }
 .planned-list li { padding: 16px 18px; border-radius: 12px; background: white; border: 1px dashed rgba(15,45,82,0.25); font-size: 15px; line-height: 1.55; color: var(--slate-700); }
 .planned-pill { display: inline-block; margin-right: 10px; padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; background: rgba(252,211,77,0.3); color: #92400E; }
+
+/* ── /book: demo booking, on the website (server-to-server with HQ) ─ */
+.book-wrap { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 56px; align-items: start; }
+.book-host h2 { font-family: var(--serif); font-size: 30px; font-weight: 600; color: var(--navy); margin: 0 0 4px; }
+.book-host .book-host-title { font-size: 14px; color: var(--slate-500); margin-bottom: 16px; }
+.book-host p { font-size: 15px; line-height: 1.65; color: var(--slate-700); }
+.book-meta { margin-top: 18px; font-size: 14px; color: var(--slate-700); line-height: 1.7; }
+.book-days { display: flex; gap: 10px; overflow-x: auto; padding: 4px 2px 12px; -webkit-overflow-scrolling: touch; }
+.book-day, .book-slot { border: 1px solid rgba(15,45,82,0.18); background: white; border-radius: 12px; cursor: pointer; font: inherit; color: var(--navy); }
+.book-day { flex: 0 0 auto; min-width: 74px; padding: 10px 12px; text-align: center; }
+.book-day span { display: block; font-size: 12px; color: var(--slate-500); }
+.book-day strong { font-size: 15px; }
+.book-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 10px; margin: 8px 0 24px; }
+.book-slot { padding: 10px 0; font-weight: 600; }
+.book-day[aria-pressed="true"], .book-slot[aria-pressed="true"] { background: var(--navy); color: white; border-color: var(--navy); }
+.book-day[aria-pressed="true"] span { color: rgba(255,255,255,0.75); }
+.book-step { font-size: 12px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: var(--gold-deep); margin: 0 0 10px; }
+.book-chosen { margin: 4px 0 18px; font-size: 15px; color: var(--navy); font-weight: 600; }
+.book-status { font-size: 15px; color: var(--slate-700); padding: 24px 0; }
+.book-done { padding: 28px; border-radius: 16px; background: rgba(252,211,77,0.15); border: 1px solid rgba(252,211,77,0.6); }
+.book-done h3 { font-family: var(--serif); font-size: 26px; color: var(--navy); margin: 0 0 8px; }
+.book-wrap > * { min-width: 0; }
+@media (max-width: 860px) { .book-wrap { grid-template-columns: minmax(0, 1fr); gap: 32px; } }
 </style>
 </head>
 <body>
@@ -1465,7 +1488,7 @@ fieldset.field legend { padding: 0; }
       <a href="/blog" class="nav-link" data-link>Blog</a>
       <a href="/about" class="nav-link" data-link>About</a>
       <a href="/contact" class="nav-link" data-link>Contact</a>
-      <a href="/book" class="btn btn-gold" target="_blank" rel="noopener">Book a Demo</a>
+      <a href="/book" class="btn btn-gold" data-link>Book a Demo</a>
     </div>
   </div>
 </nav>
@@ -1499,7 +1522,7 @@ fieldset.field legend { padding: 0; }
         <a href="/implementation" data-link>Implementation</a>
         <a href="/integrations" data-link>Integrations</a>
         <a href="/contact" data-link>Contact</a>
-        <a href="/book" target="_blank" rel="noopener">Book a Demo</a>
+        <a href="/book" data-link>Book a Demo</a>
       </div>
       <div class="footer-col">
         <h4>Get in touch</h4>
@@ -2228,7 +2251,7 @@ const pages = {
           </details>
           <p class="hero-sub">Every child at the centre. Every stakeholder connected. Supporting every child&rsquo;s SEND journey, from first concern to adulthood.</p>
           <div class="hero-actions">
-            <a href="/book" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a Demo →</a>
+            <a href="/book" class="btn btn-gold btn-lg" data-link>Book a Demo →</a>
             <a href="/sen" class="btn btn-ghost btn-lg" data-link>Explore the Platform</a>
           </div>
           ${ctaAlt()}
@@ -2260,7 +2283,7 @@ const pages = {
       titleB: 'on one screen.',
       lead: 'What a headteacher sees first thing: what needs attention today — risk assessments waiting for approval, safeguarding cases in progress, EHCP reviews coming due — drawn from the school&rsquo;s live data.',
       shots: ['head-morning'],
-      after: `<div class="showcase-cta reveal"><a href="/book" target="_blank" rel="noopener">Book a demo to see your school&rsquo;s data&nbsp;&rarr;</a></div>`,
+      after: `<div class="showcase-cta reveal"><a href="/book" data-link>Book a demo to see your school&rsquo;s data&nbsp;&rarr;</a></div>`,
     })}
 
     <section class="section">
@@ -2955,7 +2978,7 @@ const pages = {
           <div class="early-badge"><strong>Early adopter: 25% off for 3 years</strong> — available to schools joining before April 2027</div>
           <p>All prices exclude VAT.</p>
           <p>No setup fees. No per-user charges. Cancel with 30 days notice.</p>
-          <a href="/book" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a Demo →</a>
+          <a href="/book" class="btn btn-gold btn-lg" data-link>Book a Demo →</a>
           ${ctaAlt('light')}
           <p class="plans-faq">Questions? Read the <a href="/faq" data-link>FAQ</a>.</p>
         </div>
@@ -3406,6 +3429,33 @@ const pages = {
     ${ctaBand('Get ISP-ready', 'before you have to be.', 'Thirty minutes with your SENCO and your real SEN Support register. No slides.')}
   `,
 
+  book: () => `
+    <section class="hero product-hero">
+      <div class="container">
+        <div class="reveal">
+          <span class="hero-eyebrow">Book a demo</span>
+          <h1 class="hero-h1">See DARE <span class="gold">with your own school in mind.</span></h1>
+          <p class="hero-sub">Thirty minutes on a video call. Choose a time below and we will send you the meeting link.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="book-wrap">
+          <div class="book-host reveal" id="book-host">
+            <h2>A live demonstration</h2>
+            <p class="book-host-title">SkillGrow Technologies</p>
+          </div>
+          <div id="book-app">
+            <p class="book-status" id="book-status">Loading available times…</p>
+            <noscript><p class="book-status">Booking needs JavaScript. Please email <a href="mailto:hello@skillgrow.co.uk">hello@skillgrow.co.uk</a> and we will arrange a time.</p></noscript>
+          </div>
+        </div>
+      </div>
+    </section>
+  `,
+
   implementation: () => `
     <section class="hero product-hero">
       <div class="container">
@@ -3491,7 +3541,7 @@ const pages = {
           </tbody>
         </table>
         <div class="plans-terms reveal">
-          <a href="/book" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a Demo →</a>
+          <a href="/book" class="btn btn-gold btn-lg" data-link>Book a Demo →</a>
           <p>Questions about getting started? See <a href="/integrations" data-link>integrations</a>, the <a href="/faq" data-link>FAQ</a>, or <a href="/contact" data-link>contact us</a>.</p>
         </div>
       </div>
@@ -3810,7 +3860,7 @@ function articlePage(a) {
 ${sourcesBlock(a)}
           <div class="post-cta">
             <p>Want to see how SkillGrow handles this in practice?</p>
-            <a href="/book" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Book a demo →</a>
+            <a href="/book" class="btn btn-gold btn-lg" data-link>Book a demo →</a>
           </div>
           <a href="/blog" class="post-back post-back-foot" data-link>← Back to insights</a>
         </article>
@@ -3981,7 +4031,7 @@ function productPage({
   `;
 }
 
-const DEMO_CTA = { href: '/book', label: 'Book a Demo', external: true };
+const DEMO_CTA = { href: '/book', label: 'Book a Demo', external: false };
 
 function ctaLink({ href, label, external }, cls) {
   const target = external ? ' target="_blank" rel="noopener"' : ' data-link';
@@ -4023,6 +4073,7 @@ const routes = {
   'accessibility': 'accessibility',
   'integrations': 'integrations',
   'implementation': 'implementation',
+  'book': 'book',
   'safeguarding': 'safeguarding',
   'isp': 'isp',
   'blog': 'blog',
@@ -4047,6 +4098,7 @@ const titles = {
   accessibility: 'Accessibility Statement — SkillGrow',
   integrations: 'Integrations — SkillGrow',
   implementation: 'Implementation — SkillGrow',
+  book: 'Book a Demo — SkillGrow',
   safeguarding: 'Safeguarding and KCSIE — SkillGrow',
   isp: 'Individual Support Plans — SkillGrow',
   blog: 'SEND Insights — SkillGrow',
@@ -4118,6 +4170,7 @@ function render() {
 
   setupReveals();
   syncParentEnquiry();
+  if (key === 'book') loadBooking();
   document.getElementById('nav-links').classList.remove('open');
 }
 
@@ -4232,6 +4285,95 @@ document.addEventListener('input', (e) => {
 });
 document.addEventListener('change', (e) => {
   if (e.target.id === 'consent') validateField(e.target);
+});
+
+
+/* ── /book — demo booking (CEO ruling 2026-10-01) ────────────────────────────
+   Availability and booking go to the website's own /api/book, which talks to HQ
+   server-to-server: the visitor's browser never shows or calls an HQ address. */
+let BOOK = null, bookDay = null, bookSlot = null;
+const BOOK_ERROR = 'Something went wrong — please email <a href="mailto:hello@skillgrow.co.uk">hello@skillgrow.co.uk</a> and we will arrange a time.';
+function bookStatus(html) { const el = document.getElementById('book-status'); if (el) { el.innerHTML = html; el.hidden = !html; } }
+async function loadBooking() {
+  BOOK = null; bookDay = null; bookSlot = null;
+  bookStatus('Loading available times…');
+  try {
+    const r = await fetch('/api/book', { headers: { accept: 'application/json' } });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || !Array.isArray(j.days)) { bookStatus(esc(j.error || '') || BOOK_ERROR); return; }
+    BOOK = j;
+    const host = document.getElementById('book-host');
+    if (host && j.host && j.host.name) host.innerHTML = `
+      <h2>${esc(j.host.name)}</h2>
+      <p class="book-host-title">${esc(j.host.title)}</p>
+      <p>${esc(j.host.bio)}</p>
+      <div class="book-meta">${esc(j.config && j.config.title || 'SkillGrow Platform Demo')}<br>${esc(j.config && j.config.durationMins || 30)} minutes · video call<br>Times are UK time.</div>`;
+    const days = j.days.filter(d => d.slots && d.slots.length);
+    if (!days.length) { bookStatus('There are no free times in the next few weeks. Please email <a href="mailto:hello@skillgrow.co.uk">hello@skillgrow.co.uk</a> and we will arrange one.'); return; }
+    bookStatus('');
+    renderBooking();
+  } catch (_) { bookStatus(BOOK_ERROR); }
+}
+function renderBooking() {
+  const app = document.getElementById('book-app'); if (!app || !BOOK) return;
+  const days = BOOK.days.filter(d => d.slots && d.slots.length);
+  if (!bookDay || !days.some(d => d.date === bookDay)) bookDay = days[0].date;
+  const day = days.find(d => d.date === bookDay);
+  app.innerHTML = `
+    <p class="book-status" id="book-status" hidden></p>
+    <p class="book-step">1 · Choose a day</p>
+    <div class="book-days" role="group" aria-label="Day">${days.map(d => `<button type="button" class="book-day" data-day="${esc(d.date)}" aria-pressed="${d.date === bookDay}"><span>${esc(d.weekday)}</span><strong>${esc(d.label)}</strong></button>`).join('')}</div>
+    <p class="book-step">2 · Choose a time</p>
+    <div class="book-slots" role="group" aria-label="Time">${day.slots.map(t => `<button type="button" class="book-slot" data-slot="${esc(t.time)}" aria-pressed="${t.time === bookSlot}">${esc(t.label)}</button>`).join('')}</div>
+    <form class="form" id="book-form" novalidate ${bookSlot ? '' : 'hidden'}>
+      <div class="form-fields">
+        <p class="book-step">3 · Your details</p>
+        <p class="book-chosen" id="book-chosen">${bookSlot ? `${esc(day.weekday)} ${esc(day.label)} at ${esc(bookSlot)} (UK time)` : ''}</p>
+        <div class="field-row">
+          <div class="field"><label for="b-name">Full name<span class="req" aria-hidden="true">*</span></label><input type="text" id="b-name" name="name" required autocomplete="name"></div>
+          <div class="field"><label for="b-email">Work email<span class="req" aria-hidden="true">*</span></label><input type="email" id="b-email" name="email" required autocomplete="email"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label for="b-org">School or organisation<span class="req" aria-hidden="true">*</span></label><input type="text" id="b-org" name="organisation" required autocomplete="organization"></div>
+          <div class="field"><label for="b-role">Your role</label><input type="text" id="b-role" name="role" autocomplete="organization-title"></div>
+        </div>
+        <div class="field"><label for="b-phone">Phone (optional)</label><input type="tel" id="b-phone" name="phone" autocomplete="tel"></div>
+        <div class="field"><label for="b-msg">Anything you would like us to cover? (optional)</label><textarea id="b-msg" name="message" rows="3"></textarea></div>
+        <div class="hp-field" aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden"><label for="b-website">Website</label><input type="text" id="b-website" name="website" tabindex="-1" autocomplete="off"></div>
+        <p class="form-required-note">We use your details only to arrange this demo. <a href="/privacy" data-link>Privacy notice</a>.</p>
+        <p class="form-error" id="book-error" hidden></p>
+        <button type="submit" class="btn btn-gold btn-lg" id="book-submit">Book this time</button>
+      </div>
+    </form>`;
+}
+document.addEventListener('click', (e) => {
+  const d = e.target.closest('.book-day'); if (d) { bookDay = d.dataset.day; bookSlot = null; renderBooking(); return; }
+  const t = e.target.closest('.book-slot'); if (t) { bookSlot = t.dataset.slot; renderBooking(); const n = document.getElementById('b-name'); if (n) n.focus(); }
+});
+document.addEventListener('submit', async (e) => {
+  if (e.target.id !== 'book-form') return;
+  e.preventDefault();
+  const f = e.target, btn = document.getElementById('book-submit'), err = document.getElementById('book-error');
+  const missing = [...f.querySelectorAll('[required]')].filter(el => !el.value.trim() || (el.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim())));
+  if (missing.length) { err.textContent = 'Please fill in your name, a valid email and your school or organisation.'; err.hidden = false; missing[0].focus(); return; }
+  const data = new FormData(f);
+  const payload = { name: data.get('name'), email: data.get('email'), organisation: data.get('organisation'), role: data.get('role'),
+    phone: data.get('phone'), message: data.get('message'), website: data.get('website'), date: bookDay, time: bookSlot };
+  err.hidden = true; btn.setAttribute('aria-busy', 'true'); const label = btn.textContent; btn.textContent = 'Booking…';
+  try {
+    const r = await fetch('/api/book', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    const j = await r.json().catch(() => ({}));
+    if (r.ok && j.success) {
+      const day = BOOK.days.find(d => d.date === bookDay) || {};
+      document.getElementById('book-app').innerHTML = `<div class="book-done"><h3>You&rsquo;re booked in.</h3>
+        <p>${esc(day.weekday || '')} ${esc(day.label || bookDay)} at ${esc(bookSlot)} (UK time). We have emailed the meeting link and a calendar invitation to ${esc(payload.email)}.</p>
+        ${j.meetLink ? `<p><a href="${esc(j.meetLink)}" target="_blank" rel="noopener">Google Meet link</a></p>` : ''}</div>`;
+      return;
+    }
+    if (r.status === 409) { err.textContent = j.error || 'That time has just been taken. Please choose another.'; err.hidden = false; await loadBooking(); return; }
+    err.innerHTML = r.status === 400 ? esc(j.error || 'Please check your details') : BOOK_ERROR; err.hidden = false;
+  } catch (_) { err.innerHTML = BOOK_ERROR; err.hidden = false; }
+  finally { btn.removeAttribute('aria-busy'); btn.textContent = label; }
 });
 
 const CONTACT_ERROR = 'Something went wrong — please email us directly at ' +

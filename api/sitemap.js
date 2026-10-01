@@ -39,6 +39,7 @@ const STATIC_URLS = [
   ['/implementation', '2026-09-18'],
   ['/safeguarding', '2026-09-28'],
   ['/isp', '2026-09-28'],
+  ['/book', '2026-10-01'],
   ['/integrations', '2026-09-18'],
   ['/blog', '2026-09-18'],
 ];
