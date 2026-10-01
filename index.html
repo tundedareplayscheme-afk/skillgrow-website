@@ -3693,7 +3693,6 @@ let ARTICLES = FALLBACK_ARTICLES;
    shows a loading state instead of declaring it missing. */
 let postsSettled = false;
 
-const HQ_BLOG_API = 'https://hq.skillgrow.co.uk/api/content/blog';
 
 /* Everything from HQ except body_html is plain text from the database and is
    interpolated into markup here, so it is escaped on the way in. body_html is
@@ -3761,7 +3760,7 @@ function mergeArticles(hqPosts) {
 
 async function loadPosts() {
   try {
-    const r = await fetch(`${HQ_BLOG_API}?limit=50`, { headers: { accept: 'application/json' } });
+    const r = await fetch('/api/blog?limit=50', { headers: { accept: 'application/json' } });
     /* 503 = Content Hub not set up yet. Any non-200 leaves the fallback in place. */
     if (!r.ok) return;
     const j = await r.json();

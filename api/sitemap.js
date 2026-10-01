@@ -12,7 +12,7 @@
  * because a broken sitemap is worse for search than a slightly stale one.
  */
 
-const { fetchPosts } = require('../lib/hq');
+const { fetchPosts } = require('./_lib/hq');
 
 const ORIGIN = 'https://www.skillgrow.co.uk';
 

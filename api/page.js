@@ -23,7 +23,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { fetchPost } = require('../lib/hq');
+const { fetchPost } = require('./_lib/hq');
 
 const ORIGIN = 'https://www.skillgrow.co.uk';
 const OG_IMAGE = `${ORIGIN}/og-image.png`;

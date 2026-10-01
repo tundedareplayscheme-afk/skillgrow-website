@@ -1,12 +1,10 @@
-/* Shared HQ Content Hub reader, used by api/page.js (link-preview tags) and
- * api/sitemap.js (the URL list).
+/* Shared HQ Content Hub reader, used by api/page.js (link-preview tags),
+ * api/sitemap.js (the URL list) and api/blog.js (the /blog page's posts).
  *
- * This file lives outside api/ on purpose: every file inside api/ becomes a
- * Serverless Function, and a module that exports helpers rather than a handler
- * does not belong in that namespace. It is traced into both functions by
- * require(), so it needs no "includeFiles" entry. It is also served as a static
- * asset at /lib/hq.js — that is fine, it holds no secret, only the public API's
- * base URL.
+ * SERVER-ONLY (CEO ruling 2026-10-01: the public site never shows or calls a portal
+ * address). It lives in api/_lib/: files under api/ are never served as static assets,
+ * and the leading underscore keeps Vercel from deploying it as a function.
+ *
  *
  * Every function here returns null on ANY failure — non-200, malformed JSON,
  * DNS, timeout. Callers treat null as "HQ had nothing to say" and fall back to
