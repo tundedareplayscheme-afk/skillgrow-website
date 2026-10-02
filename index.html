@@ -1487,7 +1487,8 @@ body.stand-mode .tes-form button[type=submit] { font-size: 20px; padding: 18px; 
 
 /* ── 2-minute overview video (self-hosted; see OVERVIEW_VIDEO) ─ */
 #overview-video { scroll-margin-top: var(--header-h); }
-.overview-video-frame { max-width: 960px; margin: 0 auto; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: var(--navy); box-shadow: 0 20px 60px rgba(15,45,82,0.18); }
+.overview-video-note { text-align: center; font-size: 13px; color: var(--slate-500); margin-top: 12px; }
+.overview-video-frame { max-width: 960px; margin: 0 auto; aspect-ratio: 1440 / 900; border-radius: 18px; overflow: hidden; background: var(--navy); box-shadow: 0 20px 60px rgba(15,45,82,0.18); }
 .overview-video-frame video { width: 100%; height: 100%; display: block; background: #000; object-fit: contain; }
 .overview-video-soon { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 24px; text-align: center; color: white; background: linear-gradient(135deg, #0F2D52, #1B4F8A); }
 .overview-video-soon strong { font-family: var(--serif); font-size: 28px; font-weight: 600; }
@@ -1688,7 +1689,8 @@ const FAQ = [
    OVERVIEW_PDF_URL: /overview.pdf does NOT exist yet, so the download link is
      commented out in ctaAlt() below. To restore it: commit overview.pdf to
      the repo root, then uncomment that line. */
-const OVERVIEW_VIDEO = { ready: false, src: '/video/dare-overview.mp4', poster: '/video/dare-overview-poster.jpg' };
+/* Neutral DARE product overview (Terminal 6's dare-2min.mp4, ends on "Book a demo"), permanent: no event version, no date swap (CEO 2026-10-02). */
+const OVERVIEW_VIDEO = { ready: true, src: '/video/dare-overview.mp4', poster: '/video/dare-overview-poster.webp' };
 const OVERVIEW_VIDEO_URL = '/#overview-video';
 const OVERVIEW_PDF_URL = '/overview.pdf';
 
@@ -2319,6 +2321,7 @@ const pages = {
         <div class="overview-video-frame">${OVERVIEW_VIDEO.ready
           ? `<video controls playsinline preload="none" data-poster="${OVERVIEW_VIDEO.poster}" aria-label="DARE in two minutes (captions shown on screen)"><source src="${OVERVIEW_VIDEO.src}" type="video/mp4"></video>`
           : `<div class="overview-video-soon" role="status"><span class="overview-video-play" aria-hidden="true">&#9654;</span><strong>Video coming shortly</strong><span>A two-minute look at DARE. In the meantime, <a href="/book" data-link>book a demo</a> and we will show you live.</span></div>`}</div>
+        ${OVERVIEW_VIDEO.ready ? '<p class="overview-video-note">DARE — demonstration data. All pupils, staff and schools are fictional. No sound; captions on screen.</p>' : ''}
       </div>
     </section>
 
