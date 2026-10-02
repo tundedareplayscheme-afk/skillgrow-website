@@ -1449,6 +1449,22 @@ fieldset.field legend { padding: 0; }
 .book-done h3 { font-family: var(--serif); font-size: 26px; color: var(--navy); margin: 0 0 8px; }
 .book-wrap > * { min-width: 0; }
 @media (max-width: 860px) { .book-wrap { grid-template-columns: minmax(0, 1fr); gap: 32px; } }
+
+/* ── /tes: Tes SEN Show 2026 lead form (QR on phones; ?stand=1 on the stand tablet) ─ */
+.tes-wrap { max-width: 640px; margin: 0 auto; }
+.tes-form .checkbox-group { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+.tes-form select { width: 100%; padding: 13px 16px; background: var(--slate-50); border: 1px solid rgba(15,45,82,0.1); border-radius: 10px; font-family: inherit; font-size: 15px; color: var(--slate-900); outline: none; }
+.tes-form select:focus { border-color: var(--gold-deep); background: white; box-shadow: 0 0 0 3px rgba(252,211,77,0.18); }
+body.stand-mode main { padding-top: 0; }
+.tes-pending { font-size: 13px; color: var(--slate-500); margin-top: 12px; text-align: center; }
+.tes-done { text-align: center; padding: 36px 24px; border-radius: 18px; background: rgba(252,211,77,0.15); border: 1px solid rgba(252,211,77,0.6); }
+.tes-done h2 { font-family: var(--serif); font-size: 30px; color: var(--navy); margin: 0 0 10px; }
+.tes-done p { font-size: 16px; color: var(--slate-700); }
+body.stand-mode .nav, body.stand-mode .footer, body.stand-mode .mobile-menu { display: none !important; }
+body.stand-mode .tes-hero { padding-top: 40px; }
+body.stand-mode .tes-form input, body.stand-mode .tes-form select, body.stand-mode .tes-form textarea { font-size: 19px; padding: 14px 16px; }
+body.stand-mode .tes-form .checkbox-item, body.stand-mode .tes-form .consent-item { font-size: 17px; }
+body.stand-mode .tes-form button[type=submit] { font-size: 20px; padding: 18px; }
 </style>
 </head>
 <body>
@@ -3429,6 +3445,50 @@ const pages = {
     ${ctaBand('Get ISP-ready', 'before you have to be.', 'Thirty minutes with your SENCO and your real SEN Support register. No slides.')}
   `,
 
+  tes: () => `
+    <section class="hero product-hero tes-hero">
+      <div class="container">
+        <div class="tes-wrap reveal">
+          <span class="hero-eyebrow">Tes SEN Show 2026</span>
+          <h1 class="hero-h1">Thanks for visiting <span class="gold">the SkillGrow stand.</span></h1>
+          <p class="hero-sub">Leave your details and we will be in touch after the show to arrange a demo of DARE for your school or trust.</p>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="tes-wrap" id="tes-app">
+          <form class="form tes-form" id="tes-form" novalidate>
+            <div class="form-fields">
+              <p class="form-required-note"><span class="req" aria-hidden="true">*</span> Required</p>
+              <div class="field"><label for="t-name">Full name<span class="req" aria-hidden="true">*</span></label><input type="text" id="t-name" name="name" required autocomplete="name"><p class="field-error" id="t-name-error" hidden></p></div>
+              <div class="field"><label for="t-email">Work email<span class="req" aria-hidden="true">*</span></label><input type="email" id="t-email" name="email" required autocomplete="email" inputmode="email"><p class="field-error" id="t-email-error" hidden></p></div>
+              <div class="field"><label for="t-org">School or organisation<span class="req" aria-hidden="true">*</span></label><input type="text" id="t-org" name="organisation" required autocomplete="organization"><p class="field-error" id="t-organisation-error" hidden></p></div>
+              <div class="field-row">
+                <div class="field"><label for="t-orgtype">Type of organisation</label>
+                  <select id="t-orgtype" name="org_type"><option value="">Choose…</option>${TES_ORG_TYPES.map(o => `<option>${o}</option>`).join('')}</select></div>
+                <div class="field"><label for="t-role">Your role</label><input type="text" id="t-role" name="role" autocomplete="organization-title"></div>
+              </div>
+              <div class="field"><label for="t-phone">Phone (optional)</label><input type="tel" id="t-phone" name="phone" autocomplete="tel"></div>
+              <fieldset class="field">
+                <legend>What would you like to see?</legend>
+                <div class="checkbox-group">${TES_INTERESTS.map(p => `<label class="checkbox-item"><input type="checkbox" name="interests" value="${p}"> ${p}</label>`).join('')}</div>
+              </fieldset>
+              <div class="field"><label for="t-msg">Anything else? (optional)</label><textarea id="t-msg" name="message" rows="3"></textarea></div>
+              <div class="field hp-field" aria-hidden="true"><label for="t-website" tabindex="-1">Website</label><input type="text" id="t-website" name="website" tabindex="-1" autocomplete="off"></div>
+              <div class="consent-item"><input type="checkbox" id="t-consent" name="consent_contact" required><span><label for="t-consent" id="t-consent-text">${TES_CONSENT.contact}</label><span class="req" aria-hidden="true">*</span> <a href="/privacy" data-link>Privacy notice</a></span></div>
+              <p class="field-error" id="t-consent-error" hidden></p>
+              <div class="consent-item"><input type="checkbox" id="t-marketing" name="consent_marketing"><span><label for="t-marketing" id="t-marketing-text">${TES_CONSENT.marketing}</label></span></div>
+              <div class="form-error" id="tes-error" role="alert" hidden></div>
+              <button type="submit" class="btn btn-gold btn-lg" id="tes-submit" style="width:100%">Send my details →</button>
+              <p class="tes-pending" id="tes-pending" hidden></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  `,
+
   book: () => `
     <section class="hero product-hero">
       <div class="container">
@@ -4074,6 +4134,7 @@ const routes = {
   'integrations': 'integrations',
   'implementation': 'implementation',
   'book': 'book',
+  'tes': 'tes',
   'book/rubab': 'book',
   'book/kajal': 'book',
   'safeguarding': 'safeguarding',
@@ -4101,6 +4162,7 @@ const titles = {
   integrations: 'Integrations — SkillGrow',
   implementation: 'Implementation — SkillGrow',
   book: 'Book a Demo — SkillGrow',
+  tes: 'Tes SEN Show 2026 — SkillGrow',
   safeguarding: 'Safeguarding and KCSIE — SkillGrow',
   isp: 'Individual Support Plans — SkillGrow',
   blog: 'SEND Insights — SkillGrow',
@@ -4173,6 +4235,8 @@ function render() {
   setupReveals();
   syncParentEnquiry();
   if (key === 'book') loadBooking();
+  document.body.classList.toggle('stand-mode', key === 'tes' && tesMode().stand);
+  if (key === 'tes') setupTes();
   document.getElementById('nav-links').classList.remove('open');
 }
 
@@ -4289,6 +4353,93 @@ document.addEventListener('change', (e) => {
   if (e.target.id === 'consent') validateField(e.target);
 });
 
+
+/* ── /tes — Tes SEN Show 2026 lead form ───────────────────────────────────────
+   Posts only to the website's /api/tes, which hands the lead to HQ server-to-
+   server. ?stand=1 is the stand tablet: no site chrome, resets for the next
+   visitor, and holds entries on the device while offline (retried until sent).
+   ?test=1 tags the lead as a test. TES_CONSENT must match api/tes.js CONSENT. */
+const TES_ORG_TYPES = ['School', 'Academy Trust / MAT', 'Local Authority', 'Other'];
+const TES_INTERESTS = ['DARE SEN OS', 'DARE Mainstream', 'Staff PWA', 'Parent Portal', 'Trust Portal'];
+const TES_CONSENT = {
+  contact: 'I agree to SkillGrow contacting me about DARE after the Tes SEN Show, using the details above, as described in the SkillGrow privacy notice.',
+  marketing: 'I would also like occasional SkillGrow news by email. I can unsubscribe at any time.',
+};
+const TES_QUEUE = 'sg-tes-queue-v1';
+let tesTimer = null;
+function tesMode() { const p = new URLSearchParams(window.location.search); return { stand: p.get('stand') === '1', test: p.get('test') === '1' }; }
+function tesQueue() { try { return JSON.parse(localStorage.getItem(TES_QUEUE) || '[]'); } catch (_) { return []; } }
+function tesSaveQueue(q) { try { q.length ? localStorage.setItem(TES_QUEUE, JSON.stringify(q)) : localStorage.removeItem(TES_QUEUE); } catch (_) { /* storage blocked */ } }
+function tesShowPending() {
+  const el = document.getElementById('tes-pending'); if (!el) return;
+  const n = tesQueue().length; el.hidden = !n;
+  el.textContent = n ? `${n} ${n === 1 ? 'entry is' : 'entries are'} saved on this device and will be sent when the connection returns.` : '';
+}
+async function tesPost(payload) {
+  const r = await fetch('/api/tes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+  return { status: r.status, json: await r.json().catch(() => ({})) };
+}
+async function tesFlush() {
+  const q = tesQueue(); if (!q.length || !navigator.onLine) return tesShowPending();
+  const left = [];
+  for (const item of q) {
+    try { const r = await tesPost(item); if (r.status >= 500 || r.status === 429) left.push(item); /* 2xx sent; 4xx can never succeed */ }
+    catch (_) { left.push(item); }
+  }
+  tesSaveQueue(left); tesShowPending();
+}
+function tesFieldErrors(fields) {
+  for (const k of ['name', 'email', 'organisation', 'consent']) {
+    const el = document.getElementById(`t-${k}-error`); if (!el) continue;
+    el.textContent = fields[k] || ''; el.hidden = !fields[k];
+  }
+}
+function tesDone(name, queued) {
+  const app = document.getElementById('tes-app'); if (!app) return;
+  const { stand } = tesMode();
+  app.innerHTML = `<div class="tes-done" role="status"><h2>Thank you${name ? `, ${esc(name.split(' ')[0])}` : ''}.</h2>
+    <p>${queued ? 'Your details are saved on this device and will reach us as soon as the connection returns.' : 'We have your details and will be in touch after the show.'}</p>
+    ${stand ? '<p><button type="button" class="btn btn-gold btn-lg" id="tes-next">Next visitor</button></p>' : '<p><a href="/" data-link>Explore DARE &rarr;</a></p>'}</div>`;
+  if (stand) {
+    clearTimeout(tesTimer);
+    tesTimer = setTimeout(() => { if (document.getElementById('tes-next')) render(); }, 8000);   // auto-reset for the next visitor
+  }
+}
+function setupTes() { tesShowPending(); tesFlush(); }
+window.addEventListener('online', () => { tesFlush(); });
+setInterval(() => { if (document.getElementById('tes-form') && tesQueue().length) tesFlush(); }, 30000);
+document.addEventListener('click', (e) => { if (e.target.id === 'tes-next') { clearTimeout(tesTimer); render(); window.scrollTo(0, 0); } });
+document.addEventListener('submit', async (e) => {
+  if (e.target.id !== 'tes-form') return;
+  e.preventDefault();
+  const f = e.target, data = new FormData(f), mode = tesMode();
+  const payload = {
+    name: (data.get('name') || '').trim(), email: (data.get('email') || '').trim(), organisation: (data.get('organisation') || '').trim(),
+    org_type: data.get('org_type') || undefined, role: (data.get('role') || '').trim(), phone: (data.get('phone') || '').trim(),
+    interests: data.getAll('interests'), message: (data.get('message') || '').trim(), website: data.get('website') || '',
+    consent: { contact: data.get('consent_contact') === 'on', marketing: data.get('consent_marketing') === 'on', version: 'tes-2026-v1' },
+    source: mode.stand ? 'stand' : 'qr', test: mode.test || undefined,
+  };
+  const local = {};
+  if (!payload.name) local.name = 'Please enter your name';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) local.email = 'Please enter a valid email address';
+  if (!payload.organisation) local.organisation = 'Please enter your school or organisation';
+  if (!payload.consent.contact) local.consent = 'Please tick the box so we can contact you';
+  tesFieldErrors(local);
+  if (Object.keys(local).length) { const first = f.querySelector(`[name="${Object.keys(local)[0] === 'consent' ? 'consent_contact' : Object.keys(local)[0]}"]`); if (first) first.focus(); return; }
+  const btn = document.getElementById('tes-submit'), err = document.getElementById('tes-error');
+  err.hidden = true; btn.setAttribute('aria-busy', 'true'); const label = btn.textContent; btn.textContent = 'Sending…';
+  try {
+    const r = await tesPost(payload);
+    if (r.status === 200) return tesDone(payload.name, false);
+    if (r.status === 400) { tesFieldErrors(r.json.fields || {}); err.textContent = r.json.error || 'Please check your details'; err.hidden = false; return; }
+    if (mode.stand && r.status >= 500) { tesSaveQueue([...tesQueue(), payload]); return tesDone(payload.name, true); }
+    err.textContent = r.json.error || 'Something went wrong. Please try again, or email hello@skillgrow.co.uk.'; err.hidden = false;
+  } catch (_) {
+    if (mode.stand) { tesSaveQueue([...tesQueue(), payload]); return tesDone(payload.name, true); }   // offline at the stand
+    err.textContent = 'No connection. Please try again in a moment, or email hello@skillgrow.co.uk.'; err.hidden = false;
+  } finally { if (document.body.contains(btn)) { btn.removeAttribute('aria-busy'); btn.textContent = label; } }
+});
 
 /* ── /book — demo booking (CEO ruling 2026-10-01) ────────────────────────────
    Availability and booking go to the website's own /api/book, which talks to HQ

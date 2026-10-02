@@ -5,15 +5,18 @@
     },
     "api/book.js": {
       "maxDuration": 30
+    },
+    "api/tes.js": {
+      "maxDuration": 20
     }
   },
   "rewrites": [
     {
-      "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation|safeguarding|isp|book|blog)",
+      "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation|safeguarding|isp|book|tes|blog)",
       "destination": "/api/page?page=:page"
     },
     {
-      "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation|safeguarding|isp|book|blog)/",
+      "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation|safeguarding|isp|book|tes|blog)/",
       "destination": "/api/page?page=:page"
     },
     {
@@ -31,6 +34,17 @@
     {
       "source": "/sitemap.xml",
       "destination": "/api/sitemap"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/tes",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
     }
   ]
 }
