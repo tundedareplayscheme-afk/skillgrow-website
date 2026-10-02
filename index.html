@@ -1465,6 +1465,25 @@ body.stand-mode .tes-hero { padding-top: 40px; }
 body.stand-mode .tes-form input, body.stand-mode .tes-form select, body.stand-mode .tes-form textarea { font-size: 19px; padding: 14px 16px; }
 body.stand-mode .tes-form .checkbox-item, body.stand-mode .tes-form .consent-item { font-size: 17px; }
 body.stand-mode .tes-form button[type=submit] { font-size: 20px; padding: 18px; }
+
+/* ── Tes SEND Show 2026 banner, Tes section, footer line (hidden automatically after 10 Oct, Europe/London) ─ */
+.tes-banner { background: linear-gradient(90deg, #FEF3C7, #FDE68A); color: var(--navy); border-bottom: 1px solid rgba(180,83,9,0.25); }
+.tes-banner-inner { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 10px 0; font-size: 14.5px; line-height: 1.4; }
+.tes-banner-text { flex: 1 1 320px; }
+.tes-banner-text strong { font-weight: 700; }
+.tes-banner-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.tes-banner a.tes-btn { display: inline-block; padding: 7px 14px; border-radius: 999px; font-weight: 700; font-size: 13.5px; text-decoration: none; white-space: nowrap; }
+.tes-banner a.tes-btn-primary { background: var(--navy); color: white; }
+.tes-banner a.tes-btn-secondary { background: white; color: var(--navy); border: 1px solid rgba(15,45,82,0.2); }
+.tes-banner-close { background: none; border: 0; font-size: 22px; line-height: 1; color: var(--navy); cursor: pointer; padding: 4px 8px; opacity: 0.7; }
+.tes-banner-close:hover { opacity: 1; }
+#tes-show { scroll-margin-top: calc(var(--header-h) + 12px); }
+.tes-show-section .tes-show-card { max-width: 820px; margin: 0 auto; padding: 32px; border-radius: 18px; background: rgba(252,211,77,0.12); border: 1px solid rgba(252,211,77,0.55); }
+.tes-show-card h2 { font-family: var(--serif); font-size: 30px; color: var(--navy); margin: 6px 0 10px; }
+.tes-show-card p { font-size: 16px; color: var(--slate-700); line-height: 1.65; }
+.footer-tes { margin-top: 10px; font-size: 13px; color: var(--gold); }
+.footer-tes a { color: var(--gold); text-decoration: underline; }
+@media (max-width: 640px) { .tes-banner-inner { font-size: 13.5px; gap: 10px; } .tes-banner-close { position: absolute; right: 8px; top: 6px; } .tes-banner { position: relative; } .tes-banner-text { padding-right: 28px; } }
 </style>
 </head>
 <body>
@@ -1562,6 +1581,8 @@ body.stand-mode .tes-form button[type=submit] { font-size: 20px; padding: 18px; 
       <span>© 2026 SkillGrow Technologies Ltd · Company No: 13535893</span>
       <span>ICO registered (ZC142603) · GDPR compliant · Built for KCSIE 2026</span>
     </div>
+    <div class="footer-tes" id="footer-tes" hidden>Meet us at the Tes SEND Show — Stand V15 · Business Design Centre, London · 9–10 October 2026 · <a href="/book" data-link>Book a demo</a></div>
+    <script>(function(){try{if(new Intl.DateTimeFormat("en-CA",{timeZone:"Europe/London",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date())<="2026-10-10")document.getElementById("footer-tes").hidden=false}catch(e){}})();</script>
     <div class="footer-existing">Already a DARE school? Use the link in your welcome email, or <a href="/contact" data-link>contact us</a>.</div>
     <div class="footer-cookies">This site uses no cookies. Analytics by Plausible — privacy-friendly, no personal data collected.</div>
   </div>
@@ -2255,7 +2276,7 @@ function screenGallery({ eyebrow, titleA, titleB, lead, shots = [], after = '', 
 }
 
 const pages = {
-  home: () => `
+  home: () => `${tesBanner()}
     <section class="hero">
       <div class="container">
         <div class="reveal">
@@ -3287,7 +3308,7 @@ const pages = {
      Update the SLA table the moment a figure changes, and link the status
      page once it exists. */
 
-  safeguarding: () => `
+  safeguarding: () => `${tesBanner()}
     <section class="hero product-hero">
       <div class="container">
         <div class="reveal">
@@ -3301,6 +3322,7 @@ const pages = {
         </div>
       </div>
     </section>
+    ${tesShowSection()}
 
     ${screenGallery({
       eyebrow: '1 · Raising a concern',
@@ -4193,8 +4215,9 @@ let observer;
    slashes, and the Netlify 200-rewrite that serves index.html for
    every path. */
 function slugFromLocation() {
-  const legacy = window.location.hash.replace(/^#\/?/, '').replace(/\/+$/, '');
-  if (legacy) return legacy;
+  /* Old #/sen-style links are routes; any other #fragment (e.g. /safeguarding#tes-show) is an in-page anchor. */
+  const h = window.location.hash, legacy = h.replace(/^#\/?/, '').replace(/\/+$/, '');
+  if (legacy && (h.startsWith('#/') || Object.hasOwn(routes, legacy))) return legacy;
   return window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
 }
 
@@ -4235,6 +4258,7 @@ function render() {
   setupReveals();
   syncParentEnquiry();
   if (key === 'book') loadBooking();
+  if (window.location.hash && !window.location.hash.startsWith('#/')) { const t = document.getElementById(window.location.hash.slice(1)); if (t) t.scrollIntoView(); }
   document.body.classList.toggle('stand-mode', key === 'tes' && tesMode().stand);
   if (key === 'tes') setupTes();
   document.getElementById('nav-links').classList.remove('open');
@@ -4353,6 +4377,47 @@ document.addEventListener('change', (e) => {
   if (e.target.id === 'consent') validateField(e.target);
 });
 
+
+/* ── Tes SEND Show 2026 (CEO 2026-10-02) ──────────────────────────────────────
+   Shown until the end of 10 October 2026 by the UK date, then hidden with no
+   deploy. Rendered inside the page HTML (no layout shift on load). The banner
+   is dismissible per visitor. Never links to /tes, which stays QR-only. */
+const TES_SHOW_LAST_DAY = '2026-10-10';
+function tesShowActive() {
+  try { return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()) <= TES_SHOW_LAST_DAY; }
+  catch (_) { return Date.now() < Date.UTC(2026, 9, 10, 23, 0); }   // 00:00 on 11 Oct, BST
+}
+const TES_BANNER_KEY = 'sg-tes-banner-dismissed-2026';
+function tesBanner() {
+  if (!tesShowActive()) return '';
+  try { if (localStorage.getItem(TES_BANNER_KEY) === '1') return ''; } catch (_) { /* storage blocked: show it */ }
+  return `<div class="tes-banner" id="tes-banner" role="region" aria-label="Tes SEND Show 2026">
+    <div class="container tes-banner-inner">
+      <div class="tes-banner-text"><strong>Meet us at the Tes SEND Show</strong> — Stand V15 · Business Design Centre, London · 9–10 October 2026</div>
+      <div class="tes-banner-actions">
+        <a class="tes-btn tes-btn-primary" href="/safeguarding#tes-show" data-link>See DARE live at Stand V15</a>
+        <a class="tes-btn tes-btn-secondary" href="/book" data-link>Book a demo</a>
+      </div>
+      <button type="button" class="tes-banner-close" id="tes-banner-close" aria-label="Dismiss">&times;</button>
+    </div>
+  </div>`;
+}
+function tesShowSection() {
+  if (!tesShowActive()) return '';
+  return `<section class="section tes-show-section" id="tes-show">
+    <div class="container"><div class="tes-show-card reveal">
+      <span class="section-eyebrow">Tes SEND Show 2026 · Stand V15</span>
+      <h2>See DARE live at the Tes SEND Show</h2>
+      <p>Business Design Centre, London, on 9 and 10 October 2026. At Stand V15 we will show DARE running on demonstration data: a member of staff raises a safeguarding concern from the app they already use, the DSL team is alerted, and every step is recorded for inspection. Bring your questions about KCSIE 2026.</p>
+      <p><a href="/book" class="btn btn-gold" data-link>Book a demo &rarr;</a></p>
+    </div></div>
+  </section>`;
+}
+document.addEventListener('click', (e) => {
+  if (e.target.id !== 'tes-banner-close') return;
+  try { localStorage.setItem(TES_BANNER_KEY, '1'); } catch (_) { /* hidden for this page view only */ }
+  const b = document.getElementById('tes-banner'); if (b) b.remove();
+});
 
 /* ── /tes — Tes SEN Show 2026 lead form ───────────────────────────────────────
    Posts only to the website's /api/tes, which hands the lead to HQ server-to-
