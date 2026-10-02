@@ -1,4 +1,4 @@
-/* POST /api/tes — Tes SEN Show 2026 lead form (www.skillgrow.co.uk/tes).
+/* POST /api/tes — Tes SEND Show 2026 lead form (www.skillgrow.co.uk/tes).
  *
  * Server-to-server with HQ, like /api/book: the visitor's browser only ever
  * calls this function. The lead goes to HQ's intake endpoint with the shared
@@ -25,8 +25,13 @@ const CONSENT = {
     contact: 'I agree to SkillGrow contacting me about DARE after the Tes SEN Show, using the details above, as described in the SkillGrow privacy notice.',
     marketing: 'I would also like occasional SkillGrow news by email. I can unsubscribe at any time.',
   },
+  /* v2 (2026-10-02): the show's official name is "Tes SEND Show". v1 stays for the record. */
+  'tes-2026-v2': {
+    contact: 'I agree to SkillGrow contacting me about DARE after the Tes SEND Show, using the details above, as described in the SkillGrow privacy notice.',
+    marketing: 'I would also like occasional SkillGrow news by email. I can unsubscribe at any time.',
+  },
 };
-const CONSENT_VERSION = 'tes-2026-v1';
+const CONSENT_VERSION = 'tes-2026-v2';
 
 const ORG_TYPES = ['School', 'Academy Trust / MAT', 'Local Authority', 'Other'];
 const INTERESTS = ['DARE SEN OS', 'DARE Mainstream', 'Staff PWA', 'Parent Portal', 'Trust Portal'];
@@ -82,7 +87,7 @@ async function postToHq(lead, ip) {
 async function emailFallback(lead, why) {
   const apiKey = process.env.BREVO_API_KEY;
   const text = [
-    `Tes SEN Show 2026 lead${lead.test ? ' (TEST)' : ''} — HQ intake unavailable (${why}); please add it to HQ by hand.`,
+    `Tes SEND Show 2026 lead${lead.test ? ' (TEST)' : ''} — HQ intake unavailable (${why}); please add it to HQ by hand.`,
     '',
     `Name:          ${lead.name}`,
     `Email:         ${lead.email}`,

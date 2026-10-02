@@ -175,9 +175,9 @@ const META = {
   },
   tes: {
     path: '/tes',
-    title: 'Tes SEN Show 2026 — SkillGrow',
-    description: 'Visited the SkillGrow stand at the Tes SEN Show? Leave your details and we will arrange a demo of DARE.',
-    ogTitle: 'SkillGrow at the Tes SEN Show 2026',
+    title: 'Tes SEND Show 2026 — SkillGrow',
+    description: 'Visited the SkillGrow stand at the Tes SEND Show? Leave your details and we will arrange a demo of DARE.',
+    ogTitle: 'SkillGrow at the Tes SEND Show 2026',
     ogDescription: 'Leave your details and we will arrange a demo of DARE for your school or trust.',
   },
   'book/rubab': {
