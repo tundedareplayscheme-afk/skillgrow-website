@@ -102,14 +102,33 @@ function teamHeaders() {
   return secret ? { 'x-website-secret': secret } : null;
 }
 
+/* Cache rules for the team list and photos (CEO 2026-10-05, privacy: an opt-out must leave the site
+ * within a minute). Every cached copy carries the tag 'team', which /api/team-revalidate deletes when
+ * HQ reports a change. Without that call: the CDN keeps a copy 30 s at most and never serves it stale
+ * (no stale-while-revalidate, which kept an opted-out list for minutes); browsers re-check every time. */
+const TEAM_CACHE_TAG = 'team';
+function setTeamCacheHeaders(res, tags) {
+  res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+  res.setHeader('Vercel-CDN-Cache-Control', 'max-age=30');
+  res.setHeader('Vercel-Cache-Tag', tags.join(','));
+}
+
 /* [{ id, name, title, bio, photoUrl, photoVersion }] or null (no secret, HQ down, bad JSON). */
+/* True when `given` is the shared WEBSITE_TEAM_SECRET (constant time; false when unset). */
+function teamSecretMatches(given) {
+  const secret = (process.env.WEBSITE_TEAM_SECRET || '').trim();
+  if (!secret || typeof given !== 'string') return false;
+  const a = Buffer.from(given.trim()), b = Buffer.from(secret);
+  return a.length === b.length && require('crypto').timingSafeEqual(a, b);
+}
+
 async function fetchTeam() {
   const headers = teamHeaders();
   if (!headers) return null;
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
-    const res = await fetch(HQ_TEAM_API, { signal: controller.signal, headers: { accept: 'application/json', ...headers } });
+    const res = await fetch(HQ_TEAM_API, { signal: controller.signal, cache: 'no-store', headers: { accept: 'application/json', ...headers } });
     if (!res.ok) return null;
     const json = await res.json();
     if (!json || !Array.isArray(json.members)) return null;
@@ -139,7 +158,7 @@ async function fetchTeamPhoto(photoUrl) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS * 2);
   try {
-    const res = await fetch(photoUrl, { signal: controller.signal, headers: { accept: 'image/webp,image/*', ...headers } });
+    const res = await fetch(photoUrl, { signal: controller.signal, cache: 'no-store', headers: { accept: 'image/webp,image/*', ...headers } });
     const type = res.headers.get('content-type') || '';
     if (!res.ok || !/^image\/(webp|jpeg|png)$/.test(type.split(';')[0])) return null;
     const body = Buffer.from(await res.arrayBuffer());
@@ -152,4 +171,4 @@ async function fetchTeamPhoto(photoUrl) {
   }
 }
 
-module.exports = { fetchPosts, fetchPost, HQ_BLOG_API, fetchAvailability, createBooking, BOOK_HOSTS, fetchTeam, fetchTeamPhoto };
+module.exports = { fetchPosts, fetchPost, HQ_BLOG_API, fetchAvailability, createBooking, BOOK_HOSTS, fetchTeam, fetchTeamPhoto, TEAM_CACHE_TAG, setTeamCacheHeaders, teamSecretMatches };

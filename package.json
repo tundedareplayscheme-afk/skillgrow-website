@@ -1,0 +1,8 @@
+{
+  "name": "skillgrow-website",
+  "private": true,
+  "description": "Static site + Vercel functions. Only dependency: @vercel/functions, for deleting cached team copies when HQ reports a profile change (api/team-revalidate.js).",
+  "dependencies": {
+    "@vercel/functions": "3.9.11"
+  }
+}
