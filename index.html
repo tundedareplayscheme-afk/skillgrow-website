@@ -1724,7 +1724,7 @@ const initials = (name) => { const w = name.split(/\s+/); return (w[0][0] + w[w.
 const teamCards = (list = TEAM, extraClass = '') => list.map(m => `
   <div class="team-card reveal${extraClass}">
     <div class="team-head">
-      <div class="team-avatar"><span aria-hidden="true">${initials(m.name)}</span>${m.photo ? `<img src="${escAttr(m.photo)}" alt="${escAttr(m.name)}" width="72" height="72" loading="lazy" decoding="async" onerror="this.remove()">` : ''}</div>
+      <div class="team-avatar"><span aria-hidden="true">${escAttr(initials(m.name))}</span>${m.photo ? `<img src="${escAttr(m.photo)}" alt="${escAttr(m.name)}" width="72" height="72" loading="lazy" decoding="async" onerror="this.remove()">` : ''}</div>
       <div>
         <h2 class="team-name">${m.fromHq ? escAttr(m.name) : m.name}</h2>
         <div class="team-role">${m.fromHq ? escAttr(m.role) : m.role}</div>
