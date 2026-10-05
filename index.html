@@ -1960,67 +1960,6 @@ function mockSenConcernLog() {
   `);
 }
 
-/* /mainstream — ISP tracker on the assess, plan, do, review cycle. */
-function mockIspTracker() {
-  const steps = [
-    ['Assess', 'Needs identified · 2 Sep', 'done'],
-    ['Plan', '3 targets agreed with family', 'done'],
-    ['Do', 'In progress · week 4 of 6', 'now'],
-    ['Review', 'Due 12 November', 'next'],
-  ];
-  const targets = [
-    ['Reads a 100-word passage with 90% accuracy', 'Daily 10-minute precision teaching with TA', 0.7, 'On track', 9],
-    ['Starts tasks independently using a now/next board', 'Now/next board at desk; check-in at 9:05', 0.45, 'Some progress', 6],
-    ['Contributes to a small-group discussion twice a week', 'Structured talk group, Tuesday and Thursday', 0.8, 'On track', 8],
-  ];
-  const provision = [
-    ['Precision teaching', '30 min daily · TA', '£1,140'],
-    ['Speech &amp; language group', '2 × 20 min weekly', '£620'],
-    ['Now/next board', 'Classroom resource', '£25'],
-  ];
-  const sw = 278, sx = i => 32 + i * (sw + 8);
-  const chevron = (x, first) => `${x},150 ${x + sw - 20},150 ${x + sw},188 ${x + sw - 20},226 ${x},226 ${first ? x : x + 20},188`;
-  return browserFrame('DARE Mainstream — ISP tracker', 'DARE Mainstream', 600, `
-    ${appBar('DARE Mainstream', 'DARE Learning Trust Primary', 'SC')}
-    ${T(32, 100, 'Individual Support Plan', 28, MK.navy, 600, SERIF)}
-    ${T(32, 124, 'Ruby H. · Year 5 · Cedar class · Targeted support', 13, MK.s500)}
-    ${pill(946, 84, 'Cycle 2 of 4', MK.s100, MK.s700, 11)}${pill(1068, 84, 'ISP-ready', MK.navy, MK.gold, 11)}
-
-    ${steps.map(([n, s, st], i) => {
-      const x = sx(i), fill = st === 'done' ? MK.navy : st === 'now' ? MK.gold : MK.white;
-      const fg = st === 'done' ? MK.white : MK.navy, sub = st === 'done' ? MK.dim : st === 'now' ? MK.navy : MK.s500;
-      return `<polygon points="${chevron(x, i === 0)}" fill="${fill}" ${st === 'next' ? `stroke="${MK.s300}"` : ''}/>`
-        + T(x + (i === 0 ? 24 : 40), 182, (st === 'done' ? '&#10003; ' : '') + n, 17, fg, 700)
-        + T(x + (i === 0 ? 24 : 40), 204, s, 12, sub, 500);
-    }).join('')}
-
-    ${card(32, 248, 700, 328)}
-    ${T(52, 278, 'Targets', 16, MK.navy, 700)}${T(712, 278, '23 evidence entries this cycle', 12, MK.s500, 500, END)}
-    ${R(32, 294, 700, 1, MK.line)}
-    ${targets.map(([t, s, p, rag, ev], i) => {
-      const y = 306 + i * 88, ok = rag === 'On track';
-      return T(52, y + 22, t, 14, MK.navy, 600) + T(52, y + 42, s, 12, MK.s500)
-        + bar(52, y + 56, 480, p, ok ? MK.navy : MK.goldDeep)
-        + pill(552, y + 49, rag, ok ? '#E0E7F1' : MK.goldTint, ok ? MK.navy : '#92400E', 10)
-        + T(712, y + 64, `${ev} entries`, 11, MK.s500, 600, END)
-        + (i < 2 ? R(52, y + 82, 660, 1, MK.line) : '');
-    }).join('')}
-
-    ${card(748, 248, 420, 190)}
-    ${T(768, 278, 'Provision map', 16, MK.navy, 700)}${T(1148, 278, 'This term', 12, MK.s500, 500, END)}
-    ${provision.map(([n, d, c], i) => {
-      const y = 304 + i * 36;
-      return T(768, y + 12, n, 13, MK.navy, 600) + T(768, y + 28, d, 11, MK.s500) + T(1148, y + 20, c, 13, MK.navy, 700, END);
-    }).join('')}
-    ${R(768, 414, 380, 1, MK.line)}${T(768, 432, 'Total', 12, MK.s500, 700)}${T(1148, 432, '£1,785', 14, MK.navy, 700, END)}
-
-    ${R(748, 454, 420, 122, MK.navy, 12)}
-    ${T(768, 482, 'PARENT VOICE', 10, MK.gold, 700, 'letter-spacing="1.2"')}
-    ${T(768, 514, '&#8220;She&#8217;s using the now/next board', 17, MK.white, 500, SERIF)}
-    ${T(768, 536, 'at home too &#8212; mornings are calmer.&#8221;', 17, MK.white, 500, SERIF)}
-  `);
-}
-
 /* /trust — cross-school KPI dashboard. */
 function mockTrustKpis() {
   const kpis = [
@@ -2222,12 +2161,16 @@ const SCREENS = {
                        caption: 'Safer recruitment across every school in the trust — each member of staff&rsquo;s checks in one place.' },
   'parent-docs':     { file: 'dare-parent-documents-and-letters', w: 780, h: 1688, phone: true,
                        caption: 'Their child&rsquo;s plan, annual review reports and letters from school — on their phone, for their own child only.' },
+  'isp-plan':        { file: 'dare-isp-complete-plan', w: 1600, h: 1000,
+                       caption: 'One plan per pupil: strengths and needs, a SMART outcome, the provision, the pupil&rsquo;s voice and the parents&rsquo; views recorded by the SENCO, transition and the next review.' },
+  'isp-cycle':       { file: 'dare-isp-graduated-approach', w: 1600, h: 1000,
+                       caption: 'Assess, plan, do, review: where every pupil on SEN support is in the cycle, with each pupil&rsquo;s next review date.' },
   /* Recorded; held until re-recorded or fixed (see the 2026-09-28 report). */
   'sg-share':        { file: 'dare-dsl-share-record-need-to-know', w: 1600, h: 1000, ready: false,
                        caption: 'The DSL shares one record with one named colleague, with a reason and an end date — and can revoke it.' },
   'sg-shared':       { file: 'dare-shared-with-me-read-only', w: 1600, h: 1000, ready: false,
                        caption: 'What was shared arrives read-only, for a limited time.' },
-  'dbs-summary':     { file: 'dare-dbs-status-summary', w: 1600, h: 1000, ready: false,
+  'dbs-summary':     { file: 'dare-dbs-status-summary', w: 1600, h: 1000,
                        caption: 'Every DBS check on the Single Central Record: checked, needs attention or not checked — and why.' },
   'gov-panel':       { file: 'dare-governor-safeguarding-panel', w: 1600, h: 1000, ready: false,
                        caption: 'Governors see safeguarding compliance from live evidence — and &ldquo;—&rdquo; where DARE holds no record.' },
@@ -2503,12 +2446,10 @@ const pages = {
       ],
       source: 'Subject to legislation. Timings and detail per the <a href="https://www.gov.uk/government/publications/every-child-achieving-and-thriving" target="_blank" rel="noopener">Schools White Paper 2026, <em>Every child achieving and thriving</em> (DfE)</a> and the House of Commons Library briefing on SEND reform.',
     },
-    mockup: {
-      eyebrow: 'On screen', titleA: 'The graduated approach,', titleB: 'as it happens.',
-      lead: 'Assess, plan, do, review — each cycle tracked against its targets, costed on the provision map, with the family&rsquo;s voice captured alongside. The ISP builds itself from the record.',
-      label: 'DARE Mainstream — ISP tracker', svg: mockIspTracker(),
-    },
     galleries: [
+      { eyebrow: 'On screen', titleA: 'The graduated approach,', titleB: 'as it happens.',
+        lead: 'Every pupil on SEN support sits in the assess, plan, do, review cycle, with the date of their next review. The ISP draws on that record instead of being written from scratch.',
+        shots: ['isp-cycle'] },
       { eyebrow: 'Behaviour', titleA: 'Behaviour and physical intervention,', titleB: 'recorded in full.',
         lead: 'When restrictive physical intervention is used, the record asks for the framework, the techniques, the duration, confirmation that it was the minimum necessary and the debriefs — and the Headteacher is alerted when it is saved.',
         shots: ['rpi'], tint: true },
@@ -3458,10 +3399,10 @@ const pages = {
       </div>
     </section>
 
-    ${mockupSection({
+    ${screenGallery({
       eyebrow: 'The plan', titleA: 'One plan per pupil,', titleB: 'every version kept.',
       lead: 'The SENCO records the pupil&rsquo;s strengths and needs, the outcomes, the provision, the pupil&rsquo;s own voice, the parent&rsquo;s views, a transition plan and the review date. Every save is kept as a version, and a plan is marked White Paper ready once the parent&rsquo;s views and the transition plan are in.',
-      label: 'DARE Mainstream — ISP tracker', svg: mockIspTracker(),
+      shots: ['isp-plan', 'isp-cycle'],
     })}
 
     <section class="section capabilities">
