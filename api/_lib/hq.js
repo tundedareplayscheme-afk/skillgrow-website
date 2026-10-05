@@ -113,7 +113,6 @@ function setTeamCacheHeaders(res, tags) {
   res.setHeader('Vercel-Cache-Tag', tags.join(','));
 }
 
-/* [{ id, name, title, bio, photoUrl, photoVersion }] or null (no secret, HQ down, bad JSON). */
 /* True when `given` is the shared WEBSITE_TEAM_SECRET (constant time; false when unset). */
 function teamSecretMatches(given) {
   const secret = (process.env.WEBSITE_TEAM_SECRET || '').trim();
@@ -122,6 +121,7 @@ function teamSecretMatches(given) {
   return a.length === b.length && require('crypto').timingSafeEqual(a, b);
 }
 
+/* [{ id, name, title, bio, photoUrl, photoVersion }] or null (no secret, HQ down, bad JSON). */
 async function fetchTeam() {
   const headers = teamHeaders();
   if (!headers) return null;
