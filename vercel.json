@@ -8,9 +8,19 @@
     },
     "api/tes.js": {
       "maxDuration": 20
+    },
+    "api/team.js": {
+      "maxDuration": 10
+    },
+    "api/team-photo.js": {
+      "maxDuration": 15
     }
   },
   "rewrites": [
+    {
+      "source": "/team-photo/:id.webp",
+      "destination": "/api/team-photo?id=:id"
+    },
     {
       "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation|safeguarding|isp|book|tes|blog)",
       "destination": "/api/page?page=:page"

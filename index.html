@@ -1085,7 +1085,8 @@ fieldset.field legend { padding: 0; }
   font-family: var(--serif); font-size: 28px; font-weight: 600;
   overflow: hidden;
 }
-.team-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.team-avatar { position: relative; }
+.team-avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .team-name {
   font-family: var(--serif);
   font-size: 28px; font-weight: 600;
@@ -1701,8 +1702,12 @@ const ZERO25_PARAS = [
   'SkillGrow currently serves the school and trust years of that journey — from early identification in mainstream and specialist settings, through EHCP, transition planning, and post-16 pathways. Our platform is designed from the ground up to extend across the full 0–25 continuum as we grow, with each new product building on the connected foundation we&rsquo;ve established.',
   'We believe every child deserves one connected journey — not a series of handoffs between disconnected systems.',
 ];
-/* Team page. Add `photo: '/team/<file>.jpg'` to a member to replace the
-   initials avatar with their photo. */
+/* Team page. These four always appear, with initials, exactly as written here.
+   Photos, titles and bios come from HQ for whoever has switched on "Show my photo and
+   profile on the public website" there (CEO 2026-10-05): loadTeam() fetches this site's
+   /api/team (server-side to HQ — no HQ address in the browser). An opted-in person with
+   the same name as a card below takes that card over; anyone else who opts in is added
+   after these four. Nobody else from HQ appears unless they have opted in. */
 const TEAM = [
   { name: 'Tunde Alabi', role: 'Founder & CEO',
     bio: "21 years working directly with children with SEND. Tunde built SkillGrow because the platform he needed didn't exist. He leads product, strategy, and every early adopter relationship personally." },
@@ -1714,18 +1719,49 @@ const TEAM = [
     bio: 'Kajal supports school leaders and SENCOs in finding the right SkillGrow solution for their setting.' },
 ];
 const initials = (name) => { const w = name.split(/\s+/); return (w[0][0] + w[w.length - 1][0]).toUpperCase(); };
-const teamCards = () => TEAM.map(m => `
-  <div class="team-card reveal">
+/* The initials always sit under the photo, so a photo that fails to load (HQ busy, the
+   person just opted out) falls back to them without a broken image. HQ text is escaped. */
+const teamCards = (list = TEAM, extraClass = '') => list.map(m => `
+  <div class="team-card reveal${extraClass}">
     <div class="team-head">
-      <div class="team-avatar">${m.photo ? `<img src="${m.photo}" alt="${m.name}">` : `<span aria-hidden="true">${initials(m.name)}</span>`}</div>
+      <div class="team-avatar"><span aria-hidden="true">${initials(m.name)}</span>${m.photo ? `<img src="${escAttr(m.photo)}" alt="${escAttr(m.name)}" width="72" height="72" loading="lazy" decoding="async" onerror="this.remove()">` : ''}</div>
       <div>
-        <h2 class="team-name">${m.name}</h2>
-        <div class="team-role">${m.role}</div>
+        <h2 class="team-name">${m.fromHq ? escAttr(m.name) : m.name}</h2>
+        <div class="team-role">${m.fromHq ? escAttr(m.role) : m.role}</div>
       </div>
     </div>
-    <p class="team-bio">${m.bio}</p>
+    <p class="team-bio">${m.fromHq ? escAttr(m.bio) : m.bio}</p>
   </div>
 `).join('');
+
+/* Merge HQ's opted-in members into the four. Name match ignores case and spacing. */
+function mergeTeam(members) {
+  const key = (n) => String(n || '').toLowerCase().replace(/\s+/g, ' ').trim();
+  const byName = new Map(members.map(m => [key(m.name), m]));
+  const merged = TEAM.map(t => {
+    const h = byName.get(key(t.name));
+    if (!h) return t;
+    byName.delete(key(t.name));
+    return { name: h.name, role: h.title || t.role, bio: h.bio || t.bio, photo: h.photo, fromHq: true };
+  });
+  const extra = [...byName.values()]
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map(h => ({ name: h.name, role: h.title || '', bio: h.bio || '', photo: h.photo, fromHq: true }));
+  return merged.concat(extra);
+}
+
+/* Loaded after the page renders; on any failure the four static cards simply stay. */
+async function loadTeam() {
+  try {
+    const res = await fetch('/api/team', { headers: { accept: 'application/json' } });
+    if (!res.ok) return;
+    const json = await res.json();
+    if (!json || !Array.isArray(json.members) || !json.members.length) return;
+    const grid = document.getElementById('team-grid');
+    if (!grid) return;          // the visitor has already moved on
+    grid.innerHTML = teamCards(mergeTeam(json.members), ' in');
+  } catch (_) { /* keep the static cards */ }
+}
 
 const zero25Paras = () => ZERO25_PARAS.map(t => `<p>${t}</p>`).join('');
 
@@ -2937,7 +2973,7 @@ const pages = {
 
     <section class="section">
       <div class="container">
-        <div class="team-grid">${teamCards()}</div>
+        <div class="team-grid" id="team-grid">${teamCards()}</div>
       </div>
     </section>
   `,
@@ -4228,6 +4264,7 @@ function render() {
   setupReveals();
   syncParentEnquiry();
   if (key === 'book') loadBooking();
+  if (key === 'team') loadTeam();
   /* Lazy poster: fetched only as the overview video nears the screen; the MP4 itself waits for Play (preload="none"). */
   document.querySelectorAll('video[data-poster]').forEach(v => {
     if (!('IntersectionObserver' in window)) { v.poster = v.dataset.poster; return; }

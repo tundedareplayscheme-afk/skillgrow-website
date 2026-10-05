@@ -89,4 +89,67 @@ async function hqBook(method, { query = '', body, bookerIp } = {}) {
 const fetchAvailability = (host) => hqBook('GET', { query: `?username=${encodeURIComponent(host)}` });
 const createBooking = (booking, bookerIp, host) => hqBook('POST', { body: { ...booking, username: host }, bookerIp });
 
-module.exports = { fetchPosts, fetchPost, HQ_BLOG_API, fetchAvailability, createBooking, BOOK_HOSTS };
+/* ── Team page (server-to-server; CEO 2026-10-05) ─────────────────────────────────
+   HQ's opted-in team members ("Show my photo and profile on the public website" in HQ).
+   HQ answers only with WEBSITE_TEAM_SECRET (this project's env) and only for people who
+   are active AND opted in; it never sends email or phone. The photo URL it gives is an
+   HQ address, so it is used here, server-side, and never reaches a visitor's browser. */
+const HQ_TEAM_API = 'https://hq.skillgrow.co.uk/api/public/team';
+const HQ_ORIGIN = 'https://hq.skillgrow.co.uk';
+
+function teamHeaders() {
+  const secret = (process.env.WEBSITE_TEAM_SECRET || '').trim();
+  return secret ? { 'x-website-secret': secret } : null;
+}
+
+/* [{ id, name, title, bio, photoUrl, photoVersion }] or null (no secret, HQ down, bad JSON). */
+async function fetchTeam() {
+  const headers = teamHeaders();
+  if (!headers) return null;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  try {
+    const res = await fetch(HQ_TEAM_API, { signal: controller.signal, headers: { accept: 'application/json', ...headers } });
+    if (!res.ok) return null;
+    const json = await res.json();
+    if (!json || !Array.isArray(json.members)) return null;
+    return json.members
+      .filter(m => m && typeof m.id === 'string' && /^[0-9a-f-]{36}$/i.test(m.id) && m.name)
+      .map(m => ({
+        id: m.id,
+        name: String(m.name).slice(0, 80),
+        title: m.title ? String(m.title).slice(0, 80) : '',
+        bio: m.bio ? String(m.bio).slice(0, 400) : '',
+        /* Only an HQ photo URL is ever fetched — never an arbitrary host from the payload. */
+        photoUrl: typeof m.photo_url === 'string' && m.photo_url.startsWith(HQ_ORIGIN + '/') ? m.photo_url : null,
+        photoVersion: m.photo_version != null ? String(m.photo_version).replace(/[^A-Za-z0-9._-]/g, '').slice(0, 64) : '',
+      }));
+  } catch (err) {
+    console.error('hq: team fetch failed —', err && err.message);
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/* The photo bytes for an opted-in member: { type, body } or null. */
+async function fetchTeamPhoto(photoUrl) {
+  const headers = teamHeaders();
+  if (!headers || !photoUrl) return null;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS * 2);
+  try {
+    const res = await fetch(photoUrl, { signal: controller.signal, headers: { accept: 'image/webp,image/*', ...headers } });
+    const type = res.headers.get('content-type') || '';
+    if (!res.ok || !/^image\/(webp|jpeg|png)$/.test(type.split(';')[0])) return null;
+    const body = Buffer.from(await res.arrayBuffer());
+    return body.length && body.length <= 2 * 1024 * 1024 ? { type: type.split(';')[0], body } : null;
+  } catch (err) {
+    console.error('hq: team photo fetch failed —', err && err.message);
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+module.exports = { fetchPosts, fetchPost, HQ_BLOG_API, fetchAvailability, createBooking, BOOK_HOSTS, fetchTeam, fetchTeamPhoto };
