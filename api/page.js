@@ -23,7 +23,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { fetchPost } = require('./_lib/hq');
+const { fetchPost, BLOG_CACHE_TAG, setTeamCacheHeaders } = require('./_lib/hq');
 
 const ORIGIN = 'https://www.skillgrow.co.uk';
 const OG_IMAGE = `${ORIGIN}/og-image.png`;
@@ -335,10 +335,12 @@ module.exports = async function handler(req, res) {
      out in META, so that a post published in HQ needs no code change. The
      three static entries stay: they are the site's own articles and must keep
      working when HQ is unreachable. */
+  let fromHq = false;
   if (!meta && /^blog\/.+/.test(slug)) {
     const post = await fetchPost(slug.slice('blog/'.length));
-    if (!post) return notFound(res);
+    if (!post) { res.setHeader('Vercel-Cache-Tag', BLOG_CACHE_TAG); return notFound(res); }
     meta = metaForPost(post);
+    fromHq = true;
   }
 
   if (!meta || slug === 'home') {
@@ -372,6 +374,9 @@ module.exports = async function handler(req, res) {
 
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+  /* A Content Hub post page follows the blog rules (tagged, 60 s, never stale) so an unpublished or
+     edited post leaves at once; the site's own pages keep the long cache. */
+  if (fromHq) setTeamCacheHeaders(res, [BLOG_CACHE_TAG], 60);
+  else res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
   return res.end(body);
 };

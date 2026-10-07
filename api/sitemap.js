@@ -12,7 +12,7 @@
  * because a broken sitemap is worse for search than a slightly stale one.
  */
 
-const { fetchPosts } = require('./_lib/hq');
+const { fetchPosts, BLOG_CACHE_TAG, setTeamCacheHeaders } = require('./_lib/hq');
 
 const ORIGIN = 'https://www.skillgrow.co.uk';
 
@@ -101,6 +101,6 @@ module.exports = async function handler(req, res) {
   /* Five minutes, matching the HQ API's own CDN window. An hour here meant a
      post published just after a crawl stayed out of the sitemap for up to an
      hour, which looked like the fetch was broken when it was only cached. */
-  res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=86400');
+  setTeamCacheHeaders(res, [BLOG_CACHE_TAG], 300);   // tagged: a publish/unpublish purge refreshes it too
   return res.end(body);
 };

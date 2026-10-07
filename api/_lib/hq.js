@@ -23,8 +23,12 @@ async function hqGet(query) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
-    const res = await fetch(HQ_BLOG_API + query, {
+    /* Always a FRESH answer from HQ: after HQ purges our cache, the refetch must not get HQ's own CDN copy
+       back (Terminal 3 + Terminal 9, 7 Oct — "Content Hub posts not publishing" was stacked caches). */
+    const sep = query.includes('?') ? '&' : '?';
+    const res = await fetch(HQ_BLOG_API + query + `${sep}_=${Date.now()}`, {
       signal: controller.signal,
+      cache: 'no-store',
       headers: { accept: 'application/json' },
     });
     /* 503 means the Content Hub migration has not been applied; 404 on a slug
@@ -107,9 +111,14 @@ function teamHeaders() {
  * HQ reports a change. Without that call: the CDN keeps a copy 30 s at most and never serves it stale
  * (no stale-while-revalidate, which kept an opted-out list for minutes); browsers re-check every time. */
 const TEAM_CACHE_TAG = 'team';
-function setTeamCacheHeaders(res, tags) {
+/* Same rules for anything built from HQ's Content Hub (blog list, post pages, sitemap): tagged 'blog',
+   CDN 60 s max, never stale, browsers re-check. HQ calls /api/team-revalidate?tag=blog on publish /
+   unpublish / edit, which deletes every 'blog' copy at once. */
+const BLOG_CACHE_TAG = 'blog';
+const REVALIDATE_TAGS = [TEAM_CACHE_TAG, BLOG_CACHE_TAG];
+function setTeamCacheHeaders(res, tags, cdnSeconds = 30) {
   res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
-  res.setHeader('Vercel-CDN-Cache-Control', 'max-age=30');
+  res.setHeader('Vercel-CDN-Cache-Control', `max-age=${cdnSeconds}`);
   res.setHeader('Vercel-Cache-Tag', tags.join(','));
 }
 
@@ -171,4 +180,4 @@ async function fetchTeamPhoto(photoUrl) {
   }
 }
 
-module.exports = { fetchPosts, fetchPost, HQ_BLOG_API, fetchAvailability, createBooking, BOOK_HOSTS, fetchTeam, fetchTeamPhoto, TEAM_CACHE_TAG, setTeamCacheHeaders, teamSecretMatches };
+module.exports = { fetchPosts, fetchPost, HQ_BLOG_API, fetchAvailability, createBooking, BOOK_HOSTS, fetchTeam, fetchTeamPhoto, TEAM_CACHE_TAG, BLOG_CACHE_TAG, REVALIDATE_TAGS, setTeamCacheHeaders, teamSecretMatches };
