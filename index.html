@@ -1497,6 +1497,18 @@ body.stand-mode .tes-form button[type=submit] { font-size: 20px; padding: 18px; 
 .overview-video-soon a { color: var(--gold); text-decoration: underline; }
 .overview-video-play { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: rgba(252,211,77,0.95); color: var(--navy); font-size: 24px; padding-left: 4px; }
 @media (max-width: 640px) { .overview-video-soon strong { font-size: 22px; } .overview-video-soon span:last-child { font-size: 13.5px; } .overview-video-play { width: 48px; height: 48px; font-size: 18px; } }
+
+/* ── /who-we-work-with (CEO-approved 2026-10-11) ─ */
+.settings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-top: 28px; }
+.setting-card { background: white; border: 1px solid rgba(15,45,82,0.1); border-radius: 16px; padding: 22px 22px 20px; }
+.setting-card h3 { font-family: var(--serif); font-size: 21px; font-weight: 600; color: var(--navy); margin: 0 0 8px; }
+.setting-card p { font-size: 15px; line-height: 1.6; color: var(--slate-700); margin: 0; }
+.wwww-steps { list-style: none; counter-reset: wstep; display: grid; gap: 14px; max-width: 760px; margin: 28px 0 0; padding: 0; }
+.wwww-steps li { counter-increment: wstep; display: flex; align-items: center; gap: 16px; font-size: 17px; color: var(--navy); font-weight: 600; }
+.wwww-steps li::before { content: counter(wstep); flex: 0 0 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--navy); color: var(--gold); font-weight: 800; }
+.wwww-cta { margin-top: 32px; }
+.home-wwww { text-align: center; }
+.home-wwww .section-lead { margin-left: auto; margin-right: auto; }
 </style>
 </head>
 <body>
@@ -1530,6 +1542,7 @@ body.stand-mode .tes-form button[type=submit] { font-size: 20px; padding: 18px; 
           </a>
         </div>
       </div>
+      <a href="/who-we-work-with" class="nav-link" data-link>Who we work with</a>
       <a href="/safeguarding" class="nav-link" data-link>Safeguarding</a>
       <a href="/isp" class="nav-link" data-link>ISP</a>
       <a href="/pricing" class="nav-link" data-link>Pricing</a>
@@ -1563,6 +1576,7 @@ body.stand-mode .tes-form button[type=submit] { font-size: 20px; padding: 18px; 
       <div class="footer-col">
         <h4>Company</h4>
         <a href="/about" data-link>About</a>
+        <a href="/who-we-work-with" data-link>Who we work with</a>
         <a href="/team" data-link>Team</a>
         <a href="/pricing" data-link>Pricing</a>
         <a href="/faq" data-link>FAQ</a>
@@ -2368,6 +2382,17 @@ const pages = {
             <div class="how-title">Every child&rsquo;s journey in one place</div>
             <p class="how-body">Safeguarding, EHCP evidence, therapy, attendance and family contact build a single timeline for each child &mdash; from early years to twenty-five.</p>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section home-wwww">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">Who we work with</div>
+          <h2 class="section-h2">Every child at the centre, <span class="gold">whatever your setting looks like.</span></h2>
+          <p class="section-lead">DARE was built in special schools, but it&rsquo;s built around the child, not the building, and we configure it with you.</p>
+          <p style="margin-top:24px"><a href="/who-we-work-with" class="btn btn-gold btn-lg" data-link>See who we work with &rarr;</a></p>
         </div>
       </div>
     </section>
@@ -3544,6 +3569,52 @@ const pages = {
     </section>
   `,
 
+  'who-we-work-with': () => `
+    <section class="hero product-hero">
+      <div class="container">
+        <div class="reveal">
+          <span class="hero-eyebrow">Who we work with</span>
+          <h1 class="hero-h1">Every child at the centre, <span class="gold">whatever your setting looks like.</span></h1>
+          <p class="hero-sub">DARE was built in special schools, but it&rsquo;s built around the child, not the building. We configure it with you: the apps you need, the roles you have, the words you use, and the reporting your commissioners expect.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">Settings</div>
+          <h2 class="section-h2">Where DARE <span class="gold">can work.</span></h2>
+        </div>
+        <div class="settings-grid">
+          <div class="setting-card reveal"><h3>Special schools</h3><p>EHCPs, therapy, safeguarding and every adult around the child, in one record.</p></div>
+          <div class="setting-card reveal"><h3>Mainstream schools and trusts</h3><p>The graduated approach, ISPs and provision costs, with leadership across every school.</p></div>
+          <div class="setting-card reveal"><h3>Alternative provision and PRUs</h3><p>Placements, attendance and safeguarding shared with referring schools.</p></div>
+          <div class="setting-card reveal"><h3>Outreach and one-to-one tuition</h3><p>Tutors log sessions and concerns from their phone, wherever they work.</p></div>
+          <div class="setting-card reveal"><h3>Independent specialist and residential settings</h3><p>Care, education and health together.</p></div>
+          <div class="setting-card reveal"><h3>Therapy services</h3><p>Referrals, caseloads, and guidance that reaches the classroom.</p></div>
+          <div class="setting-card reveal"><h3>Holiday schemes and clubs</h3><p>Children&rsquo;s needs and consents, ready on day one.</p></div>
+          <div class="setting-card reveal"><h3>Charities and family services</h3><p>Support for parents and carers, including kinship carers.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background:white">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-eyebrow">How it works</div>
+          <h2 class="section-h2">Configured with you, <span class="gold">step by step.</span></h2>
+        </div>
+        <ol class="wwww-steps reveal">
+          <li>A conversation about how you work.</li>
+          <li>We configure DARE for your setting.</li>
+          <li>A pilot with your team, adjusted as you go.</li>
+        </ol>
+        <div class="wwww-cta reveal"><a href="/book" class="btn btn-gold btn-lg" data-link>Talk to us about your setting &rarr;</a></div>
+      </div>
+    </section>
+  `,
+
   implementation: () => `
     <section class="hero product-hero">
       <div class="container">
@@ -4161,6 +4232,7 @@ const routes = {
   'accessibility': 'accessibility',
   'integrations': 'integrations',
   'implementation': 'implementation',
+  'who-we-work-with': 'who-we-work-with',
   'book': 'book',
   'tes': 'tes',
   'book/rubab': 'book',
@@ -4189,6 +4261,7 @@ const titles = {
   accessibility: 'Accessibility Statement — SkillGrow',
   integrations: 'Integrations — SkillGrow',
   implementation: 'Implementation — SkillGrow',
+  'who-we-work-with': 'Who we work with — SkillGrow',
   book: 'Book a Demo — SkillGrow',
   tes: 'Tes SEND Show 2026 — SkillGrow',
   safeguarding: 'Safeguarding and KCSIE — SkillGrow',

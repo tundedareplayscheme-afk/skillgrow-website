@@ -5,7 +5,7 @@
  * this, every shared link would preview as the homepage, whichever page was
  * shared, and every page would carry the same meta description.
  *
- * vercel.json rewrites the twenty-two non-home routes here, plus every
+ * vercel.json rewrites the twenty-three non-home routes here, plus every
  * /blog/<slug> article (a second pattern, since a :page segment cannot
  * contain a slash). '/' is NOT routed here:
  * static files win over rewrites on Vercel, so the root is served straight
@@ -193,6 +193,13 @@ const META = {
     description: 'Book a 30-minute live demonstration of DARE with Kajal Patel, Business Development Manager at SkillGrow.',
     ogTitle: 'Book a demo of DARE with Kajal Patel',
     ogDescription: 'Thirty minutes on a video call — choose a time and we will send the meeting link.',
+  },
+  'who-we-work-with': {
+    path: '/who-we-work-with',
+    title: 'Who we work with — SkillGrow',
+    description: 'DARE is built around the child, not the building. We configure it with you for special and mainstream schools, AP and PRUs, outreach, therapy services, holiday schemes and family charities.',
+    ogTitle: 'Every child at the centre, whatever your setting looks like',
+    ogDescription: 'DARE was built in special schools, but it is built around the child, not the building. We configure it with you.',
   },
   implementation: {
     path: '/implementation',

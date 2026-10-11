@@ -25,11 +25,11 @@
       "destination": "/api/team-photo?id=:id"
     },
     {
-      "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation|safeguarding|isp|book|tes|blog)",
+      "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation|who-we-work-with|safeguarding|isp|book|tes|blog)",
       "destination": "/api/page?page=:page"
     },
     {
-      "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation|safeguarding|isp|book|tes|blog)/",
+      "source": "/:page(sen|mainstream|staff-pwa|parent|trust|about|team|contact|privacy|security|pricing|faq|terms|dpa|accessibility|integrations|implementation|who-we-work-with|safeguarding|isp|book|tes|blog)/",
       "destination": "/api/page?page=:page"
     },
     {
