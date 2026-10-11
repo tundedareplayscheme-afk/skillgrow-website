@@ -1444,6 +1444,7 @@ fieldset.field legend { padding: 0; }
 .book-day[aria-pressed="true"], .book-slot[aria-pressed="true"] { background: var(--navy); color: white; border-color: var(--navy); }
 .book-day[aria-pressed="true"] span { color: rgba(255,255,255,0.75); }
 .book-step { font-size: 12px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: var(--gold-deep); margin: 0 0 10px; }
+#book-form select { width: 100%; padding: 13px 16px; background: var(--slate-50); border: 1px solid rgba(15,45,82,0.1); border-radius: 10px; font-family: inherit; font-size: 15px; color: var(--slate-900); }
 .book-chosen { margin: 4px 0 18px; font-size: 15px; color: var(--navy); font-weight: 600; }
 .book-status { font-size: 15px; color: var(--slate-700); padding: 24px 0; }
 .book-done { padding: 28px; border-radius: 16px; background: rgba(252,211,77,0.15); border: 1px solid rgba(252,211,77,0.6); }
@@ -4596,6 +4597,15 @@ document.addEventListener('submit', async (e) => {
    Availability and booking go to the website's own /api/book, which talks to HQ
    server-to-server: the visitor's browser never shows or calls an HQ address. */
 let BOOK = null, bookDay = null, bookSlot = null;
+/* "Type of setting" (optional; CEO 2026-10-11). Keys agreed with HQ (Terminal 3); labels as Tunde wrote them.
+   api/book.js passes setting_type to HQ only when it is one of these keys. */
+const BOOK_SETTING_TYPES = [
+  ['special_school', 'Special school'], ['mainstream_school', 'Mainstream school'], ['trust', 'Trust'],
+  ['alternative_provision', 'Alternative provision / PRU'], ['outreach_tuition', 'Outreach / tuition'],
+  ['independent_specialist', 'Independent specialist / residential'], ['therapy_service', 'Therapy service'],
+  ['holiday_scheme', 'Holiday scheme / club'], ['charity_family', 'Charity / family service'],
+  ['local_authority', 'Local authority'], ['other', 'Other'],
+];
 /* /book is Tunde; /book/rubab and /book/kajal book with that colleague. */
 function bookHost() { const m = window.location.pathname.match(/^\/book\/(rubab|kajal)\/?$/); return m ? m[1] : 'tunde'; }
 const BOOK_ERROR = 'Something went wrong — please email <a href="mailto:hello@skillgrow.co.uk">hello@skillgrow.co.uk</a> and we will arrange a time.';
@@ -4644,7 +4654,10 @@ function renderBooking() {
           <div class="field"><label for="b-org">School or organisation<span class="req" aria-hidden="true">*</span></label><input type="text" id="b-org" name="organisation" required autocomplete="organization"></div>
           <div class="field"><label for="b-role">Your role</label><input type="text" id="b-role" name="role" autocomplete="organization-title"></div>
         </div>
-        <div class="field"><label for="b-phone">Phone (optional)</label><input type="tel" id="b-phone" name="phone" autocomplete="tel"></div>
+        <div class="field-row">
+          <div class="field"><label for="b-phone">Phone (optional)</label><input type="tel" id="b-phone" name="phone" autocomplete="tel"></div>
+          <div class="field"><label for="b-setting">Type of setting (optional)</label><select id="b-setting" name="setting_type"><option value="">Choose…</option>${BOOK_SETTING_TYPES.map(([k, l]) => `<option value="${k}">${l}</option>`).join('')}</select></div>
+        </div>
         <div class="field"><label for="b-msg">Anything you would like us to cover? (optional)</label><textarea id="b-msg" name="message" rows="3"></textarea></div>
         <div class="hp-field" aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden"><label for="b-website">Website</label><input type="text" id="b-website" name="website" tabindex="-1" autocomplete="off"></div>
         <p class="form-required-note">We use your details only to arrange this demo. <a href="/privacy" data-link>Privacy notice</a>.</p>
@@ -4665,7 +4678,8 @@ document.addEventListener('submit', async (e) => {
   if (missing.length) { err.textContent = 'Please fill in your name, a valid email and your school or organisation.'; err.hidden = false; missing[0].focus(); return; }
   const data = new FormData(f);
   const payload = { name: data.get('name'), email: data.get('email'), organisation: data.get('organisation'), role: data.get('role'),
-    phone: data.get('phone'), message: data.get('message'), website: data.get('website'), date: bookDay, time: bookSlot };
+    phone: data.get('phone'), message: data.get('message'), website: data.get('website'), date: bookDay, time: bookSlot,
+    setting_type: data.get('setting_type') || undefined };
   err.hidden = true; btn.setAttribute('aria-busy', 'true'); const label = btn.textContent; btn.textContent = 'Booking…';
   try {
     const r = await fetch('/api/book?host=' + bookHost(), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });

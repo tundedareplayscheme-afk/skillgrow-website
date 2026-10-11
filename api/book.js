@@ -15,6 +15,8 @@
 const { fetchAvailability, createBooking, BOOK_HOSTS } = require('./_lib/hq');
 
 const oneLine = (v, max) => String(v == null ? '' : v).replace(/\s+/g, ' ').trim().slice(0, max);
+const SETTING_TYPES = new Set(['special_school', 'mainstream_school', 'trust', 'alternative_provision', 'outreach_tuition',
+  'independent_specialist', 'therapy_service', 'holiday_scheme', 'charity_family', 'local_authority', 'other']);
 const send = (res, status, obj) => { res.statusCode = status; return res.end(JSON.stringify(obj)); };
 const UNAVAILABLE = 'Online booking is temporarily unavailable. Please email hello@skillgrow.co.uk and we will arrange a time.';
 
@@ -50,6 +52,8 @@ module.exports = async function handler(req, res) {
       phone: oneLine(body.phone, 40), message: String(body.message == null ? '' : body.message).trim().slice(0, 2000),
       date: oneLine(body.date, 10), time: oneLine(body.time, 5),
     };
+    // Optional "Type of setting" — passed to HQ only when it is one of the agreed keys (HQ ignores unknowns too).
+    if (SETTING_TYPES.has(String(body.setting_type || ''))) p.setting_type = String(body.setting_type);
     const fields = [];
     if (!p.name) fields.push('name');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p.email)) fields.push('email');
