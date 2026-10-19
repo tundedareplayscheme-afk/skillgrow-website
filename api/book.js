@@ -8,7 +8,7 @@
  *
  *   GET  → { host: { name, title, bio }, config: { durationMins, timezone, title, description },
  *            days: [{ date, weekday, label, slots: [{ time, label }] }] }
- *   POST { name, email, organisation, role?, phone?, message?, date, time, website (honeypot) }
+ *   POST { name, email, organisation, role?, phone?, message?, date, time, zq_bk (spam trap) }
  *        → 200 { success, date, time, meetLink? } · 400 { error, fields } · 409 { error, taken }
  *          · 503 { error }
  */
@@ -42,8 +42,10 @@ module.exports = async function handler(req, res) {
     let body = req.body;
     if (typeof body === 'string') { try { body = JSON.parse(body); } catch (_) { body = null; } }
     if (!body || typeof body !== 'object') return send(res, 400, { error: 'Invalid request' });
-    if (oneLine(body.website, 100)) {
-      console.log('book: honeypot tripped, discarding silently');
+    /* Spam trap: a hidden box humans never see. Its name means nothing to browsers, so autofill
+       can't fill it (the old name "website" could be autofilled, silently discarding a real booking). */
+    if (oneLine(body.zq_bk, 100)) {
+      console.warn('book: spam trap tripped (zq_bk filled), answered success, booked nothing; host=' + who);
       return send(res, 200, { success: true });
     }
     const p = {
