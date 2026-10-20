@@ -189,6 +189,10 @@ const HQ_PRICING_API = 'https://hq.skillgrow.co.uk/api/public/pricing';
 const PRICING_CACHE_TAG = 'pricing';
 const PRICING_CDN_SECONDS = 300;   // a change saved in HQ is on the site within 5 minutes
 
+/* Only the products this site shows (index.html HQ_PRICE_ROW) are kept or re-served, even if HQ sends more
+   (HQ already sends only rows ticked "Show on website"; this is defence in depth, T9 review 20 Oct). */
+const WEBSITE_PRICED_PRODUCTS = new Set(['dare sen', 'dare mainstream', 'trust portal', 'staff pwa']);
+
 const priceText = (v, max = 120) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
 
 /* [{ product, price, unit, note, tiers }] or null (HQ down, 503, bad JSON, nothing usable). */
@@ -210,7 +214,7 @@ async function fetchPricing() {
           .map(t => ({ band: priceText(t && t.band), price: priceText(t && t.price) }))
           .filter(t => t.band && t.price).slice(0, 12),
       }))
-      .filter(r => r.product && r.price);
+      .filter(r => r.product && r.price && WEBSITE_PRICED_PRODUCTS.has(r.product.toLowerCase()));
     if (!products.length) {
       console.error('pricing: HQ sent no usable prices — the site is showing its built-in prices');
       return null;
