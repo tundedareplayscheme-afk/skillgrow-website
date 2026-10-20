@@ -1623,17 +1623,70 @@ const TIER_NOTE = 'Tiered by pupil count. Early-adopter programme: <strong>25% o
   + 'Multi-school discounts: <strong>15%</strong> (2–5 schools), <strong>25%</strong> (6–10), '
   + '<strong>35%</strong> (11–20). 20+ by bespoke negotiation.';
 
+/* ─── Prices: HQ's Settings → Pricing is the ONLY source (Tunde, 20 Oct 2026) ───
+   Never hand-edit a price on this site: change it in HQ. api/page.js puts HQ's rows in
+   window.__SG_PRICING on a direct visit to a priced page; otherwise loadPricing() fetches this
+   site's /api/pricing (server-side to HQ, cached 5 minutes). The prices typed below (PLANS tiers,
+   each product page's pricing.price / unit) are the FALLBACK, shown only while HQ cannot be
+   reached; the server logs every time that happens. HQ rows are matched by product name. */
+const HQ_PRICE_ROW = { sen: 'dare sen', mainstream: 'dare mainstream', trust: 'trust portal', 'staff-pwa': 'staff pwa' };
+let hqPricing = Array.isArray(window.__SG_PRICING) && window.__SG_PRICING.length ? window.__SG_PRICING : null;
+let pricingRequested = !!hqPricing;
+const hqPriceRow = (id) => (hqPricing && HQ_PRICE_ROW[id])
+  ? hqPricing.find(r => String(r.product || '').trim().toLowerCase() === HQ_PRICE_ROW[id]) || null
+  : null;
+
+/* /pricing tiers: HQ's tiers; an HQ row without tiers shows its one price range. HQ text is escaped. */
+function planTiers(p) {
+  const row = hqPriceRow(p.id);
+  if (!row) return p.tiers;
+  if (row.tiers && row.tiers.length) return row.tiers.map(t => [escAttr(t.band), escAttr(t.price)]);
+  return [[escAttr(row.unit ? row.unit.charAt(0).toUpperCase() + row.unit.slice(1) : 'Per year'), escAttr(row.price)]];
+}
+const tierItems = (p) => planTiers(p).map(([band, price]) =>
+  `<li><span>${band}</span><strong>${price}${/^£/.test(price) && !price.includes('/') ? '<small>/yr</small>' : ''}</strong></li>`).join('');
+
+/* A product page's price line: HQ "£3,500 – 8,500 / yr" + "per special school" → "£3,500 – 8,500" + "per year · per special school". */
+function productPrice(pricing) {
+  const row = hqPriceRow(pricing.id);
+  if (!row) return { price: pricing.price, unit: pricing.unit };
+  const m = row.price.match(/^(.*?)\s*\/\s*(yr|year)\s*$/i);
+  const unit = m ? ['per year', row.unit].filter(Boolean).join(' · ') : row.unit;
+  return { price: escAttr(m ? m[1] : row.price), unit: escAttr(unit || '') };
+}
+
+/* Fetched once per visit; an open priced page is updated in place (no re-render, no scroll jump).
+   On any failure the built-in prices simply stay (the server has already logged why). */
+async function loadPricing() {
+  if (pricingRequested) return;
+  pricingRequested = true;
+  try {
+    const res = await fetch('/api/pricing', { headers: { accept: 'application/json' } });
+    if (!res.ok) return;
+    const json = await res.json();
+    if (!json || !Array.isArray(json.products) || !json.products.length) return;
+    hqPricing = json.products;
+  } catch (_) { return; }
+  PLANS.forEach(p => { const ul = document.getElementById('plan-tiers-' + p.id); if (ul) ul.innerHTML = tierItems(p); });
+  const card = document.querySelector('.pricing-card[data-price-id]');
+  if (card) {
+    const pp = productPrice({ id: card.dataset.priceId, price: '', unit: '' });
+    if (hqPriceRow(card.dataset.priceId)) {
+      card.querySelector('.pricing-price').innerHTML = pp.price;
+      card.querySelector('.pricing-unit').innerHTML = pp.unit;
+    }
+  }
+}
+
 /* ─── /pricing — one card per product ──────── */
-/* Keep in step with each product page's pricing band and with
-   PRICING_LINES in skillgrow-hq (src/app/hq-new.js). */
 const PLANS = [
-  { audience: 'Special schools', name: 'DARE SEN OS',
+  { id: 'sen', audience: 'Special schools', name: 'DARE SEN OS',
     tiers: [['Up to 50 pupils', '£3,500'], ['51–100 pupils', '£5,500'], ['101–200 pupils', '£7,500'], ['201+ pupils', '£8,500']],
     includes: ['All 29+ apps', 'Every role', 'Trust Portal connection', 'Parent Portal (free for families)', 'Staff PWA'] },
-  { audience: 'Mainstream schools', name: 'DARE Mainstream',
+  { id: 'mainstream', audience: 'Mainstream schools', name: 'DARE Mainstream',
     tiers: [['Up to 100 on SEN register', '£2,400'], ['101–200 on SEN register', '£3,200'], ['201+ on SEN register', '£4,500']],
     includes: ['Graduated approach', 'ISP builder', 'EHCP evidence', 'Parent Portal (free)', 'Staff PWA'] },
-  { audience: 'Multi-academy trusts', name: 'Trust Portal',
+  { id: 'trust', audience: 'Multi-academy trusts', name: 'Trust Portal',
     tiers: [['Up to 3 schools', '£12,000'], ['4–10 schools', '£18,000'], ['11+ schools', 'Contact us']],
     includes: ['Cross-school safeguarding', 'KPI dashboard', 'Governance', 'Attendance rollup'] },
 ];
@@ -2482,7 +2535,7 @@ const pages = {
       { icon: 'target', title: 'EHCP evidence, gathered as you go', body: 'Outcomes and provision sit underneath every interaction, so the evidence for the annual review is a by-product of the work rather than a second job.' },
       { icon: 'timeline', title: 'One timeline per child', body: 'Medical, behaviour, therapy, communication, attendance, safeguarding — a single chronology, visible only to the people entitled to see each part of it.' },
     ],
-    pricing: { headingA: 'Transparent,', headingB: 'tiered, no surprises.', price: '£3,500 – 8,500', unit: 'per year · per special school', note: TIER_NOTE },
+    pricing: { id: 'sen', headingA: 'Transparent,', headingB: 'tiered, no surprises.', price: '£3,500 – 8,500', unit: 'per year · per special school', note: TIER_NOTE },
     cta: { titleA: 'See it with', titleB: 'your own safeguarding chain.', body: 'Thirty minutes, your real workflows, your escalation routes. No slides.' },
   }),
 
@@ -2542,7 +2595,7 @@ const pages = {
       { icon: 'map', title: 'Provision mapping that costs itself', body: 'Drag-and-drop interventions with automatic costings and a clean audit trail from assessment to outcome, ready for the LA and the finance committee alike.' },
       { icon: 'users', title: 'Parents in the plan, not after it', body: 'ISPs are developed with parents by design. Live portal access means families see provision and progress, and respond before the meeting rather than during it.' },
     ],
-    pricing: { headingA: 'Transparent,', headingB: 'tiered, no surprises.', price: '£2,400 – 4,500', unit: 'per year · per mainstream school', note: TIER_NOTE },
+    pricing: { id: 'mainstream', headingA: 'Transparent,', headingB: 'tiered, no surprises.', price: '£2,400 – 4,500', unit: 'per year · per mainstream school', note: TIER_NOTE },
     cta: { titleA: 'Three years sounds like a lot.', titleB: 'It is four review cycles.', body: 'Thirty minutes on what ISP readiness actually requires, against your current register.' },
   }),
 
@@ -2585,7 +2638,7 @@ const pages = {
       { icon: 'bell', title: 'Your record, your notifications', body: 'Your own profile and school record, and notifications that are actually about you. Nothing school-wide, nothing about other people&rsquo;s work.' },
       { icon: 'devices', title: 'Any device, no app store', body: 'Installs as a progressive web app straight from the browser — phone, tablet, or personal laptop. Nothing to approve through an app store, nothing to manage through MDM.' },
     ],
-    pricing: { headingA: 'No per-seat charge.', headingB: 'Ever.', price: 'Included', unit: 'with every school licence', note: 'The Staff PWA is not licensed separately. It ships with DARE SEN OS and DARE Mainstream for <strong>every member of staff on your roll</strong>, at no additional cost — because a workspace that only some of your staff can reach is not much of a workspace.' },
+    pricing: { id: 'staff-pwa', headingA: 'No per-seat charge.', headingB: 'Ever.', price: 'Included', unit: 'with every school licence', note: 'The Staff PWA is not licensed separately. It ships with DARE SEN OS and DARE Mainstream for <strong>every member of staff on your roll</strong>, at no additional cost — because a workspace that only some of your staff can reach is not much of a workspace.' },
     cta: { titleA: 'See it on', titleB: 'your own phone.', body: 'Thirty minutes. Bring a phone, a tablet, and someone from the kitchen or the site team.' },
   }),
 
@@ -2673,7 +2726,7 @@ const pages = {
       { icon: 'lock', title: 'Governance built in', body: 'Role-based access, full audit trails, and statutory reporting shaped around how trust leaders already work — not a separate compliance exercise bolted on.' },
       { icon: 'chart', title: 'Comparative outcomes', body: 'Benchmark provision and progress across schools — not to rank them, but to find what is working in one place and move it to the others.' },
     ],
-    pricing: { headingA: 'One licence,', headingB: 'whole trust.', price: '£12,000+', unit: 'per year · per MAT', note: 'Priced at MAT level across every school in the trust. Multi-school discounts: <strong>15%</strong> (2–5 schools), <strong>25%</strong> (6–10), <strong>35%</strong> (11–20). 20+ by bespoke negotiation.' },
+    pricing: { id: 'trust', headingA: 'One licence,', headingB: 'whole trust.', price: '£12,000+', unit: 'per year · per MAT', note: 'Priced at MAT level across every school in the trust. Multi-school discounts: <strong>15%</strong> (2–5 schools), <strong>25%</strong> (6–10), <strong>35%</strong> (11–20). 20+ by bespoke negotiation.' },
     cta: { titleA: 'See your trust', titleB: 'in one view.', body: 'Thirty minutes with your structure, your schools, and the reporting your board actually asks for.' },
   }),
 
@@ -3022,9 +3075,7 @@ const pages = {
             <div class="plan-card reveal">
               <div class="plan-audience">${p.audience}</div>
               <h2 class="plan-name">${p.name}</h2>
-              <ul class="plan-tiers">
-                ${p.tiers.map(([band, price]) => `<li><span>${band}</span><strong>${price}${price.startsWith('£') ? '<small>/yr</small>' : ''}</strong></li>`).join('')}
-              </ul>
+              <ul class="plan-tiers" id="plan-tiers-${p.id}">${tierItems(p)}</ul>
               <div class="plan-includes-label">Includes</div>
               <ul class="plan-includes">${p.includes.map(i => `<li>${i}</li>`).join('')}</ul>
             </div>
@@ -4175,9 +4226,9 @@ function productPage({
           <div class="section-eyebrow">Pricing</div>
           <h2 class="section-h2">${pricing.headingA} <span class="gold">${pricing.headingB}</span></h2>
         </div>
-        <div class="pricing-card reveal">
-          <div class="pricing-price">${pricing.price}</div>
-          <div class="pricing-unit">${pricing.unit}</div>
+        <div class="pricing-card reveal"${pricing.id ? ` data-price-id="${pricing.id}"` : ''}>
+          <div class="pricing-price">${productPrice(pricing).price}</div>
+          <div class="pricing-unit">${productPrice(pricing).unit}</div>
           <div class="pricing-note">${pricing.note}</div>
           <div class="pricing-actions">
             ${ctaLink(primary, 'btn btn-gold')}
@@ -4339,6 +4390,7 @@ function render() {
   syncParentEnquiry();
   if (key === 'book') loadBooking();
   if (key === 'team') loadTeam();
+  if (key === 'pricing' || HQ_PRICE_ROW[key]) loadPricing();
   /* Lazy poster: fetched only as the overview video nears the screen; the MP4 itself waits for Play (preload="none"). */
   document.querySelectorAll('video[data-poster]').forEach(v => {
     if (!('IntersectionObserver' in window)) { v.poster = v.dataset.poster; return; }
@@ -4386,6 +4438,7 @@ window.addEventListener('DOMContentLoaded', () => {
   /* Render first so the page is never blank while HQ answers, then upgrade. */
   render();
   loadPosts();
+  loadPricing();   // also on other pages, so a click through to a priced page already has HQ's prices
 });
 
 document.getElementById('hamburger').addEventListener('click', () => {

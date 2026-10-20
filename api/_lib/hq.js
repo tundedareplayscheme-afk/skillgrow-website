@@ -180,4 +180,55 @@ async function fetchTeamPhoto(photoUrl) {
   }
 }
 
-module.exports = { fetchPosts, fetchPost, HQ_BLOG_API, fetchAvailability, createBooking, BOOK_HOSTS, fetchTeam, fetchTeamPhoto, TEAM_CACHE_TAG, BLOG_CACHE_TAG, REVALIDATE_TAGS, setTeamCacheHeaders, teamSecretMatches };
+/* ── Prices (server-to-server; Tunde 20 Oct 2026) ────────────────────────────────
+   HQ's Settings → Pricing is the ONLY source of SkillGrow prices. HQ's public, read-only
+   /api/public/pricing answers { products: [{ product, price, unit, note, tiers: [{ band, price }] }] },
+   or 503 when it cannot read them or none are set (never an empty list). Any failure here is
+   LOGGED, and callers then show the site's built-in prices: the fallback is never silent. */
+const HQ_PRICING_API = 'https://hq.skillgrow.co.uk/api/public/pricing';
+const PRICING_CACHE_TAG = 'pricing';
+const PRICING_CDN_SECONDS = 300;   // a change saved in HQ is on the site within 5 minutes
+
+const priceText = (v, max = 120) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
+
+/* [{ product, price, unit, note, tiers }] or null (HQ down, 503, bad JSON, nothing usable). */
+async function fetchPricing() {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  try {
+    const res = await fetch(HQ_PRICING_API, { signal: controller.signal, cache: 'no-store', headers: { accept: 'application/json' } });
+    if (!res.ok) {
+      console.error(`pricing: HQ answered ${res.status} — the site is showing its built-in prices`);
+      return null;
+    }
+    const json = await res.json();
+    const products = (Array.isArray(json && json.products) ? json.products : [])
+      .map(r => ({
+        product: priceText(r && r.product), price: priceText(r && r.price),
+        unit: priceText(r && r.unit), note: priceText(r && r.note, 200),
+        tiers: (Array.isArray(r && r.tiers) ? r.tiers : [])
+          .map(t => ({ band: priceText(t && t.band), price: priceText(t && t.price) }))
+          .filter(t => t.band && t.price).slice(0, 12),
+      }))
+      .filter(r => r.product && r.price);
+    if (!products.length) {
+      console.error('pricing: HQ sent no usable prices — the site is showing its built-in prices');
+      return null;
+    }
+    return products;
+  } catch (err) {
+    console.error('pricing: HQ unreachable — the site is showing its built-in prices —', err && err.message);
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/* Cache headers for anything built from HQ's prices: CDN 5 minutes, never stale, browsers re-check. */
+function setPricingCacheHeaders(res) {
+  res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+  res.setHeader('Vercel-CDN-Cache-Control', `max-age=${PRICING_CDN_SECONDS}`);
+  res.setHeader('Vercel-Cache-Tag', PRICING_CACHE_TAG);
+}
+
+module.exports = { fetchPosts, fetchPost, HQ_BLOG_API, fetchAvailability, createBooking, BOOK_HOSTS, fetchTeam, fetchTeamPhoto, TEAM_CACHE_TAG, BLOG_CACHE_TAG, REVALIDATE_TAGS, setTeamCacheHeaders, teamSecretMatches, fetchPricing, setPricingCacheHeaders };

@@ -23,7 +23,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { fetchPost, BLOG_CACHE_TAG, setTeamCacheHeaders } = require('./_lib/hq');
+const { fetchPost, BLOG_CACHE_TAG, setTeamCacheHeaders, fetchPricing, setPricingCacheHeaders } = require('./_lib/hq');
 
 const ORIGIN = 'https://www.skillgrow.co.uk';
 const OG_IMAGE = `${ORIGIN}/og-image.png`;
@@ -301,6 +301,31 @@ function metaForPost(post) {
   };
 }
 
+/* ── Prices (HQ's Settings → Pricing is the ONLY source; Tunde 20 Oct 2026) ──────
+   These pages show prices. Each is served with HQ's rows in window.__SG_PRICING, so the
+   first paint already has HQ's prices, and cached 5 minutes like /api/pricing. The /pricing
+   search description quotes the lowest price per product from the same rows. When HQ cannot
+   be reached fetchPricing() logs it, the page keeps its built-in prices and META's description,
+   and the cache is short so the site recovers within a minute. */
+const PRICED_PAGES = new Set(['pricing', 'sen', 'mainstream', 'trust', 'staff-pwa']);
+const DESCRIPTION_PRODUCTS = [['dare sen', 'DARE SEN OS'], ['dare mainstream', 'DARE Mainstream'], ['trust portal', 'Trust Portal']];
+
+/* "from £3,500/yr" per product: its first tier's price, else its range; the first £ amount in it. */
+function pricingDescription(products) {
+  const parts = [];
+  for (const [key, label] of DESCRIPTION_PRODUCTS) {
+    const row = products.find(r => r.product.trim().toLowerCase() === key);
+    if (!row) continue;
+    const m = String((row.tiers[0] && row.tiers[0].price) || row.price).match(/£\s?\d[\d,.]*k?/i);
+    if (m) parts.push(`${label} from ${m[0].replace(/\s/g, '')}/yr`);
+  }
+  if (!parts.length) return null;
+  return `SkillGrow pricing: ${parts.join(', ')}. No setup fees and no per-user charges, ever.`;
+}
+
+/* Inline JSON: '<' and the two JS line separators are escaped so HQ text can never end the script. */
+const inlineJson = (v) => JSON.stringify(v).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
+
 const BLOCK = /<!-- META:START[\s\S]*?META:END -->/;
 
 let shell = null;
@@ -377,10 +402,25 @@ module.exports = async function handler(req, res) {
     console.error('page: META block not found in index.html — serving unmodified');
   }
 
-  const body = html.replace(BLOCK, headFor(meta));
+  let head = headFor(meta);
+  let priced = null;
+  if (PRICED_PAGES.has(slug)) {
+    priced = await fetchPricing();
+    if (priced) {
+      const description = slug === 'pricing' ? pricingDescription(priced) : null;
+      if (description) head = headFor({ ...meta, description });
+      head += `\n<script>window.__SG_PRICING=${inlineJson(priced)};</script>`;
+    }
+  }
+  const body = html.replace(BLOCK, () => head);
 
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  if (PRICED_PAGES.has(slug)) {
+    if (priced) setPricingCacheHeaders(res);
+    else res.setHeader('Cache-Control', 'public, s-maxage=60');
+    return res.end(body);
+  }
   /* A Content Hub post page follows the blog rules (tagged, 60 s, never stale) so an unpublished or
      edited post leaves at once; the site's own pages keep the long cache. */
   if (fromHq) setTeamCacheHeaders(res, [BLOG_CACHE_TAG], 60);
