@@ -1619,9 +1619,7 @@ body.stand-mode .tes-form button[type=submit] { font-size: 20px; padding: 18px; 
 <script>
 /* ─── Page templates ────────────────────── */
 /* Shared pricing footnote — DARE SEN and DARE Mainstream tier identically. */
-const TIER_NOTE = 'Tiered by pupil count. Early-adopter programme: <strong>25% off for three years</strong>. '
-  + 'Multi-school discounts: <strong>15%</strong> (2–5 schools), <strong>25%</strong> (6–10), '
-  + '<strong>35%</strong> (11–20). 20+ by bespoke negotiation.';
+const TIER_NOTE = 'Tiered by pupil count. Early-adopter programme: <strong>25% off for three years</strong>.';
 
 /* ─── Prices: HQ's Settings → Pricing is the ONLY source (Tunde, 20 Oct 2026) ───
    Never hand-edit a price on this site: change it in HQ. api/page.js puts HQ's rows in
@@ -1703,8 +1701,8 @@ const FAQ = [
       '<p>For special schools: all 29+ DARE SEN OS apps, every role, the Trust Portal connection, the Parent Portal for families and the Staff PWA for every member of staff.</p><p>For mainstream schools: the graduated approach, the ISP builder, EHCP evidence, the Parent Portal and the Staff PWA.</p>'],
     ['Can I cancel?',
       '<p>Yes. You can cancel with 30 days&rsquo; notice.</p>'],
-    ['Do you offer discounts for MATs?',
-      '<p>Yes. When several schools in a trust take DARE, each school&rsquo;s licence is discounted: <strong>15%</strong> for 2–5 schools, <strong>25%</strong> for 6–10 and <strong>35%</strong> for 11–20. Trusts of more than 20 schools are priced individually.</p><p>Schools joining before April 2027 also receive our early-adopter discount of 25% for their first three years.</p>'],
+    ['How are trusts priced?',
+      '<p>The Trust Portal is one licence per trust, priced by how many schools the trust has: see the Trust Portal bands on our <a href="/pricing" data-link>pricing page</a>. For trusts of 11 or more schools, <a href="/contact" data-link>contact us</a>.</p><p>Schools joining before April 2027 also receive our early-adopter discount of 25% for their first three years.</p>'],
     ['Is VAT included?',
       '<p>No. All prices exclude VAT.</p>'],
   ]},
@@ -2726,7 +2724,7 @@ const pages = {
       { icon: 'lock', title: 'Governance built in', body: 'Role-based access, full audit trails, and statutory reporting shaped around how trust leaders already work — not a separate compliance exercise bolted on.' },
       { icon: 'chart', title: 'Comparative outcomes', body: 'Benchmark provision and progress across schools — not to rank them, but to find what is working in one place and move it to the others.' },
     ],
-    pricing: { id: 'trust', headingA: 'One licence,', headingB: 'whole trust.', price: '£12,000+', unit: 'per year · per MAT', note: 'Priced at MAT level across every school in the trust. Multi-school discounts: <strong>15%</strong> (2–5 schools), <strong>25%</strong> (6–10), <strong>35%</strong> (11–20). 20+ by bespoke negotiation.' },
+    pricing: { id: 'trust', headingA: 'One licence,', headingB: 'whole trust.', price: '£12,000+', unit: 'per year · per MAT', note: 'Priced at MAT level across every school in the trust, by the number of schools. Trusts of 11 or more schools: contact us.' },
     cta: { titleA: 'See your trust', titleB: 'in one view.', body: 'Thirty minutes with your structure, your schools, and the reporting your board actually asks for.' },
   }),
 
