@@ -18,9 +18,20 @@
     },
     "api/team-revalidate.js": {
       "maxDuration": 10
+    },
+    "api/dm-parents.js": {
+      "maxDuration": 20
     }
   },
   "rewrites": [
+    {
+      "source": "/parents",
+      "destination": "/dm-parents.html"
+    },
+    {
+      "source": "/parents/",
+      "destination": "/dm-parents.html"
+    },
     {
       "source": "/team-photo/:id.webp",
       "destination": "/api/team-photo?id=:id"
@@ -53,6 +64,28 @@
   "headers": [
     {
       "source": "/tes",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/parents",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/dm-parents.html",
       "headers": [
         {
           "key": "X-Robots-Tag",

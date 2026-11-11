@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Parents event sign-up | DAREManor Activities Centre</title>
+<meta name="description" content="Sign up to hear from DAREManor Activities Centre about Saturday clubs, holiday schemes and 19–25 provision.">
+<meta name="theme-color" content="#F4A623">
+<!-- DAREManor parents event, 11 Nov 2026 (T4). A clone of /tes for DAREManor: posts ONLY to this site's /api/dm-parents,
+     which hands the sign-up to HQ server-to-server. ?stand=1 = the stand tablet (resets for the next visitor, keeps
+     entries on the device while offline and retries them); ?test=1 tags the sign-up as a test.
+     DM_CONSENT must match api/dm-parents.js CONSENT (a test checks). -->
+<style>
+:root { --accent: #F4A623; --accent-deep: #C77F0A; --ink: #1F2937; --muted: #4B5563; --line: #D1D5DB; --bg: #FFFBF3; --card: #FFFFFF; --err: #B91C1C; }
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+.wrap { max-width: 600px; margin: 0 auto; padding: 20px 16px 48px; }
+header { text-align: center; padding: 8px 0 18px; }
+header img { width: 220px; max-width: 70%; height: auto; display: block; margin: 0 auto 14px; background: #fff; border-radius: 10px; }
+h1 { font-size: 26px; line-height: 1.25; margin: 0 0 8px; }
+.lead { color: var(--muted); margin: 0; }
+.card { background: var(--card); border: 1px solid #F3E2C2; border-radius: 16px; padding: 20px 16px; box-shadow: 0 6px 24px rgba(199,127,10,0.08); }
+.req-note { font-size: 13px; color: var(--muted); margin: 0 0 12px; }
+.req { color: var(--err); margin-left: 2px; }
+.field { margin: 0 0 16px; border: 0; padding: 0; min-width: 0; }
+label, legend { display: block; font-weight: 600; margin: 0 0 6px; }
+.hint { font-weight: 400; color: var(--muted); font-size: 14px; margin: -2px 0 6px; }
+input[type=text], input[type=email], input[type=tel], select, textarea {
+  width: 100%; font: inherit; font-size: 17px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); }
+input:focus, select:focus, textarea:focus { outline: 3px solid rgba(244,166,35,0.35); border-color: var(--accent-deep); }
+.choices { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.choice { display: flex; align-items: center; gap: 10px; font-weight: 400; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; margin: 0; cursor: pointer; }
+.choice input { width: 20px; height: 20px; accent-color: var(--accent-deep); flex: none; }
+.consent { display: flex; gap: 10px; align-items: flex-start; margin: 0 0 12px; }
+.consent input { width: 22px; height: 22px; margin-top: 2px; accent-color: var(--accent-deep); flex: none; }
+.consent label { font-weight: 400; margin: 0; }
+.field-error, .form-error { color: var(--err); font-size: 14px; margin: 6px 0 0; }
+.form-error { background: #FEF2F2; border: 1px solid #FECACA; padding: 10px 12px; border-radius: 10px; margin: 0 0 12px; }
+.hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+button[type=submit], .next { width: 100%; font: inherit; font-size: 18px; font-weight: 700; padding: 15px; border: 0; border-radius: 12px; background: var(--accent); color: #1F2937; cursor: pointer; }
+button[aria-busy=true] { opacity: 0.7; }
+.pending { font-size: 13px; color: var(--muted); text-align: center; margin: 12px 0 0; }
+.done { text-align: center; padding: 28px 12px; }
+.done h2 { font-size: 26px; margin: 0 0 10px; }
+.privacy { font-size: 14px; margin: 4px 0 16px; }
+.privacy a { color: #8A5300; }
+footer { text-align: center; font-size: 13px; color: var(--muted); margin-top: 22px; }
+body.stand input[type=text], body.stand input[type=email], body.stand input[type=tel], body.stand select, body.stand textarea { font-size: 19px; padding: 14px 16px; }
+body.stand .choice, body.stand .consent label { font-size: 17px; }
+body.stand button[type=submit] { font-size: 20px; padding: 18px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="/img/daremanor-logo.jpg" alt="DAREManor Activities Centre" width="512" height="144">
+    <h1>Stay in touch with DAREManor</h1>
+    <p class="lead">Leave your details and we'll tell you about our Saturday club, holiday schemes and 19–25 provision.</p>
+  </header>
+  <main class="card" id="dm-app"></main>
+  <footer>DAREManor Activities Centre · <a href="https://daremanoractivities.com/privacy" rel="noopener">Privacy notice</a></footer>
+</div>
+<script>
+'use strict';
+const DM_AGE_GROUPS = ['Under 8', '8–11', '12–15', '16–19', '19–25'];
+const DM_INTERESTS = ['Saturday club', 'Holiday scheme', '19–25 provision', 'Other'];
+const DM_CONSENT = {
+  contact: 'I agree DAREManor Activities Centre may contact me about its activities and services. I can unsubscribe at any time.',
+  marketing: 'I would also like to receive news and offers from DAREManor Activities Centre by email. I can unsubscribe at any time.',
+};
+const DM_CONSENT_VERSION = 'dm-event-2026-11-v1';
+const DM_PRIVACY_URL = 'https://daremanoractivities.com/privacy';
+const DM_QUEUE = 'dm-parents-queue-v1';
+let dmTimer = null;
+const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function dmMode() { const p = new URLSearchParams(window.location.search); return { stand: p.get('stand') === '1', test: p.get('test') === '1' }; }
+function dmQueue() { try { return JSON.parse(localStorage.getItem(DM_QUEUE) || '[]'); } catch (_) { return []; } }
+function dmSaveQueue(q) { try { q.length ? localStorage.setItem(DM_QUEUE, JSON.stringify(q)) : localStorage.removeItem(DM_QUEUE); } catch (_) { /* storage blocked */ } }
+function dmShowPending() {
+  const el = document.getElementById('dm-pending'); if (!el) return;
+  const n = dmQueue().length; el.hidden = !n;
+  el.textContent = n ? `${n} ${n === 1 ? 'entry is' : 'entries are'} saved on this device and will be sent when the connection returns.` : '';
+}
+async function dmPost(payload) {
+  const r = await fetch('/api/dm-parents', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+  return { status: r.status, json: await r.json().catch(() => ({})) };
+}
+async function dmFlush() {
+  const q = dmQueue(); if (!q.length || !navigator.onLine) return dmShowPending();
+  const left = [];
+  for (const item of q) {
+    try { const r = await dmPost(item); if (r.status >= 500 || r.status === 429) left.push(item); /* 2xx sent; 4xx can never succeed */ }
+    catch (_) { left.push(item); }
+  }
+  dmSaveQueue(left); dmShowPending();
+}
+function render() {
+  const app = document.getElementById('dm-app');
+  app.innerHTML = `
+  <form id="dm-form" novalidate>
+    <p class="req-note"><span class="req" aria-hidden="true">*</span> Required</p>
+    <div class="field"><label for="d-name">Parent or carer name<span class="req" aria-hidden="true">*</span></label>
+      <input type="text" id="d-name" name="name" required autocomplete="name"><p class="field-error" id="d-name-error" hidden></p></div>
+    <div class="field"><label for="d-email">Email<span class="req" aria-hidden="true">*</span></label>
+      <input type="email" id="d-email" name="email" required autocomplete="email" inputmode="email"><p class="field-error" id="d-email-error" hidden></p></div>
+    <div class="field"><label for="d-phone">Mobile (optional)</label><input type="tel" id="d-phone" name="phone" autocomplete="tel" inputmode="tel"></div>
+    <div class="field"><label for="d-area">Borough or area</label><input type="text" id="d-area" name="area" autocomplete="address-level2"></div>
+    <div class="field"><label for="d-age">Your child's age group</label>
+      <select id="d-age" name="age_group"><option value="">Choose…</option>${DM_AGE_GROUPS.map((a) => `<option>${esc(a)}</option>`).join('')}</select></div>
+    <fieldset class="field"><legend>What are you interested in?</legend>
+      <div class="choices">${DM_INTERESTS.map((i) => `<label class="choice"><input type="checkbox" name="interests" value="${esc(i)}"> ${esc(i)}</label>`).join('')}</div></fieldset>
+    <div class="field"><label for="d-msg">Anything you'd like us to know? (optional)</label>
+      <p class="hint" id="d-msg-hint">Please don't include medical details.</p>
+      <textarea id="d-msg" name="message" rows="3" maxlength="1500" aria-describedby="d-msg-hint"></textarea></div>
+    <div class="hp" aria-hidden="true"><label for="d-website">Website</label><input type="text" id="d-website" name="website" tabindex="-1" autocomplete="off"></div>
+    <div class="consent"><input type="checkbox" id="d-consent" name="consent_contact" required><label for="d-consent" id="d-consent-text">${esc(DM_CONSENT.contact)}<span class="req" aria-hidden="true">*</span></label></div>
+    <p class="field-error" id="d-consent-error" hidden></p>
+    <div class="consent"><input type="checkbox" id="d-marketing" name="consent_marketing"><label for="d-marketing" id="d-marketing-text">${esc(DM_CONSENT.marketing)}</label></div>
+    <p class="privacy">How we use your details: <a href="${DM_PRIVACY_URL}" target="_blank" rel="noopener">DAREManor privacy notice</a></p>
+    <div class="form-error" id="dm-error" role="alert" hidden></div>
+    <button type="submit" id="dm-submit">Send my details</button>
+    <p class="pending" id="dm-pending" hidden></p>
+  </form>`;
+  dmShowPending();
+}
+function dmFieldErrors(fields) {
+  for (const k of ['name', 'email', 'consent']) {
+    const el = document.getElementById(`d-${k}-error`); if (!el) continue;
+    el.textContent = fields[k] || ''; el.hidden = !fields[k];
+  }
+}
+function dmDone(name, queued) {
+  const app = document.getElementById('dm-app');
+  const { stand } = dmMode();
+  app.innerHTML = `<div class="done" role="status"><h2>Thank you${name ? `, ${esc(name.split(' ')[0])}` : ''}.</h2>
+    <p>${queued ? 'Your details are saved on this device and will reach us as soon as the connection returns.' : 'We have your details and will be in touch soon.'}</p>
+    ${stand ? '<p><button type="button" class="next" id="dm-next">Next person</button></p>' : ''}</div>`;
+  if (stand) { clearTimeout(dmTimer); dmTimer = setTimeout(() => { if (document.getElementById('dm-next')) { render(); window.scrollTo(0, 0); } }, 8000); }
+}
+document.addEventListener('click', (e) => { if (e.target.id === 'dm-next') { clearTimeout(dmTimer); render(); window.scrollTo(0, 0); } });
+document.addEventListener('submit', async (e) => {
+  if (e.target.id !== 'dm-form') return;
+  e.preventDefault();
+  const f = e.target, data = new FormData(f), mode = dmMode();
+  const payload = {
+    name: (data.get('name') || '').trim(), email: (data.get('email') || '').trim(), phone: (data.get('phone') || '').trim(),
+    area: (data.get('area') || '').trim(), age_group: data.get('age_group') || undefined, interests: data.getAll('interests'),
+    message: (data.get('message') || '').trim(), website: data.get('website') || '',
+    consent: { contact: data.get('consent_contact') === 'on', marketing: data.get('consent_marketing') === 'on', version: DM_CONSENT_VERSION },
+    source: mode.stand ? 'stand' : 'qr', test: mode.test || undefined,
+  };
+  const local = {};
+  if (!payload.name) local.name = 'Please enter your name';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) local.email = 'Please enter a valid email address';
+  if (!payload.consent.contact) local.consent = 'Please tick the box so we can contact you';
+  dmFieldErrors(local);
+  if (Object.keys(local).length) { const k = Object.keys(local)[0]; const first = f.querySelector(`[name="${k === 'consent' ? 'consent_contact' : k}"]`); if (first) first.focus(); return; }
+  const btn = document.getElementById('dm-submit'), err = document.getElementById('dm-error');
+  err.hidden = true; btn.setAttribute('aria-busy', 'true'); const label = btn.textContent; btn.textContent = 'Sending…';
+  try {
+    const r = await dmPost(payload);
+    if (r.status === 200) return dmDone(payload.name, false);
+    if (r.status === 400) { dmFieldErrors(r.json.fields || {}); err.textContent = r.json.error || 'Please check your details'; err.hidden = false; return; }
+    if (mode.stand && r.status >= 500) { dmSaveQueue([...dmQueue(), payload]); return dmDone(payload.name, true); }
+    err.textContent = r.json.error || 'Something went wrong. Please try again, or email hello@daremanoractivities.co.uk.'; err.hidden = false;
+  } catch (_) {
+    if (mode.stand) { dmSaveQueue([...dmQueue(), payload]); return dmDone(payload.name, true); }   // offline at the stand
+    err.textContent = 'No connection. Please try again in a moment, or email hello@daremanoractivities.co.uk.'; err.hidden = false;
+  } finally { if (document.body.contains(btn)) { btn.removeAttribute('aria-busy'); btn.textContent = label; } }
+});
+window.addEventListener('online', () => { dmFlush(); });
+setInterval(() => { if (document.getElementById('dm-form') && dmQueue().length) dmFlush(); }, 30000);
+if (dmMode().stand) document.body.classList.add('stand');
+render();
+dmFlush();
+</script>
+</body>
+</html>
