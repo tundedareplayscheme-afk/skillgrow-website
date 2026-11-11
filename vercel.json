@@ -69,5 +69,17 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/parents",
+      "destination": "https://daremanoractivities.com/parents",
+      "permanent": false
+    },
+    {
+      "source": "/parents/",
+      "destination": "https://daremanoractivities.com/parents",
+      "permanent": false
+    }
   ]
 }
