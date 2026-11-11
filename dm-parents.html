@@ -98,22 +98,24 @@ async function dmFlush() {
 }
 function render() {
   const app = document.getElementById('dm-app');
+  // T9 MUST: on the shared stand tablet the browser must never offer an earlier parent's details to the next one.
+  const ac = (v) => (dmMode().stand ? 'off' : v);
   app.innerHTML = `
-  <form id="dm-form" novalidate>
+  <form id="dm-form" novalidate${dmMode().stand ? ' autocomplete="off"' : ''}>
     <p class="req-note"><span class="req" aria-hidden="true">*</span> Required</p>
     <div class="field"><label for="d-name">Parent or carer name<span class="req" aria-hidden="true">*</span></label>
-      <input type="text" id="d-name" name="name" required autocomplete="name"><p class="field-error" id="d-name-error" hidden></p></div>
+      <input type="text" id="d-name" name="name" required autocomplete="${ac('name')}"><p class="field-error" id="d-name-error" hidden></p></div>
     <div class="field"><label for="d-email">Email<span class="req" aria-hidden="true">*</span></label>
-      <input type="email" id="d-email" name="email" required autocomplete="email" inputmode="email"><p class="field-error" id="d-email-error" hidden></p></div>
-    <div class="field"><label for="d-phone">Mobile (optional)</label><input type="tel" id="d-phone" name="phone" autocomplete="tel" inputmode="tel"></div>
-    <div class="field"><label for="d-area">Borough or area</label><input type="text" id="d-area" name="area" autocomplete="address-level2"></div>
+      <input type="email" id="d-email" name="email" required autocomplete="${ac('email')}" inputmode="email"><p class="field-error" id="d-email-error" hidden></p></div>
+    <div class="field"><label for="d-phone">Mobile (optional)</label><input type="tel" id="d-phone" name="phone" autocomplete="${ac('tel')}" inputmode="tel"></div>
+    <div class="field"><label for="d-area">Borough or area</label><input type="text" id="d-area" name="area" autocomplete="${ac('address-level2')}"></div>
     <div class="field"><label for="d-age">Your child's age group</label>
-      <select id="d-age" name="age_group"><option value="">Choose…</option>${DM_AGE_GROUPS.map((a) => `<option>${esc(a)}</option>`).join('')}</select></div>
+      <select id="d-age" name="age_group" autocomplete="off"><option value="">Choose…</option>${DM_AGE_GROUPS.map((a) => `<option>${esc(a)}</option>`).join('')}</select></div>
     <fieldset class="field"><legend>What are you interested in?</legend>
       <div class="choices">${DM_INTERESTS.map((i) => `<label class="choice"><input type="checkbox" name="interests" value="${esc(i)}"> ${esc(i)}</label>`).join('')}</div></fieldset>
     <div class="field"><label for="d-msg">Anything you'd like us to know? (optional)</label>
       <p class="hint" id="d-msg-hint">Please don't include medical details.</p>
-      <textarea id="d-msg" name="message" rows="3" maxlength="1500" aria-describedby="d-msg-hint"></textarea></div>
+      <textarea id="d-msg" name="message" autocomplete="off" rows="3" maxlength="1500" aria-describedby="d-msg-hint"></textarea></div>
     <div class="hp" aria-hidden="true"><label for="d-website">Website</label><input type="text" id="d-website" name="website" tabindex="-1" autocomplete="off"></div>
     <div class="consent"><input type="checkbox" id="d-consent" name="consent_contact" required><label for="d-consent" id="d-consent-text">${esc(DM_CONSENT.contact)}<span class="req" aria-hidden="true">*</span></label></div>
     <p class="field-error" id="d-consent-error" hidden></p>
@@ -134,7 +136,8 @@ function dmFieldErrors(fields) {
 function dmDone(name, queued) {
   const app = document.getElementById('dm-app');
   const { stand } = dmMode();
-  app.innerHTML = `<div class="done" role="status"><h2>Thank you${name ? `, ${esc(name.split(' ')[0])}` : ''}.</h2>
+  // T9: no name on the shared stand tablet's thank-you screen (the next parent sees it)
+  app.innerHTML = `<div class="done" role="status"><h2>Thank you${name && !stand ? `, ${esc(name.split(' ')[0])}` : ''}.</h2>
     <p>${queued ? 'Your details are saved on this device and will reach us as soon as the connection returns.' : 'We have your details and will be in touch soon.'}</p>
     ${stand ? '<p><button type="button" class="next" id="dm-next">Next person</button></p>' : ''}</div>`;
   if (stand) { clearTimeout(dmTimer); dmTimer = setTimeout(() => { if (document.getElementById('dm-next')) { render(); window.scrollTo(0, 0); } }, 8000); }

@@ -118,3 +118,17 @@ test('vercel.json serves /parents from dm-parents.html, noindex, and gives the f
   assert.ok(v.headers.some(h => h.source === '/parents' && h.headers.some(x => x.key === 'X-Robots-Tag')))
   assert.equal(v.functions['api/dm-parents.js'].maxDuration, 20)
 })
+
+test('T9: test flag only from an @example.invalid address', async () => {
+  const { calls } = await call(good({ email: 'real.parent@gmail.com', test: true }), { env: SECRET })
+  assert.ok(!('test' in calls[0].body))
+})
+
+test('T9 MUST: stand mode turns autocomplete off on the form and every field; no name on the stand thank-you', () => {
+  const html = readFileSync(new URL('../dm-parents.html', import.meta.url), 'utf8')
+  assert.ok(html.includes(`const ac = (v) => (dmMode().stand ? 'off' : v);`))
+  for (const t of ['name', 'email', 'tel', 'address-level2']) assert.ok(html.includes(`autocomplete="\${ac('${t}')}"`), t)
+  assert.ok(!/autocomplete="(name|email|tel|address-level2)"/.test(html), 'no fixed autocomplete left')
+  assert.ok(html.includes(`<form id="dm-form" novalidate\${dmMode().stand ? ' autocomplete="off"' : ''}>`))
+  assert.ok(html.includes('name && !stand ?'))
+})

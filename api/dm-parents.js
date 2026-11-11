@@ -158,7 +158,8 @@ module.exports = async function handler(req, res) {
     contact: true, marketing: s.marketing, version: CONSENT_VERSION,
     text: s.marketing ? `${wording.contact} ${wording.marketing}` : wording.contact,
   };
-  s.test = body.test === true || /@example\.invalid$/.test(s.email);
+  /* T9: a sign-up is a TEST only with an @example.invalid address (?test=1 alone can't hide a real parent's sign-up). */
+  s.test = /@example\.invalid$/.test(s.email);
 
   const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
   const hqBody = {
